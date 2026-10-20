@@ -56,7 +56,7 @@ Assets:
 | Attack | Source (level) | Setting | Degradation | Countermeasure reported |
 |---|---|---|---|---|
 | Mimicry with feedback training | tey2013 (F) | 2 fixed 8-char passwords, 84 attackers | FAR 0.24 → 0.63 (easy pw) and 0.20 → 0.42 (hard) with partial information. The 14 best attackers reached 0.99 with full information. | None effective in the paper. The authors question keystroke dynamics as a biometric. |
-| Snoop-forge-replay (keylogged timings → synthesised forgery) | rahman2011sfr, rahman2013sfr (A) | **Free-text continuous** verification, 50 users | Up to 87.75% forgery success against configurations with < 11% zero-effort pass rate. 20–100 snooped keystrokes suffice. | None. This is the closest analogue to ZTBE, which is why on-device malware is out of scope. |
+| Snoop-forge-replay (keylogged timings → synthesised forgery) | rahman2011sfr, rahman2013sfr (A) | **Free-text continuous** verification, 50 users | Up to 87.75% forgery success with 50–200 snooped keystrokes against configurations with < 11% zero-effort pass rate (rahman2011sfr). The TIFS version reports the attack effective with as few as 20–100 snooped keystrokes (rahman2013sfr). | None. This is the closest analogue to ZTBE, which is why on-device malware is out of scope. |
 | Population-statistics algorithmic attack | serwadda2013 (A) | Password keystrokes, > 3000 users | Mean EER +28.6% to +84.4%. Worse for short strings; some users hit much harder. | Longer strings; test against algorithmic attacks rather than only zero-effort. |
 | Robot (Lego) forgery | serwadda2013ccs, serwadda2016robot (A) | **Touch** swipes | EER +339% to +1004% (population-driven). FAR up to 5× (population and user-tailored). | Not keystroke, but shows population-statistics attacks beat zero-effort baselines. |
 | Targeted mimicry, touch | khan2016mimicry (A) | 3 touch-IA schemes, 256 pairs | 84% bypass by shoulder surfing (< 2 min observation); 86% with offline training. | The authors conclude touch IA is unsuitable for security. |
@@ -362,7 +362,7 @@ Legal analysis below is the research assistant's reading of the sources, not leg
 - **EU AI Act** (euaiact2024, read through the consolidated mirror):
   - Annex III(1)(a) excludes from the high-risk class biometric *verification* whose sole purpose is to confirm that a person is who they claim to be.
   - Annex III(4)(b) lists AI used to monitor and evaluate the behaviour of persons in work relationships as high-risk. A workforce deployment could fall there irrespective of the verification exclusion, hence D6.
-  - Art. 5(1) prohibits inferring emotions in the workplace and in education (the text was read; the sub-point letter (f) is UNVERIFIED). ZTBE MUST NOT infer emotion, stress or health.
+  - Art. 5(1) prohibits inferring emotions in the workplace and in education (Art. 5(1)(f); letter checked against the artificialintelligenceact.eu consolidated text in review round 1). ZTBE MUST NOT infer emotion, stress or health.
 - **NIST SP 800-63B-4** (non-EU, for US RPs): its biometric definition includes keystroke and mouse, and fraud indicators are not authentication factors. ZTBE claims no AAL.
 
 ## 11. Claims ZTBE v2 makes, and does not make
