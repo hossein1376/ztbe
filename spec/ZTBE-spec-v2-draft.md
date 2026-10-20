@@ -47,7 +47,7 @@ Assets:
 | A3 | Session hijack (stolen cookie or token used from another machine) | Valid session, no device key | Use the session | The RP binds the session to the device key (assertions MUST arrive for active sessions, §9.4) | No fresh signed assertions arrive, so the session is degraded after `max_silence`. This is a device-binding control, not a behavioural one. |
 | A4 | Unattended terminal (insider walks up to an unlocked machine) | Physical input on the enrolled device | Act as the user | Behavioural score → trust model → band `high` → WebAuthn step-up | Detection probability against **zero-effort** impostors with the default trust parameters: 72–88% within 5 windows, at 0.51–1.49 false alarms per 60 genuine windows (§6.5, Tappy; the q80 row gives 83–93% at 1.35–2.21). Not a guarantee. |
 | A5 | Imitation / mimicry (human trains on the victim's rhythm) | Observes the victim, e.g. by shoulder surfing or replaying captured timings | Pass as `ok` | None strong. Partly mitigated by multi-feature, long windows, the trust model and step-up on sensitive operations | Literature (§2.1): mimicry raises FAR several-fold. **ZTBE does not resist a trained, targeted imitator**, and the spec says so. |
-| A6 | Synthetic input injection / bots (OS-level injected events, timing forgeries) | Injects events through OS APIs or virtual HID | Pass as `ok`, or poison adaptation | Injected-event provenance check (§4.4), a liveness/synthetic detector as a separate signal, and supervised adaptation only | Provenance flags catch naive injection (OS-flagged events). Hardware-level injection (USB HID emulators) is not detectable by provenance. Detector performance on open data is quoted in §2.1, not measured by us. |
+| A6 | Synthetic input injection / bots (OS-level injected events, timing forgeries) | Injects events through OS APIs or virtual HID | Pass as `ok`, or poison adaptation | Injected-event provenance check (§3.1), a liveness/synthetic detector as a separate signal, and supervised adaptation only | Provenance flags catch naive injection (OS-flagged events). Hardware-level injection (USB HID emulators) is not detectable by provenance. Detector performance on open data is quoted in §2.1, not measured by us. |
 | A7 | Malicious insider (operator or admin of the verifier or RP) | Reads band streams, sets policy | Profile or surveil employees | 3-level band only, no score/feature API, ≤ 30-day retention, purpose limitation in RP terms (D6) | Limits what can be learned per person. It cannot stop an employer from *using* bands punitively; that is a legal and organisational control (§10). |
 | A8 | Template poisoning (gradual drift) | Input on the device over days | Shift the template towards the attacker | Supervised-only adaptation (D4); the unsupervised mode needs the full guard stack | Measured: naive or gated updates lead to 83% takeover after 28 days. The full stack gives 9% (equal to the no-attack baseline). Supervised mode reduces A8 to A6+A4 plus defeating the step-up. |
 
@@ -83,7 +83,7 @@ ICC and test-window within/between ratio come from [experiments-v2, per-feature 
 | Press-press latency (median, per zone transition) | **Keep** | `pp_median` ICC 0.98, ratio 0.22–0.41. Zone-transition means: ratio 0.37–0.59 (Aalto), 0.54–0.90 (LASER). |
 | Release-press flight (per zone transition) | **Keep** (redundant with PP+hold; kept for robustness) | `rp_mu_*` ratio 0.37–0.97; Tappy self-prior ICC for `rp_mu_SR`/`rp_mu_RS` is 0.01–0.03 (unstable) |
 | Rollover (RP < 0) fraction | **Keep, conditional** | Among the best features on Aalto/LASER (ratio 0.24/0.39), but on Tappy the ratio is 1.19 (fails). The suspected cause, a ~15.6 ms timer, is untested. MUST be disabled when the measured timer resolution is > 4 ms (agent self-test). The 4 ms cut-off is a proposal. |
-| Per-transition SDs (`pp_sd_*`) | **Drop** | Ratio 0.75–1.03 on Aalto (intra-session), but 0.90–1.81 on LASER and Tappy (cross-session or cross-day) |
+| Per-transition SDs (`pp_sd_*`) | **Drop** | Ratio 0.75–1.22 on Aalto (intra-session), but 0.90–1.81 on LASER and Tappy (cross-session or cross-day) |
 | Hold SDs | Keep `hold_sd_{L,R}`, drop `hold_sd_S` | L/R ratio 0.52–0.99 (6 of 8 cells ≤ 0.70) vs S ratio 0.66–1.21 |
 | Error-correction ratio (backspace fraction) | **Drop** | Ratio 1.01 (Aalto), 1.90 (LASER) |
 | Burstiness | **Drop** | ICC 0.30–0.53; ratio 1.09–1.57 |
@@ -272,7 +272,7 @@ v1's §6.1 gate alone does not stop poisoning.
 **Default mode: supervised (D4).**
 - **U1.** Only windows closed within **30 min after a successful WebAuthn ceremony** and with block score ≤ τ_g are update candidates.
 - **U2.** μ is updated by EWMA with `η = 0.05` per accepted window. σ is re-estimated weekly from the last 50 supervised windows using the same shrinkage formula.
-- **U3.** Anchors are the enrolment template plus ≤ 3 checkpoints taken at strong-auth events. An update is rejected if the new μ is further than `r_anchor = 0.67·τ_v` from *any* anchor, where τ_v is the verify threshold in score units, as in `adapt.py`.
+- **U3.** Anchors are the enrolment template plus ≤ 3 checkpoints taken at strong-auth events. An update is rejected if the new μ is further than `r_anchor = 0.675·τ_v` from *any* anchor, where τ_v is the verify threshold in score units, as in `adapt.py`.
 - **U4.** Re-enrolment is required after 180 days without a supervised checkpoint. NIST 800-63B-4 requires time-limited adaptation; the 180-day value is ours.
 
 The supervised mode itself is **not simulated**. The adaptation experiment covers unsupervised policies only. Its security argument is structural: the attacker must first pass a WebAuthn step-up. Its FRR benefit is unmeasured (PLAN M1-T4).
@@ -415,7 +415,7 @@ Follows eberz2017 and ISO/IEC 19795-1 terminology (iso19795-1; standard text not
 | Step-up rate limit | ≤ 2/h per user | §6.5 T5 (proposal) |
 | Persistent-goat rule | > 3/day over 14 days → re-enrol → disable | §6.6 (proposal, untested) |
 | Enrolment | ≥ 1000 keys, ≥ 15 min, ≥ 2 days, supervised | §5 |
-| Adaptation | supervised 30 min, η = 0.05, anchors ≤ 3, r_anchor = 0.67·τ_v, 180-day re-enrol | §8, D4 |
+| Adaptation | supervised 30 min, η = 0.05, anchors ≤ 3, r_anchor = 0.675·τ_v, 180-day re-enrol | §8, D4 |
 | Epoch nonce | 10 min | §9.1 |
 | max_silence | 15 min | §9.1 (proposal) |
 | Retention | ≤ 30 days of bands | D6 |
