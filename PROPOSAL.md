@@ -228,12 +228,14 @@ Licences: lattigo, go-tpm, go-attestation, go-tpm-tools, memguard and tink-go ar
 | M4 (2 wk) | WebAuthn step-up, supervised adaptation, anchors, sanitiser; optional per-RP keyed transform (O2) for renewability | Poisoning simulation reproduced in Go: takeover ≤ baseline + 2 pp, week-8 FRR ≤ static |
 | M5 (2 wk) | Pilot hardening: DPIA inputs, retention, user-visible status, kill switch | Pilot on ≥ 20 consenting users for 4 weeks. Measured per-user prompt rate and Gini |
 
-## 10. Open issues and decisions for Hossein
+## 10. Decisions
 
-1. **Role.** Accept ZTBE as a **risk signal and step-up trigger only** (recommended), not an authentication factor.
-2. **Trust anchor.** Require TPM/Secure Enclave devices, or allow a software-keystore fallback with weaker claims.
-3. **Population priors.** The Aalto data is **non-commercial**, so the shipped priors and LDA must come from a licensed or own consented population. Tappy (ODC-By) is commercially usable with attribution but small and partly PD subjects.
-4. **Unsupervised adaptation.** Off by default (recommended)? Also choose the re-enrolment time limit (180 days proposed).
-5. **Server-side matching (O4/HE).** Is it ever required, for example for roaming users without a trusted device? If not, drop it from scope.
-6. **Workforce deployments.** The EU AI Act Annex III(4)(b) (monitoring and evaluating behaviour of workers) may apply. Get a legal opinion. Also enforce technically that outputs cannot be used for productivity monitoring.
-7. **Tappy PD subjects.** Health-related data. Use it only for research numbers and do not ship models trained on it.
+The full rationale for each decision, and what would change it, is in [`notes/decisions.md`](notes/decisions.md).
+
+1. **Role: decided by Hossein (2026-10-21).** ZTBE is a **risk signal and step-up trigger only**. It is not an authentication factor and never locks a user out on its own.
+2. **Trust anchor: decided by research assistant (delegated).** Hardware-backed keys where available, with a software fallback allowed. Every assertion carries `key_protection`, and the relying party weighs it.
+3. **Population priors.** Nothing derived from Aalto or Tappy ships. Shipped priors come only from our own consented collection. Until then the MVP uses self-normalised templates.
+4. **Adaptation.** Supervised-only by default. Unsupervised mode is opt-in, with the full guard stack. Re-enrol after 180 days without a checkpoint.
+5. **Server-side encrypted matching (HE / OPRF).** Out of scope for v2.
+6. **Workforce use.** Opt-in volunteer pilots only, plus technical minimisation (3-level bands only, at most 30-day retention, no per-person reporting API). A legal opinion on AI Act Annex III(4)(b) is required before any workforce deployment.
+7. **Tappy.** Research measurements only. No shipped models, and no use of health labels.
