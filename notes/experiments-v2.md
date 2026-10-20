@@ -716,3 +716,109 @@ gated+anchor+velocity+sanitize | 7 | 14.2% | 0.7% | 26.6%
 gated+anchor+velocity+sanitize | 28 | 9.3% | 0.0% | 24.4%
 (no attack, static template: attacker's own windows accepted >= 50% for 8.0% of pairs)
 ```
+
+## 9. Round 2 re-runs (2026-10-21): disjoint calibration, CIs, spec settings
+
+Scripts:
+- `extract_tappy_v2.py`: spec window rules, plus a per-user timer quantum computed from all hold times;
+- `eval2.py`: user-fold calibration (2 folds), percentile bootstrap over users (B = 1000), matched-FAR policy comparison, pooled + macro + p90 + Gini, trust model reset per day, quantum-split FAR, cold start. The `run_eval2.sh` script runs the 11 configurations;
+- `adapt_supervised.py`;
+- `power.py` (upper bootstrap ρ).
+
+Results are in `results/eval2_<cfg>_<feats>_<subset>.txt`. This section fixes review M2, M4, M5, M6 and M9, and bounds M1.
+
+### 9.1 Windows built by the spec rules
+
+| Rule | Value |
+|---|---|
+| Idle gaps | > 5 s removed from active time |
+| `hyb` | Closes at 200 keys or 60 s active, whichever comes first |
+| `s60` | 60 s active |
+| Minimum | ≥ 40 keys |
+
+The `hyb` file has 66,739 windows from 224 users. Per-user timer quantum:
+
+| Quantum | Users |
+|---|---|
+| 3.90625 ms | 106 |
+| 15.625 ms | 6 |
+| 7.8125 ms | 2 |
+| Finer or irregular | 82 |
+| < 500 keys, not estimated | 44 |
+
+### 9.2 Headline (spec configuration hyb + 21 features; 81 users)
+
+- P0 FRR 5.3% [3.7, 7.5] pooled, 7.9% [5.3, 11.0] macro, 25.4% [12.9, 33.3] at the p90 user; Gini 0.71.
+- FAR 11.7% [8.9, 15.4].
+- FRR at matched FAR 10%: 6.8% [4.3, 11.2]; at FAR 5%: 16.7% [10.0, 25.7].
+- Trust model: 0.64 [0.41, 0.93] genuine alarms per 60 windows (macro 0.93, p90 2.46). Impostor alarm within 5 windows 81.6% [76.9, 86.2], within 10 88.0%, within 30 93.0%.
+
+### 9.3 Policies at matched FAR (hyb, 34 features)
+
+FRR pooled at FAR 10%:
+
+| Policy | FRR |
+|---|---|
+| P0 | 6.6% [4.4, 9.6] |
+| P5 | 7.5% [4.9, 10.5] |
+| P3 | 11.0% [6.6, 17.4] |
+| P1 | 11.1% [6.9, 18.2] |
+
+At FAR 5%: P0 14.1%, P5 15.4%, P3 21.9%, P1 26.0%.
+
+The round-1 conclusion (per-user thresholds hurt) survives the matched-FAR comparison. The effect is about 1.7× rather than "double".
+
+Caveat: in t120 the P1 matched-FAR point is `nan`, because the target lies outside the swept FAR range. Its CI is still reported.
+
+### 9.4 Device-confound bound (review M1)
+
+FAR of impostor blocks where the attacker's timer quantum equals the target's, vs different or unknown quantum:
+
+| Run | Same quantum | Different / unknown | Ratio |
+|---|---|---|---|
+| hyb | 9.6% [6.2, 13.4] | 12.2% [8.6, 16.2] | 0.79 |
+| t60 | 9.5% [6.2, 13.6] | 12.8% [10.0, 16.3] | 0.74 |
+
+Ratios across the other runs: 0.59–0.90.
+
+Restricting to the 44 evaluable users with a 3.906 ms quantum gives P0 FAR of 9.5–12.8%, similar to all users.
+
+**Reading.** Sharing the timer source does not make impostors *more* accepted, so the quantum is not what separates users. This bounds only one device component. Keyboard, layout and OS repeat settings remain confounded, and only a same-device study can remove them.
+
+### 9.5 Cold start (hyb, all features; τ from the other fold)
+
+FAR by number of enrolment windows m:
+
+| m | 1 | 2 | 3 | 5 | 8 | 12 | 20 |
+|---|---|---|---|---|---|---|---|
+| FAR | 44.3% | 35.9% | 35.6% | 24.9% | 23.7% | 26.7% | 19.7% |
+
+FRR stays at 3.5–9.0% throughout. With a full week-1 enrolment, FAR is 11.4%. As a result, spec E1 is now ≥ 20 windows **and** ≥ 7 days.
+
+### 9.6 Supervised adaptation (`adapt_supervised.py`)
+
+The strong-auth proxy is the first S windows per day; 86 users; t60. Static window FRR is 4.8% at week 1 and 4.8% at week 8 (pooled).
+
+Paired Δ (weeks 6–8, supervised − static):
+
+| Updates per day | Δ |
+|---|---|
+| S = 2 | +0.2 pp [−1.2, +1.7] |
+| S = 5 | +0.5 pp [−0.8, +1.8] |
+| S = 10 | +1.3 pp [−0.3, +3.1] |
+
+The hyb results are similar. There is no benefit, which supports D8.
+
+### 9.7 Power (upper bootstrap ρ)
+
+- ρ_FRR = 0.36 and ρ_FAR = 0.30.
+- FRR 5% ± 2 pp needs 164–177 users. FAR 10% ± 3 pp needs 119–131.
+
+Both replace round 1's 87–104, which used point estimates of ρ.
+
+### 9.8 Corrections to earlier sections
+
+- §5 / spec v2.0: "FRR@FAR1% does not improve with more enrolment" is wrong as worded. It improves from m = 1 to m ≈ 3–5 (t120: 70.2 → 43.7), then flattens.
+- §6 / spec v2.0: "gains flatten beyond K = 4–8" is wrong for LASER n100. EER goes 14.0 → 13.3 → 11.1 for K = 4/8/16, with survivorship at K = 16.
+- LASER "cross-session" is same-day (≈ 10 min apart, with a task switch). It is not evidence for cross-day effects.
+- The ICC column is the population ICC under the Aalto prior. It is not per-dataset stability evidence.
