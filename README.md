@@ -1,6 +1,6 @@
 # ZTBE research
 
-Research base for the **ZeroTrace Behavioral Engine (ZTBE)** spec v1.0.0-draft: a privacy-preserving continuous behavioural authentication engine built on fuzzy extractors and cancelable templates.
+Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a review of spec v1.0.0-draft (fuzzy extractors and cancelable templates). That design was rejected. The current direction is [spec v2](spec/ZTBE-spec-v2-draft.md): on-device keystroke scoring that emits a signed risk signal, with WebAuthn step-up. It is a risk signal, not an authentication factor.
 
 ## Layout
 
@@ -16,11 +16,13 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)** spec v1.0.0-draft: 
 | [`notes/spec-review.md`](notes/spec-review.md) | Critical review: 14 findings (R1–R14) with sanity numbers |
 | [`notes/open-questions.md`](notes/open-questions.md) | §8 questions: literature, candidate answers, settling experiments |
 | [`references/bibliography.md`](references/bibliography.md) | Spec citation audit (Part A), FOSS licence and Go equivalents check (A.2), Part B sources by topic: B.1–B.9 from pass 1, B.10–B.14 and Go libraries from pass 2 |
-| [`references/references.bib`](references/references.bib) | BibTeX, 154 entries, keys match bibliography.md |
+| [`references/references.bib`](references/references.bib) | BibTeX, 181 entries, keys match bibliography.md |
 | [`experiments/`](experiments/) | `sanity/`, `go-bench/`, `cmu-quantization/` (pass 1); `opendata/` (pass 2 evaluation, with `fetch.sh` because no data is committed); `go-he/` (pass 2 Go crypto costs) |
 | `papers/` | Not created. No PDFs are redistributed, because none of the full texts used was confirmed CC-BY. Links only. |
 
-## Status (2026-10-21, pass 2)
+## Status (2026-10-21, pass 3 + review round 1)
+
+Independent review: [`notes/review-round-1.md`](notes/review-round-1.md). It covers consistency, re-runs, citation checks, gaps and a ranked work list. The earlier status notes below are kept for history.
 
 - **Pass 2 done.**
   - Measured open-data results: per-window keystroke EER of 6–16% cross-session and cross-day; FRR@FAR1% of 20–60%; guessing entropy of about 1–4 bits.
