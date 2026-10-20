@@ -1,6 +1,6 @@
 # DPIA outline for ZTBE (pilot and product)
 
-Status: outline, 2026-10-21. It is a template to be completed by the controller with its DPO. **It is not legal advice.** A legal opinion is required before any workforce deployment (D6).
+Status: outline, 2026-10-21 (updated for spec v2.2: R8 rewritten, R9 added after review round 2 H1). It is a template to be completed by the controller with its DPO. **It is not legal advice.** A legal opinion is required before any workforce deployment (D6).
 
 Structure follows GDPR Art. 35(7) (description, necessity and proportionality, risks, measures) and the ICO DPIA guidance (ico-dpia). Screening uses the WP248 rev.01 criteria endorsed by the EDPB (wp248dpia).
 
@@ -74,7 +74,8 @@ WP248 rev.01 lists nine criteria. "In most cases, a data controller can consider
 | R5 | Template theft from the device | A1/A2 do not apply; device compromise is out of scope | Remote × medium |
 | R6 | Friction harm: repeated step-ups, stress, lost work | §6.5 alarm rates; SIGNAL_LOST | Likely × low–medium |
 | R7 | False sense of security leading to weaker other controls | D1 framing | Possible × medium |
-| R8 | Function creep to identification (1:N) | Non-goal | Remote by design (no server templates) |
+| R8 | Function creep to identification (1:N), and **cross-RP linking or profiling** through device identifiers or proof contents (review round 2 H1) | Non-goal; proofs are visible to web origins | Remote for 1:N (no server templates). Cross-RP linking: possible before v2.2 (global `dev`/`kid`, flags in proofs, unscoped registry); remote after D18 |
+| R9 | Disclosure of assistive-technology use or remote-work status to RPs or websites | Proof and assertion flags before v2.2 | Possible × high before D18; remote after (reason never leaves the device) |
 
 ## 4. Measures
 
@@ -85,9 +86,10 @@ WP248 rev.01 lists nine criteria. "In most cases, a data controller can consider
 | R3 | No health labels; no emotion or health inference (AI Act Art. 5(1)(f)); priors not trained on clinical data | D7, D3 |
 | R4 | Window vectors only; copy-task exception under separate consent | spec §3.3 |
 | R5 | TPM / SE sealing; memguard; no export | spec §7 |
-| R6 | T5 rate limit (≤ 2/h); `uncertain` does not force step-up; pilot measures SIGNAL_LOST | spec §6.5, §9.6 |
+| R6 | T5 rate limit (≤ 2/h); `uncertain` does not force step-up; pilot measures SIGNAL_LOST and the fraction of time stale. The HIGH latch (D19) means a genuine false alarm or network blip costs exactly one step-up, or a lock/unlock | spec §6.5, §9.6, §9.9 |
 | R7 | RP guide: LOW never raises assurance | docs/interfaces.md §4 |
-| R8 | On-device templates; per-device keys; no cross-RP identifiers | spec §1, §7 |
+| R8 | On-device templates. **Pairwise** device IDs (`pdid`) and per-RP proof keys; the global device ID never reaches an RP. The extension answers only user-linked origins. The registry is scoped to the calling RP's own subjects. SSF subjects are pairwise. Proofs carry no `seq` or version strings | spec §1, §7, §9.5, §9.7, D18 |
+| R9 | Assistive/remote reasons are kept on the device and in the user-visible local log. Verifier and RPs see only `unscored` / `no_signal`, which is the same value as paused or enrolling | spec §3.1, §9.5, D18 |
 
 ## 5. Consultation and sign-off
 
