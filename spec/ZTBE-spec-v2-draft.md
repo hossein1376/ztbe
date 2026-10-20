@@ -251,7 +251,7 @@ Spec configuration (hyb, v21): P0 FRR 5.3% [3.7, 7.5] pooled, 7.9% [5.3, 11.0] m
 
 **Interpretation.**
 - At equal FAR, per-user thresholds from one week (P1, P3) cost about 1.7× the FRR of a global threshold. Shrinkage (P5) is close to P0 (CIs overlap) and gives no benefit.
-- Errors are concentrated: Gini 0.73, and the p90 user has about 3–4× the pooled FRR.
+- Errors are concentrated: Gini 0.73 with all features (0.71 in the spec config), and the p90 user has about 4× the pooled FRR (20.0 / 5.3 with all features; 25.4 / 5.3 ≈ 4.8× in the spec config).
 - Round 1 found that per-user high error is mostly a state, not a trait (calibration-week FRR barely predicts later FRR; Spearman 0.04–0.39 on 28–40 users). That is consistent with this, but was not re-tested on the larger fold.
 
 ### 6.2 Policy (normative)
