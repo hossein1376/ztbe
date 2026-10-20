@@ -4,6 +4,8 @@ Date: 2026-10-21. Inputs:
 - measurements in `notes/experiments-v2.md` (open data, Eberz-style protocol) and `experiments/go-he` (Go crypto costs);
 - sources in `references/bibliography.md` (B.10–B.14 are new).
 
+> **Historical (phase 2).** The normative design is `spec/ZTBE-spec-v2-draft.md` (v2.1). Attacker IDs here use the old PROPOSAL numbering (A3 insider, A4 oracle, A5 malware, A6 impostor, A7 poisoner). In the spec they are A7, (no separate oracle row; A2/A1), out of scope, A4, and A8 respectively.
+
 Levels used for sources: **A** = abstract read, **F** = full text read, **M** = metadata only. A claim marked UNVERIFIED has no checked source.
 
 ## 0. The constraint everything else follows from
@@ -37,7 +39,7 @@ Consequences:
 | A2 | Server compromise | Code execution on the verifier. Sees runtime memory and probes, can call HSM APIs, but cannot export HSM keys. |
 | A3 | Insider / operator | Read access to data and dashboards. Can run queries and may call internal APIs. A3 is weaker than A2 but persistent. |
 | A4 | Verification oracle | Submits chosen probes (synthetic feature vectors) and observes accept/reject, or a score. This covers centre-search (pagnin2014), hill-climbing, and population-dictionary guessing (§0). |
-| A5 | Endpoint compromise | Malware on the user's device. Can inject synthetic input (antal2021sapiagent, serwadda2013), read process memory, and tamper with the agent. |
+| A5 | Endpoint compromise | Malware on the user's device. Can inject humanlike synthetic mouse input (antal2021sapiagent: humanlike, not user-specific) and population-statistics keystroke forgeries (serwadda2013), read process memory, and tamper with the agent. |
 | A6 | Physical impostor | Uses the unlocked session at the keyboard: zero-effort, or mimicry (tey2013). |
 | A7 | Poisoner | A6 or A5 over time: steers template adaptation toward themselves (biggio2012, biggio2015spm). |
 
@@ -229,7 +231,8 @@ Columns A1–A7 are the attackers from §1. ✓ = protected, ◐ = partial or co
 - Keep gated+anchor+velocity+sanitize as defence in depth for unsupervised updates, if they are enabled at all.
 - On rollback, raise an alert, because the event is evidence of A6/A7.
 - Enforce NIST's "limit on the allowable time for adaptation" (nist80063b4): re-enrol after N days without a strong-auth checkpoint.
-- Per-user thresholds are needed for the high-FRR minority. Fixing them is a policy choice; see PROPOSAL §9.
+- ~~Per-user thresholds are needed for the high-FRR minority.~~ Superseded: at matched FAR, per-user thresholds cost ≈ 1.7× the FRR of a global threshold (spec v2.1 §6.1, T2). The high-error minority is handled by the `uncertain` band and the disable rule (spec §6.6).
+- Round 2 superseded the unsupervised-adaptation recommendations above: adaptation is off by default (D8).
 
 ## 5. Regulatory fit (summary, not legal advice)
 

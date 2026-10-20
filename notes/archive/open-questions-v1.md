@@ -1,3 +1,5 @@
+> **ARCHIVED (v1, superseded).** This file answers the open questions of spec v1 (fuzzy extractors, lockers, K_app, server-side matching). v2 dropped that architecture; see `spec/ZTBE-spec-v2-draft.md` and `notes/decisions.md` D5/D14. Kept for the record; do not use for design.
+
 # §8 open questions: literature, candidate answers, settling experiments
 
 Pass 1, 2026-10-21. Keys refer to `references/bibliography.md`. "R#" refers to `notes/spec-review.md`.

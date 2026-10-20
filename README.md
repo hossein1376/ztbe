@@ -14,7 +14,7 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 | [`notes/design-options.md`](notes/design-options.md) | Phase 2 options O0–O8 (keyless FE, keyed/OPRF, HE, 2PC, embeddings, on-device + attestation, threshold) with an attacker-by-option matrix |
 | [`PLAN.md`](PLAN.md) | Research plan by FR-01..07, NFR-01..05, spec §3–6 and §8, with a prioritized list |
 | [`notes/spec-review.md`](notes/spec-review.md) | Critical review: 14 findings (R1–R14) with sanity numbers |
-| [`notes/open-questions.md`](notes/open-questions.md) | §8 questions: literature, candidate answers, settling experiments |
+| [`notes/archive/open-questions-v1.md`](notes/archive/open-questions-v1.md) | Archived v1 open questions (superseded) |
 | [`references/bibliography.md`](references/bibliography.md) | Spec citation audit (Part A), FOSS licence and Go equivalents check (A.2), Part B sources by topic: B.1–B.9 from pass 1, B.10–B.14 and Go libraries from pass 2 |
 | [`references/references.bib`](references/references.bib) | BibTeX, 181 entries, keys match bibliography.md |
 | [`experiments/`](experiments/) | `sanity/`, `go-bench/`, `cmu-quantization/` (pass 1); `opendata/` (pass 2 evaluation, with `fetch.sh` because no data is committed); `go-he/` (pass 2 Go crypto costs) |
