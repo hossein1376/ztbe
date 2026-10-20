@@ -109,9 +109,9 @@ Status values:
 ## Implications recorded in PROPOSAL §10 and `spec/ZTBE-spec-v2-draft.md`
 
 - D1 → spec §1 (scope and non-goals), §9 (relying-party consumption).
-- D2 → spec §8 (sealing tiers).
+- D2 → spec §7 (sealing tiers).
 - D3 → spec §4 (priors).
-- D4 → spec §7 (adaptation).
+- D4 → spec §8 (adaptation) and §5 E3 (supervised enrolment).
 - D5 → spec non-goals.
 - D6 → spec §10 (privacy).
-- D7 → evaluation data policy.
+- D7 → spec §1 non-goals and §12 (evaluation data policy).
