@@ -334,11 +334,15 @@ Levels: A = abstract read, F = full text read, M = metadata only (Crossref, Sema
 | go-tpm | google/go-tpm (Go, Apache-2.0) | GitHub API + README | Latest release v0.9.8 (2025-12-29). The `tpm2` "TPMDirect" API is described as a prototype. `legacy/tpm2` is the legacy API. TPM 1.2 is in maintenance mode. |
 | go-tpm-tools | google/go-tpm-tools (Apache-2.0) | GitHub API | v0.4.11 (2026-10-10). Sealing and attestation helpers. |
 | go-keyring | zalando/go-keyring (MIT) | GitHub API | v0.2.8 (2026-03-23). OS keyring fallback (Keychain, Secret Service, Windows Credential Manager). This is **software** protection. |
+| rfc9052 | J. Schaad, "CBOR Object Signing and Encryption (COSE): Structures and Process", RFC 9052 (Internet Standard), Aug. 2022. DOI 10.17487/RFC9052 | M (RFC Editor JSON) | The COSE_Sign1 envelope for the ZTBE assertion (spec §9.1). |
+| go-cose | veraison/go-cose | GitHub API, 2026-10-21 | v1.3.0 (2024-09-27), last push 2026-10-03. **MPL-2.0** (file-level copyleft). |
+| fxamacker-cbor | fxamacker/cbor | GitHub API | v2.9.6 (2026-10-06), MIT. |
+| go-webauthn / go-attestation (versions) | go-webauthn/webauthn, google/go-attestation | GitHub API | go-webauthn v0.18.2 (2026-09-19), BSD-3-Clause. go-attestation v0.6.4 (2026-08-11), Apache-2.0. |
 
 ### Counts (pass 3, 2026-10-21)
 
-- B.15 adds **29 new sources**: 13 literature, 2 ISO, 5 RFCs (8417, 8935, 8936, 9470, 9493), 2 OIDF, 1 EDPB, 2 vendor docs and 4 Go libraries. tey2013, serwadda2013 and antal2021sapiagent are re-annotated, not counted again.
-- Total distinct sources: 150 + 29 = **179**.
+- B.15 adds **30 new sources**: 14 literature, 2 ISO, 6 RFCs (8417, 8935, 8936, 9052, 9470, 9493), 2 OIDF, 1 EDPB, 2 vendor docs and 3 Go libraries (sks, go-cose, fxamacker/cbor). The go-tpm, go-tpm-tools, go-keyring, go-webauthn and go-attestation rows are version and maturity updates of existing FOSS rows, not new sources. tey2013, serwadda2013 and antal2021sapiagent are re-annotated, not counted again.
+- Total distinct sources: 150 + 30 = **180**.
 
 ### Counts (pass 2, 2026-10-21)
 
