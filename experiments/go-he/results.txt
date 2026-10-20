@@ -1,0 +1,68 @@
+    he_test.go:118: CKKS distance ok: got 3.900550 want 3.900552
+--- PASS: TestCKKSCorrect (0.07s)
+    he_test.go:125: CKKS logN=13 logQP=180: fresh ciphertext 393566 B; stored template (2 ct) 787132 B
+    he_test.go:128: CKKS result ciphertext (level 0) 131390 B
+    he_test.go:139: CKKS evaluation keys (relin + 7 Galois) 12585840 B
+    he_test.go:142: BGV logN=13 logQP=163: bit-template ciphertext 262478 B
+--- PASS: TestSizes (0.14s)
+    he_test.go:257: BGV encrypted Hamming distance over 256 bits = 66
+--- PASS: TestBGVCorrect (0.06s)
+PASS
+ok  	github.com/hossein1376/ztbe/experiments/go-he	0.282s
+goos: linux
+goarch: amd64
+pkg: github.com/hossein1376/ztbe/experiments/go-he
+cpu: Intel(R) Xeon(R) Processor
+BenchmarkCKKSClientEncrypt-8              	      30	   3279219 ns/op
+BenchmarkCKKSClientEncrypt-8              	      30	   3254736 ns/op
+BenchmarkCKKSClientEncrypt-8              	      30	   3299444 ns/op
+BenchmarkCKKSServerDistance-8             	      30	   9827412 ns/op
+BenchmarkCKKSServerDistance-8             	      30	   9634960 ns/op
+BenchmarkCKKSServerDistance-8             	      30	  10243657 ns/op
+BenchmarkCKKSDecrypt-8                    	      30	    292545 ns/op
+BenchmarkCKKSDecrypt-8                    	      30	    295755 ns/op
+BenchmarkCKKSDecrypt-8                    	      30	    284128 ns/op
+BenchmarkCKKSKeygen-8                     	      30	  52350565 ns/op
+BenchmarkCKKSKeygen-8                     	      30	  54995806 ns/op
+BenchmarkCKKSKeygen-8                     	      30	  56497605 ns/op
+BenchmarkBGVServerHamming256-8            	      30	  13143152 ns/op
+BenchmarkBGVServerHamming256-8            	      30	  13183987 ns/op
+BenchmarkBGVServerHamming256-8            	      30	  13384604 ns/op
+BenchmarkOPRFServerEvaluateRistretto-8    	      30	     41620 ns/op
+BenchmarkOPRFServerEvaluateRistretto-8    	      30	     48980 ns/op
+BenchmarkOPRFServerEvaluateRistretto-8    	      30	     67596 ns/op
+BenchmarkOPRFClientRoundTripRistretto-8   	      30	    169881 ns/op
+BenchmarkOPRFClientRoundTripRistretto-8   	      30	    163880 ns/op
+BenchmarkOPRFClientRoundTripRistretto-8   	      30	    174148 ns/op
+PASS
+ok  	github.com/hossein1376/ztbe/experiments/go-he	9.125s
+goos: linux
+goarch: amd64
+pkg: github.com/hossein1376/ztbe/experiments/go-he
+cpu: Intel(R) Xeon(R) Processor
+BenchmarkPlainScore-8               	 3962053	       303.8 ns/op
+BenchmarkPlainScore-8               	 3945070	       306.4 ns/op
+BenchmarkPlainScore-8               	 3923985	       302.4 ns/op
+BenchmarkTemplateSealOpenAESGCM-8   	  666900	      1554 ns/op	1112.33 MB/s	      1756 sealed_B
+BenchmarkTemplateSealOpenAESGCM-8   	  720224	      1521 ns/op	1136.00 MB/s	      1756 sealed_B
+BenchmarkTemplateSealOpenAESGCM-8   	  709867	      1524 ns/op	1134.17 MB/s	      1756 sealed_B
+PASS
+ok  	github.com/hossein1376/ztbe/experiments/go-he	7.807s
+goos: linux
+goarch: amd64
+pkg: github.com/hossein1376/ztbe/experiments/go-he
+cpu: Intel(R) Xeon(R) Processor
+BenchmarkAssertionSignEd25519-8     	   49430	     20294 ns/op
+BenchmarkAssertionSignEd25519-8     	   62881	     19622 ns/op
+BenchmarkAssertionSignEd25519-8     	   62986	     18940 ns/op
+BenchmarkAssertionVerifyEd25519-8   	   25776	     44291 ns/op
+BenchmarkAssertionVerifyEd25519-8   	   27770	     44611 ns/op
+BenchmarkAssertionVerifyEd25519-8   	   26992	     44049 ns/op
+BenchmarkAssertionSignP256-8        	   38767	     31481 ns/op
+BenchmarkAssertionSignP256-8        	   36146	     30768 ns/op
+BenchmarkAssertionSignP256-8        	   39097	     31343 ns/op
+BenchmarkAssertionVerifyP256-8      	   17772	     67887 ns/op
+BenchmarkAssertionVerifyP256-8      	   17544	     68304 ns/op
+BenchmarkAssertionVerifyP256-8      	   15910	     68557 ns/op
+PASS
+ok  	github.com/hossein1376/ztbe/experiments/go-he	20.205s
