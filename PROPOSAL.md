@@ -2,6 +2,8 @@
 
 Status: proposal, 2026-10-21 (Asia/Tehran).
 
+> **Superseded where it differs from [spec v2](spec/ZTBE-spec-v2-draft.md).** The spec governs enrolment rules, band policy, the feature set and template size, attacker numbering and the assertion format. The known differences are listed in [`notes/review-round-1.md`](notes/review-round-1.md) §1.2.
+
 Evidence used:
 - `notes/experiments-v2.md`: open-data measurements;
 - `notes/design-options.md`: comparison of options;
