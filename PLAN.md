@@ -1,12 +1,43 @@
 # ZTBE research plan
 
-Passes 1–3, 2026-10-21. Status values:
+Passes 1–3 and round 2, 2026-10-21. Status values:
 - **open**: not started
 - **lit**: literature collected
 - **checked**: claim checked by calculation or experiment
 - **blocked**: depends on a decision or data
 
-Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `notes/spec-review.md`. Section Q refers to `notes/open-questions.md`.
+Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `notes/spec-review.md`. Section Q refers to `notes/archive/open-questions-v1.md` (archived). The normative spec is `spec/ZTBE-spec-v2-draft.md` v2.1; decisions are D1–D15 in `notes/decisions.md`.
+
+## Round 2 outcome and remaining work (2026-10-21)
+
+Review `notes/review-round-1.md` was addressed by spec v2.1 and D8–D15. **The remaining work is empirical.** Further desk research adds little until the three items below produce data.
+
+| # | Remaining item | Why it can't be done from the desk | Protocol / exit |
+|---|---|---|---|
+| E1 | **Same-device impostor pilot**, 10–20 people | Every open dataset confounds user with device (spec L1). The bound (FAR ratio 0.79; 0.59–0.90) is not a measurement | `docs/pilot-protocol.md`; D15 go/stop. Resolvable range in `results/pilot_ci.txt` |
+| E2 | **Keyboard-capture prototype** (M1 T1, T5, T6): ztbe-capture plus ztbe-svc on Windows, macOS and Linux | Provenance flags, assistive-tool behaviour, MDM/TCC, hook timeouts and timer quanta are partly UNVERIFIED (spec §3.1, `notes/collector-tradeoffs.md`) | Capture-spike metrics in pilot-protocol §5. Injected events flagged on 3 OSes; CPU < 1%; RSS < 15 MB |
+| E3 | **Supervised-adaptation FRR** | Tappy simulation: Δ +0.2 [−1.2, +1.7] pp (no measurable benefit). Real WebAuthn-anchored supervision needs ≥ 8 weeks of data | Powered study (Phase 3b) H4. Adaptation stays off (D8) unless H4 is met |
+
+**Round-2 changes to the milestones below:**
+- **M0 T1.** Ship only the 21-feature set (D11).
+- **M1 T3 and T4.** Done in Python: `eval2.py` and `adapt_supervised.py`.
+- **M1 split.** M1 becomes ztbe-svc plus ztbe-capture (D10). It adds the heartbeat (60 s) and `capture_lost`.
+- **M2 T4.** In-house COSE (D9).
+- **M3 additions:**
+  - mTLS ingestion and the invalid-assertion counter (spec §9.4);
+  - silence → `SIGNAL_LOST` (§9.6);
+  - pause grants (§9.3);
+  - ZTBE-Proof verification (§9.5; `docs/interfaces.md`).
+- **M4.** Supervised only, behind a flag (D8).
+- **M5.** Research mode stores window vectors only (§3.3). It adds the assistive profile and the remote-session skip (§3.1).
+
+**Sequencing.**
+1. M0 and M1 (with the E2 spike) first.
+2. Then M2, plus a minimal M3 that is enough to run the pilot. M5 research mode is needed for E1.
+3. Run E1.
+4. Only on "go": M3 in full (SSF), M4 experiments and the Phase 3b powered study, sized at **≥ 177 completers**. That means ≈ 220 recruited at 20% attrition; this replaces the earlier 130.
+
+**Governance before E1:** the DPIA (`docs/dpia-outline.md`), consent (`docs/consent-templates.md`) and ethics approval. Any workforce use additionally needs a legal opinion on WP29 2/2017 §5.4.1 (spec §10).
 
 ## Pass 3 outcome and next phase (2026-10-21)
 
@@ -18,19 +49,19 @@ Decisions D1–D7 are recorded in `notes/decisions.md`. D1 is Hossein's; D2–D7
 | Cold start | **checked** (Tappy) | Count windows plateau after ≈ 500–1000 keys; t120 improves up to ≈ 25 min. Enrolment rule: ≥ 1000 keys, ≥ 15 min, ≥ 2 days (spec §5). |
 | Mimicry / synthetic attacks | **lit** | Snoop-forge-replay reaches up to 87.75% success on free-text continuous keystroke verification (rahman2011sfr). Trained mimicry: FAR 0.24 → 0.63 (tey2013). Out of scope for strong claims; added to the eval protocol (spec §2.1, §12). |
 | Signalling | **specified** | COSE_Sign1 assertion → verifier → CAEP `risk-level-change` (LOW/MEDIUM/HIGH) → RFC 9470 step-up |
-| Sample size | **checked** (`experiments/opendata/power.py`) | Intra-user error correlation is ρ ≤ 0.20, so 87–104 users are needed for ±2 pp on a 5% FRR (20–200 blocks per user) (and ≥ 86 even with unlimited data per user). |
+| Sample size | **checked** (`experiments/opendata/power.py`) | Intra-user error correlation is ρ ≤ 0.20, so 87–104 users are needed for ±2 pp on a 5% FRR (20–200 blocks per user) (and ≥ 86 even with unlimited data per user). **Superseded in round 2:** with the bootstrap upper ρ, 164–177 (FRR) and 119–131 (FAR) users. |
 
 ### Phase 3a: Go MVP (agent + scoring library + verifier)
 
-Single module `github.com/hossein1376/ztbe`; layout as in PROPOSAL §9.1. Durations assume one engineer.
+Single module `github.com/hossein1376/ztbe`; layout as in spec §14 (the round-2 changes are listed in the next section). Durations assume one engineer.
 
 | M | Scope | Tasks | Exit criteria |
 |---|---|---|---|
 | **M0** scoring lib (1 wk) | `internal/features`, `internal/model`, `cmd/ztbe-eval` | T1: port the window features (the 36-feature superset, plus the 21-feature v2 set). T2: scaled Manhattan with shrinkage, K-fusion, trust model. T3: golden tests against `experiments/opendata` | Go and Python feature vectors agree within 1e-6 on LASER and Tappy. EER and trust-model table within ±0.2 pp of `userpolicy_*.txt` |
 | **M1** agent, local only (2 wk) | `internal/capture`, `internal/zone`, `cmd/ztbe-agent` | T1: hooks (evdev on Linux, gohook on macOS/Windows). T2: zone mapping, characters dropped at source. **T3: re-run the experiments with the 21-feature set** (spec §3). **T4: simulate supervised adaptation** (spec §8), since FRR benefit is unmeasured. **T5: injected-event provenance per OS** (spec §3.1). T6: timer-resolution self-test (rollover gate) | CPU < 1% of one core and RSS < 15 MB while typing. A property test shows no key identity reaches `features`. On each OS, injected events are flagged and not scored |
-| **M2** sealing + assertions (2 wk) | `internal/seal`, `internal/attest`, `internal/wire` | T1: TPM 2.0 seal/unseal (go-tpm-tools) and an AK-certified P-256 assertion key (go-attestation). **T2: measure TPM unseal and sign latency.** T3: macOS SE key via sks, plus go-keyring fallback. T4: COSE_Sign1 encoding (go-cose, MPL-2.0; licence review) | `key_protection` correctly reported on 3 platforms. Fuzzed malformed assertions are all rejected |
+| **M2** sealing + assertions (2 wk) | `internal/seal`, `internal/attest`, `internal/wire` | T1: TPM 2.0 seal/unseal (go-tpm-tools) and an AK-certified P-256 assertion key (go-attestation). **T2: measure TPM unseal and sign latency.** T3: macOS SE key via sks, plus go-keyring fallback. T4: COSE_Sign1 encoding (~~go-cose~~ → in-house on fxamacker/cbor, alg −9/−19, D9) | `key_protection` correctly reported on 3 platforms. Fuzzed malformed assertions are all rejected |
 | **M3** verifier (2 wk) | `cmd/ztbe-verifier`, `internal/policy` | T1: enrolment binding via WebAuthn (go-webauthn). T2: seq / nonce-epoch / silence checks. T3: SSF transmitter, emitting CAEP `risk-level-change` SETs over RFC 8935 push. T4: sample RP showing an RFC 9470 step-up | Replay, rollback, forged-key and stale-nonce tests fail closed. An end-to-end walk-up demo triggers step-up |
-| **M4** adaptation + policy (1 wk) | `internal/adapt` | Supervised windows (30 min after WebAuthn), anchors, unsupervised guard stack, 180-day re-enrolment, persistent-goat rule | The Go port reproduces `adapt_n200.txt` within ±2 pp. Supervised mode shows week-8 FRR ≤ static |
+| **M4** adaptation + policy (1 wk) | `internal/adapt` | Supervised windows (30 min after WebAuthn, experimental, off by default), ~~unsupervised guard stack~~ (withdrawn, D8), 180-day re-enrolment, persistent-goat rule | The Go port reproduces `adapt_n200.txt` within ±2 pp. Supervised mode shows week-8 FRR ≤ static |
 | **M5** pilot build (1 wk) | Packaging, status UI, kill switch, data-collection mode (phase 3b) | The user can pause, disable and delete. Research mode uploads only encrypted feature vectors | Security review checklist passed. DPIA draft complete |
 
 ### Phase 3b: own consented data collection
@@ -58,7 +89,7 @@ Purpose:
 - Data minimisation:
   - pseudonymous ID;
   - no characters, no application or window titles, no URLs;
-  - demographics limited to optional age band and handedness (for fairness analysis); no health or disability data.
+  - demographics limited to optional age band, handedness, typing language and a self-reported typing-related condition, as required for fairness reporting (spec §10; round 2 replaces the earlier "no health or disability data"). These items are covered by separate consent and are never inferred (D7).
 - Storage:
   - encrypted at rest;
   - access logged;
@@ -73,7 +104,7 @@ Purpose:
   - FRR 5% ± 1 pp: ≈ 350–415 users.
   - Block FAR 10% ± 3 pp: 80–94 targets.
 - Low-FAR claims: FAR ≤ 1% at 95% needs ≥ 300 independent zero-error impostor attempts (rule of 3). Cross-user pairs are correlated per attacker and target, so impostor attempts must be counted at the effective sample size.
-- **Target:** recruit 130 participants, expecting ≈ 20% attrition, so that ≥ 100 complete 8 weeks with ≥ 50 test blocks each. Of these, 40 also join attack sessions; the mimicry sub-study uses 30 attackers.
+- **Target** (superseded in round 2 by ≥ 177 completers / ≈ 220 recruited): recruit 130 participants, expecting ≈ 20% attrition, so that ≥ 100 complete 8 weeks with ≥ 50 test blocks each. Of these, 40 also join attack sessions; the mimicry sub-study uses 30 attackers.
 - Priors and τ_g come from a disjoint 50% of participants (a 2-fold swap), as in the experiments.
 
 **Analysis plan.** Spec §12, with every metric reported with clustered CIs. Pre-registered hypotheses:
@@ -203,7 +234,7 @@ Pass-1 sections below are kept for traceability. Statuses that changed in pass 2
 | §5.3 | Counting BF | lit | Counter-delta leakage (R5.4). Quantify it from DB snapshots. |
 | §5.4 | Comparison matrix | checked | Storage and "IT security" entries are wrong (R1, R4) |
 | §6 | Anti-poisoning | checked | 0.423n envelope, anchor infeasible (R9). Add sanitization (biggio2015spm) and multi-template anchors (uludag2004). |
-| §8 | Open questions | lit | See `notes/open-questions.md` |
+| §8 | Open questions | lit | See `notes/archive/open-questions-v1.md` (archived; superseded by spec v2.1 §11 L1–L4) |
 
 ## Data needed
 

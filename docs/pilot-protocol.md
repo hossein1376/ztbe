@@ -36,7 +36,7 @@ This removes the open-data device confound (spec L1). Different-device Tappy giv
 - Recruited openly, not through a line-management chain (D6). Flat payment, not tied to performance (tey2013).
 - **Device mix:** at least 4 Windows, 4 macOS and 2 Linux (X11 or console; Wayland is excluded, see collector-tradeoffs). At least 3 participants use an external keyboard as their main keyboard.
 - **Fairness subgroups (optional self-report, consent D):** age band (< 30, 30–49, ≥ 50), handedness, primary typing language, typing-related condition (yes / no / prefer not).
-  - The pilot is **descriptive only** for subgroups. n is far too small for inference, so per-subgroup counts are reported, not rates, when n < 5.
+  - The pilot is **descriptive only** for subgroups. n is far too small for inference. As spec §10 requires, a subgroup with < 10 users is reported as "insufficient n" with counts only. The self-reported condition item is used only for this table: it is never linked to scores in any output and never inferred (D7).
 - **Exclusions:** none on ability. Assistive-input users are welcome; their sessions are classified per spec §3.1 and reported separately.
 
 ## 3. Timeline (per participant)
