@@ -93,7 +93,7 @@ Out of scope: account-recovery attacks, phishing of the step-up factor (mitigate
 - **Features:** the 36 content-blind zone features (`experiments/opendata/features.py`) for keyboard, plus 23 mouse features. Keys are mapped to L/R/S/other zones *before* any buffering, which satisfies FR-02.
   - Most stable on all three keystroke sets: median press-press latency and the zone hold means. The within/between ratio is 0.22–0.30 on Aalto, about 0.4 cross-session on LASER, and 0.41–0.51 cross-day on Tappy.
   - Rollover fraction is stable on Aalto and LASER but not on Tappy (ratio 1.19), possibly because of Tappy's timer resolution (experiments-v2 §2).
-  - The least stable: the standard-deviation features and burstiness (ratio ≥ 0.9). Keep them only in the scale term or drop them in M3.
+  - The least stable: the per-transition standard-deviation features and burstiness (ratio ≥ 0.9 cross-session and cross-day; 0.75–1.22 intra-session on Aalto). Keep them only in the scale term or drop them in M3.
 - **Window: 200 keystrokes, or 60 s of active typing, whichever comes first.**
 
   | Window | EER | Data |
@@ -157,7 +157,7 @@ v2 policy:
 1. **Supervised updates (default).** Only windows within T=30 min after a successful WebAuthn step-up or login update the template. Rule: η=0.05 EWMA on μ, and the scale is re-estimated weekly from the last 50 supervised windows. The attacker must beat the step-up factor first, so A7 reduces to A6 + phishing.
 2. **Unsupervised mode (opt-in, for low-friction deployments).** Uses the full guard stack:
    - gate at the median genuine score;
-   - anchor radius at 0.67 × the verify threshold from the enrolment template;
+   - anchor radius at 0.675 × the verify threshold from the enrolment template;
    - velocity of at most anchor/14 per day;
    - sanitisation: when 10 consecutive updates are aligned (mean cosine > 0.5), roll back to the checkpoint, **freeze** for 200 windows, and raise a `possible-poisoning` event.
 3. **Anchors.** Keep the enrolment template plus up to 3 checkpoints taken at strong-auth events (uludag2004-style multi-template). Each probe is scored against the current template. Updates must stay within the radius of *all* anchors.
