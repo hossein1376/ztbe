@@ -370,7 +370,7 @@ Levels: A = abstract read, F = full text read, M = metadata only (Crossref, Sema
 | w3c-dbsc, google2026dbsc | F (ED read; blog read) | Device-bound browser sessions; Chrome 146 Windows |
 | rfc8610, rfc9457 | M | CDDL and problem+json in `docs/interfaces.md` |
 | edpb2020consent | F (§3.1.1 read) | Employee consent generally not freely given (para 21) |
-| wp29opinion2017work | F (§3.1.1, §5.4.1 read) | Logging keystrokes and mouse movements disproportionate; consent not the basis at work |
+| wp29opinion2017work | F (consent passage pp. 6–7, §5.4.1 p. 16 read) | Logging keystrokes and mouse movements disproportionate; consent not the basis at work |
 | wp248dpia | F (criteria read) | Nine DPIA criteria; two usually trigger a DPIA |
 | ico-dpia, ico-monitoring | M (pages resolve) | UK DPIA and worker-monitoring guidance |
 | ms-kbdllhook, ms-gettickcount, apple-pppc, w3c-hrtime, linux-input | F (API docs read) | `notes/collector-tradeoffs.md` |

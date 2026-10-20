@@ -467,7 +467,7 @@ This is the research assistant's reading of the sources, not legal advice. D6 re
   - Conservative reading: **Art. 9 applies** even though ZTBE is only a risk signal.
 - **Lawful basis.**
   - Consumer and volunteer settings: Art. 9(2)(a) explicit consent, with a non-biometric alternative (§3.1).
-  - Employment: consent is generally not freely given. EDPB Guidelines 05/2020 §3.1.1 para 21 (edpb2020consent) and WP29 Opinion 2/2017 (wp29opinion2017work) say that for most processing at work the lawful basis "cannot and should not be the consent of the employees".
+  - Employment: consent is generally not freely given. EDPB Guidelines 05/2020 §3.1.1 para 21 (edpb2020consent) and WP29 Opinion 2/2017, pp. 6–7 (wp29opinion2017work), say that for most processing at work the lawful basis "cannot and should not be the consent of the employees".
   - WP29 2/2017 §5.4.1 also calls software that logs "keystrokes and mouse movements" **disproportionate**, and says a legitimate-interest basis is "very unlikely". ZTBE captures timing, not content. Whether that distinction suffices is a question for counsel; we do not assume it does.
   - Art. 9(2)(b) needs Member State law. Hence D6: no workforce deployment without a legal opinion.
 - **Minimisation.**
