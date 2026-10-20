@@ -447,7 +447,7 @@ The verifier is an SSF **Transmitter** (openid-ssf, Final). Events are SETs (RFC
 - `principal` = `DEVICE` (the verifier does not know RP session IDs; RPs map devices to sessions via verified proofs, `docs/interfaces.md` §3);
 - `risk_reason` ∈ {`BEHAVIOUR_OK`, `BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `UNSCORED_CHANGE`, `SIGNAL_LOST`, `ASSERTION_INVALID`}. "No signal" states (enrolling, disabled, unscored, remote, locked) are not risk events.
 
-`sub_id` uses RFC 9493 formats (`iss_sub` or `opaque`). Only changes are sent. The mapping with example SETs is in `docs/interfaces.md`.
+`sub_id` is an SSF Complex Subject (`format` = `complex`, openid-ssf §3.3) whose `user` member uses the RFC 9493 `iss_sub` format and whose `device` member uses `opaque`. Only changes are sent. The mapping with example SETs is in `docs/interfaces.md`.
 
 ### 9.8 RP behaviour (normative for conforming RPs)
 
