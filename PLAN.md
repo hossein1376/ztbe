@@ -1,6 +1,6 @@
 # ZTBE research plan
 
-Pass 1, 2026-10-21. Status values:
+Pass 1 and pass 2, 2026-10-21. Status values:
 - **open**: not started
 - **lit**: literature collected
 - **checked**: claim checked by calculation or experiment
@@ -8,7 +8,33 @@ Pass 1, 2026-10-21. Status values:
 
 Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `notes/spec-review.md`. Section Q refers to `notes/open-questions.md`.
 
-## Prioritized list
+## Pass 2 outcome (2026-10-21)
+
+The direction has changed. Spec v1, a keyless FE that derives keys from behaviour, is **rejected on measured evidence**. The replacement is the v2 architecture in `PROPOSAL.md`: on-device scoring, a sealed template, signed risk assertions, and WebAuthn step-up. Evidence: `notes/experiments-v2.md` and `notes/design-options.md`.
+
+| P | Item | Status | Result / next |
+|---|---|---|---|
+| 1 | Cross-session BER/EER on free text, Eberz protocol | **checked** (Aalto, LASER, Tappy, SapiMouse, Balabit) | Per-window EER 6–16% (keystroke), 21–34% (mouse). FRR@FAR1% 20–60%. Clarkson II still needed (M3). |
+| 2 | Entropy that matters | **checked** | Upper estimate of guessing entropy: about 1–4 bits at the verifier's threshold. No keyless design is viable. |
+| 3 | Threat model decision | **proposed** | O7 on-device + attestation (design-options §2). Needs Hossein's decision (PROPOSAL §10). |
+| 4 | Storage vs architecture | **resolved** by v2 | 1.7 KB sealed template on the device; no biometric data on the server |
+| 5 | Δw leakage of updates | **moot** in v2 | No helper data exists |
+| 6 | Anti-poisoning | **checked** (simulation) | Gating alone: 83% takeover. Gate + anchor + velocity + sanitise (rollback + freeze): 9% (= baseline). Supervised updates by default. |
+| 7 | Quantizer choice | **checked** | LSSC beats Gray, and the population mask helps cross-session. In v2 no binarisation is used. |
+| 8 | Architecture C | **dropped** | |
+| 9 | Go prototype | **planned** | PROPOSAL §9 milestones M0–M5. Crypto costs measured in `experiments/go-he`. |
+| 10 | GDPR / DPIA / AI Act | **lit** | NIST 800-63B-4 and the AI Act text checked. Annex III(4)(b) workforce question goes to legal review. |
+
+New open items:
+- Per-user threshold policy for the high-FRR minority (Gini 0.6–0.9).
+- In-domain, commercially licensed population priors.
+- Mimicry and synthetic-injection evaluation (no open data).
+- TPM unseal/sign latency on real hardware.
+- Clarkson II re-run of every table.
+
+Pass-1 sections below are kept for traceability. Statuses that changed in pass 2 are marked "(pass 2)".
+
+## Prioritized list (pass 1)
 
 | P | Item | Why first | Area |
 |---|---|---|---|
@@ -47,7 +73,7 @@ Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `n
 - **Status:** the EW-Welford recursion is verified [S§6], and burstiness matches goh2008.
 - **Next steps:** sweep N_eff against cross-session BER. Decide whether to drop or coarsen the time-of-day feature.
 
-### FR-04 Irreversible hashing: checked, and it fails as specified
+### FR-04 Irreversible hashing: checked, and it fails as specified (pass 2: measured, ≤ ~4 bits; design rejected)
 
 - **Research questions:**
   - What is the offline attack cost for each architecture against a population-prior attacker?
@@ -57,7 +83,7 @@ Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `n
   - Run the guessing-curve experiment (Q §8.2 Q1).
   - Write up an ISO/IEC 24745 / 30136-style evaluation plan covering irreversibility, unlinkability (gomezbarrero2018tifs) and renewability.
 
-### FR-05 Noisy verification and S_trust: checked (partly)
+### FR-05 Noisy verification and S_trust: checked (pass 2: the best free-text sample-then-lock setting, k=24 on Aalto, gives FRR 7.6% and FAR 7.6%)
 
 - **Research questions:** What operating point (t, k_sub, ℓ) gives FRR ≤ 5% and FAR ≤ 1%? Which metric applies: actions until detection (bours2012), or FCS (sugrim2019)? Does S_trust act as an oracle (R10)?
 - **Status:** on CMU, no sample-then-lock setting is usable (R6).
@@ -65,7 +91,7 @@ Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `n
   - Repeat on free-text data.
   - Specify that only binary decisions are exposed.
 
-### FR-06 Drift adaptation: checked (leakage)
+### FR-06 Drift adaptation: checked (pass 2: boundary-walk poisoning and sanitisation simulated on Tappy)
 
 - **Research questions:** What does an observer of T^(1..k) learn under re-Gen sample-then-lock? Which update rule converges without impostor intrusion (didaci2014; rattani2009)?
 - **Status:** the §5.2 and §5.1-A leaks are demonstrated [S§7]. The anti-poisoning envelope is in R9.
@@ -110,7 +136,10 @@ Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `n
 | Dataset | Use | Access | Status |
 |---|---|---|---|
 | CMU (killourhy2009) | Quantization, BER | public, no licence (citation requested) | used |
-| Clarkson II (murphy2017) | In the wild, keyboard + mouse, long-term drift | on request | **request needed** (not sent) |
-| Aalto 136M (dhakal2018) | Free text, population priors | non-commercial | to download |
+| Clarkson II (murphy2017) | In the wild, keyboard + mouse, long-term drift | on request | being requested (outside this repo) |
+| Aalto 136M (dhakal2018) | Free text, population priors | non-commercial | **used** (pass 2; 162k QWERTY users) |
 | BB-MAS (belman2019) | Cross-device | IEEE DataPort login | to request |
-| SapiMouse / Balabit | Mouse | public, licence unclear | to download |
+| SapiMouse / Balabit | Mouse | public, licence unclear | **used** (pass 2) |
+| CMU LASER-2012 (killourhy2012laser) | Cross-session free text | public, no licence | **used** (pass 2) |
+| Tappy (adams2017tappy) | Cross-day, weeks | ODC-By 1.0 | **used** (pass 2; adaptation) |
+| Buffalo (sun2016buffalo) | Free text, multi-session | on request | not requested |

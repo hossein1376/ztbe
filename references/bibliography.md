@@ -296,6 +296,15 @@ Not yet located/verified: Buffalo free-text keystroke dataset (shadman2025 lists
 
 ---
 
+### Counts (pass 2, 2026-10-21)
+
+- New in pass 2: **56 entries** (B.10: 5, B.11: 31, B.12: 13, B.13: 5, B.14: 2). The FOSS table gained 8 Go-library rows (checked via the GitHub API).
+- The DOIs of all new references.bib entries were re-checked against Crossref (`bibcheck`): titles, years and pages match. The Crossref titles for khan2014itus and nist80063b4 are truncated.
+- Read at A or F level in pass 2: ~20 (marked in the Level column). The rest are M.
+- Non-DOI items checked on the official pages: USENIX (Pythia), the IACR ePrint pages (FV, Li–Micciancio), W3C (WebAuthn L3 REC 2026-08-25, including §10.1.4 prf), FIDO (Biometrics Requirements v4.1), NIST (800-63B-4 HTML), and HomomorphicEncryption.org (the HE standard, via search plus SEAL `hestdparms.h`).
+- The EU AI Act was read through a consolidated mirror; EUR-Lex returned empty content to curl.
+- Total distinct sources after pass 2: 94 + 56 = **150**.
+
 ### Counts (pass 1)
 
 - Spec references checked: **13 literature/standard items + 13 FOSS projects**.
