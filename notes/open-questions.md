@@ -55,7 +55,7 @@ Pass 1, 2026-10-21. Keys refer to `references/bibliography.md`. "R#" refers to `
 **Argon2id arithmetic** [S§1b]
 - A 20 ms Rep budget at ℓ=1500 gives 13.3 µs per locker, which is far too small for any memory-hard setting.
 - A slow KDF must therefore be applied *once*, not per locker. For example, lock R' and set R = Argon2id(R', salt). This slows only the final check, not the subset search. The attacker's per-locker brute force (2^32 × HKDF) is unaffected, because the locker check (zero padding) does not need R.
-- Making each locker check slow needs a cost c per locker. Genuine Rep then costs ℓ·c in the worst case, the same factor as the attacker's per-guess cost. The ratio only improves if ℓ ≪ 2^k_sub, and it already is. Multiplying both by c buys log2(c_attack/c_genuine) ≈ 0 extra bits per locker relative to a budget-limited user. So Argon2 per locker is either too slow or does not help.
+- Making each locker check slow, with cost c per locker, multiplies the attacker's per-locker work by c. The genuine worst case is ℓ·c, so the 20 ms budget caps c at about 13.3 µs. Compared with the measured ~1.6–1.8 µs for HKDF, that is ≈ 8.5×, or **≈ 3 extra bits** (32 → ~35 bits of work per locker). Argon2 per locker is therefore either too slow for the budget or makes almost no difference.
 
 **Candidate answers**
 - Accept that offline security is about 2^20–2^32 work per user. Make the database secret-dependent: lockers keyed with a server-side pepper held in an HSM, or a device-held key. That turns the scheme into a two-factor scheme, which is the honest framing.
@@ -64,7 +64,7 @@ Pass 1, 2026-10-21. Keys refer to `references/bibliography.md`. "R#" refers to `
 **Experiments that would settle it**
 1. Estimate H∞ and fuzzy min-entropy of w on Aalto and Clarkson II with a population-prior attacker. Generate guesses from a population model, as in Ballard's "guessing distance", and report the success-vs-guesses curve.
 2. For sample-then-lock, find the minimum over 1500 random 32-bit subsets of the empirical subset min-entropy.
-3. Benchmark the actual attacker cost: GPU HKDF-SHA256 per locker against our CPU figure of 1.56 µs (2.34 ms / 1500).
+3. Benchmark the actual attacker cost: GPU HKDF-SHA256 per locker against our CPU figure of 1.56–1.78 µs per locker (worst-case Rep / 1500 across two runs; `go-bench/results.txt` holds the 2.66 ms run).
 
 ## 8.2 Q2: Custody of K_app (Architecture C)
 

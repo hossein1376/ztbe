@@ -47,7 +47,7 @@ NFR-04 requires ≤2 KB per user profile.
 
 ## R2. Architecture B security is capped by k_sub (S1)
 
-Each locker is an independent offline target. An attacker who brute-forces the k_sub=32 bits of v_i for a single locker recovers R. The cost is ≤ 2^32 × 1.56 µs ≈ 6.7·10³ core-seconds, about 1.9 core-hours, and much less if v_i is predictable from a population prior [S§1b].
+Each locker is an independent offline target. An attacker who brute-forces the k_sub=32 bits of v_i for a single locker recovers R. The cost is ≤ 2^32 × 1.56 µs ≈ 6.7·10³ core-seconds, about 1.9 core-hours (1.56 µs/locker from an earlier bench run; the committed run gives 1.78 µs, i.e. ~2.1 core-hours), and much less if v_i is predictable from a population prior [S§1b].
 
 So the scheme's strength is at most the **minimum over lockers of H∞(W_I)**, which is ≤ k_sub = 32 bits. This is exactly the correction Shukla et al. make to Canetti et al.'s analysis (shukla2025, A-level). It does not reach 80 bits, so the §7.1 claim "H∞(W\|T) ≥ 80 bits" is unsupported for Architecture B. On iris, Shukla et al. need careful subset selection and a large ℓ to reach 105 bits, and iris has far more degrees of freedom than keystrokes (Daugman DoF 9–89 on CMU [CMU]; the iris figure in daugman2006 is in the hundreds, exact value not re-checked: UNVERIFIED).
 
