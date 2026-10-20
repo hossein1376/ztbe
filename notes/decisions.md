@@ -246,6 +246,8 @@ Cost: genuine silence (crash, network loss, unannounced sleep) now causes step-u
 
 ## D15. Go/no-go criterion for the same-device pilot: decided by research assistant, 2026-10-21
 
+> **Decision rule SUPERSEDED by D21** (review round 2 H9: the stop rule almost never fired). The meanings of go and stop and the 1.5/h burden threshold are kept.
+
 **Decision.** The pilot (`docs/pilot-protocol.md`) is a feasibility test with these pre-registered outcomes:
 - **Stop** (abandon A4 as a claim) if the same-device zero-effort impostor alarm-within-10-windows rate has a 95% CI upper bound below 60%.
 - **Go** if its lower bound is ≥ 70% **and** the genuine step-up rate (macro) is ≤ 1.5 per active hour.
@@ -261,6 +263,8 @@ Cost: genuine silence (crash, network loss, unannounced sleep) now causes step-u
 **Addendum (2026-10-21, research assistant).** The rule's resolvable range at pilot size is in `experiments/opendata/results/pilot_ci.txt`. With 20 participants × 3 impostors × 3 segments, and an *assumed* intra-victim ρ of 0.1–0.3, "go" needs an observed rate ≥ 79–83% and "stop" needs ≤ 46–50%. The rule is unchanged. Rates in between are inconclusive by design.
 
 ## D16. Pilot design parameters: decided by research assistant, 2026-10-21
+
+> **Partly SUPERSEDED by D21.** Size is now 16 + 16 in two stages; segments are 2 per 45-min session (was 3 per 30 min); a genuine same-task control session is added. The other items (zero-effort primary arm, notification-only, frozen parameters, storage, subgroup rule) stand.
 
 **Decision** (`docs/pilot-protocol.md`):
 - **Size and pairing:** N = 10–20 (target 16). Round robin with 3 impostors per victim and 3 ten-window segments per 30-minute session.
@@ -292,3 +296,121 @@ Cost: genuine silence (crash, network loss, unannounced sleep) now causes step-u
 Further literature or open-data runs only re-bound these (e.g. the timer-quantum bound on L1).
 
 **What would change it.** A public dataset with multiple users per physical keyboard and device identifiers. That would let L1 be measured without a pilot.
+
+
+---
+
+# Review round 2 decisions (2026-10-21, after `notes/review-round-2.md`)
+
+## D18. Pairwise identifiers and minimal proofs (H1): decided by research assistant, 2026-10-21
+
+**Decision.**
+- **Per-RP keys and IDs.** Each linked RP gets its own proof key and a pairwise device ID, `pdid = HMAC-SHA-256(k_verifier, rp_id ‖ dev)[:16]`. The global `dev` and the device key stay between the device and the verifier.
+- **Linking.** Linking is user-initiated in the agent or extension UI, with explicit origin approval. The RP redeems a one-time code with its own `rp_sub`, which the verifier checks against the user (pairwise `sub` or an IdP ID token).
+- **Extension.** It registers content scripts only for linked origins and exposes no web-accessible resources.
+- **Proof contents.** Proofs carry only `sig` ∈ {low, medium, high, no_signal}, a coarse `age`, `kp`, `aud`, `chal` and `iat`. There is no `seq`, no flags and no version strings.
+- **Assistive and remote state.** Both become `status=unscored` in assertions. The reason stays on the device, in the user-visible local log.
+- **Registry and SSF.** The registry is scoped to the calling RP's own subjects (`/rp/v1/subjects/{rp_sub}/devices`). SSF `sub_id` uses the RP's `rp_sub` and that RP's `pdid`.
+
+**Rationale.**
+- Spec §1 promises no cross-service linking, and DPIA R8 relied on it. Round-2 proofs broke both: any page could get a global `kid` plus disability-adjacent flags.
+- DBSC, which ZTBE cites, has the same goal of no stable device identifiers.
+- The per-RP key cost is one extra TPM/SE key per linked RP. HMAC pairwise IDs are standard practice (cf. OIDC pairwise `sub`).
+
+**What would change it.**
+- A measured need for RPs to correlate one device across their own multiple origins. That would be handled by linking those origins under one `rp_id`, not by global IDs.
+- Evidence that extension presence is fingerprintable anyway (PLAN E2). That would not undo D18, but it would need its own mitigation.
+
+## D19. HIGH latches (H2): decided by research assistant, 2026-10-21
+
+**Decision.**
+- A trust alarm or `SIGNAL_LOST` puts the device and the verifier into a latched HIGH. The latch has two exits only:
+  - (a) a WebAuthn assertion verified by the verifier (`/user/v1/stepup`, reason `STEP_UP_OK`);
+  - (b) an OS lock followed by an unlock (`UNLOCK`).
+- Scored `ok` blocks, resumed heartbeats and new days do not clear it.
+- RPs MUST NOT clear a pending ZTBE step-up on a later LOW or MEDIUM.
+- The state machine is spec §9.9.
+
+**Rationale.** Without a latch, a walk-up attacker who keeps typing through one more period, or who restores the network after a block, can see HIGH replaced by LOW before the RP enforces it. "Only changes are sent" makes this order-dependent.
+
+**Cost.** A genuine false alarm or a network blip costs exactly one step-up, or one lock/unlock. This is already counted in the alarm rates.
+
+**What would change it.** Pilot evidence that latched `SIGNAL_LOST` from benign network loss dominates the burden. Then `SIGNAL_LOST` could latch only for sensitive scopes, while trust alarms stay latched.
+
+## D20. Unscored periods go stale (H3): decided by research assistant, 2026-10-21
+
+**Decision.**
+- A period with no scored window does not refresh the band.
+- After `T_stale` = 10 min of unlocked time since `max(last scored window, unlock, verified WebAuthn)`, the state becomes MEDIUM `NO_RECENT_SCORE`. This covers mouse-only use, fewer than 40 keys per window, and an unattended unlocked screen.
+- Proofs carry a coarse `age`. For sensitive operations RPs SHOULD require `age ≤ 1`, i.e. the last score is at most 5 min old.
+- The non-typing walk-up limit is stated in A4 and L5. Mouse scoring stays out of scope for v2.
+
+**Rationale.**
+- "Last band forever" would let a mouse-only attacker inherit the victim's LOW until the screen locks.
+- MEDIUM, not HIGH, because the genuine user is often reading.
+- MEDIUM only gates sensitive operations, so the burden stays bounded.
+- The 10 min and 5 min values are proposals; the pilot measures the stale fraction and the age distribution.
+
+**What would change it.** A pilot stale fraction high enough that MEDIUM events become noise; then lengthen `T_stale` and rely on `age` alone. Or adding mouse scoring, which would shrink unscored time.
+
+## D21. Pilot decision rule redesigned (H9): decided by research assistant, 2026-10-21
+
+**Decision** (`docs/pilot-protocol.md` §1).
+
+**Design.** A two-stage feasibility pilot:
+- **Stage 1:** 16 complete participants. Go if the conservative CI lower bound ≥ 70%, burden ≤ 1.5 and the task is valid. Stop if `p̂` < 60%. Otherwise run stage 2.
+- **Stage 2:** 16 more participants, analysed cumulatively (N = 32). Go under the same condition. Stop if `p̂` < 70%. Otherwise inconclusive.
+- **Sessions:** 3 impostors × 2 ten-window segments per victim, in 45-min sessions (60 min if the dry run requires).
+- **Conservative CI:** the union of a victim-cluster bootstrap and Wilson on `n_eff` (ρ̂ floored at 0.1). The same CI is used in planning (`pilot_oc2.py`) and in the decision.
+- **Burden:** the macro point estimate of step-ups per active-typing hour.
+- **Genuine control:** a same-task control session, with a task-validity rule of at most +10 pp over the natural-use rate.
+- **Dry run:** checks window yield first, against 59.5 s per window on Tappy.
+
+**Operating characteristics** (simulated; ρ 0.1–0.3, impostor sd 0–0.8; `results/pilot_oc2.txt`):
+
+| True alarm-within-10 | P(stop) | P(go) | Other |
+|---|---|---|---|
+| ≤ 0.60 | ≥ 0.97 | — | — |
+| 0.65 | 0.84–0.89 | ≤ 0.01 | — |
+| 0.75 | 0.10–0.22 | 0.18–0.24 | indifference zone |
+| 0.80 | — | 0.48–0.72 | — |
+| 0.85 | — | 0.83–0.97 | — |
+| 0.88 | — | 0.94–1.00 | — |
+
+- Wrong-direction errors are ≤ 0.05.
+- Coverage of the conservative CI is 0.88–0.98.
+- The round-2 rule had P(stop | 0.55) = 0.13–0.17.
+
+**Rationale.**
+- Hossein asked for a 10–20 person pilot, and stage 1 keeps that.
+- Stage 2 runs only when needed: it is triggered in ≈ 25–90% of cases depending on the true rate, most often in the 0.65–0.80 zone.
+- A futility rule on the point estimate is the only way to make "stop" reachable at this n.
+
+Two alternatives were rejected:
+- **Single stage with N = 20:** weaker, with P(go | 0.85) of only 0.60–0.84.
+- **20 + 20:** marginally better, but 25% more participants.
+
+**What would change it.** A dry-run yield below 20 windows per 60 min, which means S = 1: re-simulate and amend before recruitment. Or Hossein preferring a lower stop risk in the 0.75 zone, which means a stage-2 stop threshold of 0.65 at the cost of more inconclusive outcomes.
+
+## D22. Should-fix bundle (H4–H8): decided by research assistant, 2026-10-21
+
+**Decision.**
+- **H4 request binding.** Any "A3 mitigated" claim requires sender-constrained sessions (DBSC, DPoP or mTLS). Periodic proofs alone protect only sensitive operations.
+- **H5 assertion hygiene.**
+  - `stale-seq`, `bad-nonce` and `future-time` are hygiene failures. They are logged and do not count toward `integrity_suspect`; only signature, `kid`, alg and format failures count.
+  - The device refetches the epoch on reconnect, drops stale queued assertions, and persists `seq = max(last + 1, unix_ms·2^10)`.
+  - The effective outcome of persistent failures (`SIGNAL_LOST`) is documented.
+- **H6 COSE.** A 7-item implementation checklist in spec §9.1:
+  - DER → raw r‖s;
+  - verify over the received bytes;
+  - alg ↔ key type;
+  - strict decoding;
+  - randomised-ECDSA test caveat;
+  - negative fuzzing;
+  - a key-use argument. TLS 1.3 CertificateVerify and the COSE Sig_structure are domain-separated by construction (RFC 8446 §4.4.3 prefix vs CBOR "Signature1"). The same algorithm is used for both, and proofs use separate per-RP keys.
+- **H7.** Assistive-profile evasion, MEDIUM-not-HIGH for profile-less users, threshold gaming and the non-typing window are stated as limitation L5.
+- **H8 paused.** Paused with a grant means `no_signal` in proofs, `age = 3` and no CAEP event. Expiry falls back to `active` with stale rules. Pausing while HIGH requires WebAuthn and so clears the latch legitimately.
+
+**Rationale.** These are cheap text fixes that close the remaining reviewer findings without new research.
+
+**What would change it.** Implementation experience (M2/M3), e.g. if clock-derived `seq` proves fragile on some platform.
