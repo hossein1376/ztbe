@@ -257,3 +257,38 @@ Cost: genuine silence (crash, network loss, unannounced sleep) now causes step-u
 - The thresholds are judgement calls, recorded before data collection to avoid moving goalposts.
 
 **What would change it.** Hossein's product judgement on acceptable burden.
+
+**Addendum (2026-10-21, research assistant).** The rule's resolvable range at pilot size is in `experiments/opendata/results/pilot_ci.txt`. With 20 participants × 3 impostors × 3 segments, and an *assumed* intra-victim ρ of 0.1–0.3, "go" needs an observed rate ≥ 79–83% and "stop" needs ≤ 46–50%. The rule is unchanged. Rates in between are inconclusive by design.
+
+## D16. Pilot design parameters: decided by research assistant, 2026-10-21
+
+**Decision** (`docs/pilot-protocol.md`):
+- **Size and pairing:** N = 10–20 (target 16). Round robin with 3 impostors per victim and 3 ten-window segments per 30-minute session.
+- **Primary arm:** zero-effort only; the mimicry arm is reported separately.
+- **Burden measurement:** step-ups are shown as notifications only.
+- **Frozen parameters:** all spec Appendix A values; no re-tuning on pilot data.
+- **Data and subgroups:** window vectors only; ≤ 12 months retention; subgroups with < 10 users are reported as "insufficient n".
+
+**Rationale.**
+- Same-device impostors are the only way to measure L1.
+- 3×3 maximises attempts per participant-hour while keeping sessions short.
+- Notification-only avoids disrupting real work and still counts burden.
+- Freezing parameters keeps D15 honest.
+
+**What would change it.**
+- An ethics board objecting to the study-account template copy. The fallback is a supervised handover in the victim's account.
+- Pilot ρ much higher than 0.3. Then more victims are needed rather than more segments.
+
+## D17. Round-2 stopping point: decided by research assistant, 2026-10-21
+
+**Decision.** Stop desk research after round 2.
+
+**Rationale.** The open questions that change the design all need new data:
+- the same-device rate (L1);
+- capture behaviour per OS (E2);
+- the supervised-adaptation benefit (E3);
+- legal proportionality at work (counsel).
+
+Further literature or open-data runs only re-bound these (e.g. the timer-quantum bound on L1).
+
+**What would change it.** A public dataset with multiple users per physical keyboard and device identifiers. That would let L1 be measured without a pilot.

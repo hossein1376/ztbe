@@ -5,7 +5,7 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 ## Start here
 
 1. [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) **v2.1** is the single normative spec (D14).
-2. [`notes/decisions.md`](notes/decisions.md) holds D1–D15.
+2. [`notes/decisions.md`](notes/decisions.md) holds D1–D17.
 3. [`PLAN.md`](PLAN.md) lists the remaining work, which is empirical.
 4. [`docs/pilot-protocol.md`](docs/pilot-protocol.md) is the next experiment.
 
@@ -19,7 +19,7 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 | [`docs/pilot-protocol.md`](docs/pilot-protocol.md) | Same-device feasibility pilot (10–20 people), with the D15 go/stop rule and its resolvable range |
 | [`docs/dpia-outline.md`](docs/dpia-outline.md) | DPIA outline: WP248 screening, Art. 35(7) structure, risks and measures. Not legal advice |
 | [`docs/consent-templates.md`](docs/consent-templates.md) | Pilot consent form and layered end-user notice. Not legal advice |
-| [`notes/decisions.md`](notes/decisions.md) | D1 (Hossein); D2–D15 (research assistant), each with rationale and what would change it |
+| [`notes/decisions.md`](notes/decisions.md) | D1 (Hossein); D2–D17 (research assistant), each with rationale and what would change it |
 | [`notes/experiments-v2.md`](notes/experiments-v2.md) | Open-data results (Aalto, LASER-2012, Tappy, SapiMouse, Balabit); §9 has round-2 re-runs with CIs |
 | [`notes/collector-tradeoffs.md`](notes/collector-tradeoffs.md) | Native agent vs browser vs OS frameworks, per OS (timers, injection flags, permissions, MDM) |
 | [`notes/landscape.md`](notes/landscape.md) | Vendors, OSS and patents. Not legal advice |

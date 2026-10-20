@@ -16,7 +16,7 @@ Changes in v2.1 (round 2, after `notes/review-round-1.md`):
 Evidence:
 - `notes/experiments-v2.md` (§9 "Round 2" holds the re-runs);
 - `experiments/opendata/results/eval2_*.txt`, `adapt_supervised_*.txt`, `adapt_adaptive_n200.txt`, `power.txt`;
-- `notes/decisions.md` (D1–D14), `notes/collector-tradeoffs.md`, `docs/interfaces.md`, `docs/dpia-outline.md`, `docs/pilot-protocol.md`.
+- `notes/decisions.md` (D1–D17), `notes/collector-tradeoffs.md`, `docs/interfaces.md`, `docs/dpia-outline.md`, `docs/pilot-protocol.md`.
 
 Citation keys refer to `references/references.bib`. Numbers come from our own runs or from sources read at abstract level or better. Anything else is marked UNVERIFIED.
 
