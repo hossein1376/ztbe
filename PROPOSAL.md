@@ -138,7 +138,7 @@ Mean score over k consecutive windows (`fuse.py`, cross-session/cross-day):
 ### 5.4 Thresholds and calibration
 
 - One global threshold per model version, calibrated on the in-domain population.
-- Per-user adjustment only in the direction of *less* sensitivity, capped, and logged (§5.2).
+- **Superseded by spec v2 §6** (2026-10-21, measured in `userpolicy.py`). There are no per-user thresholds in v2.0, because one-week per-user calibration doubled FRR. The policy is an abstain band (`uncertain`) plus a trust model for `high`, and ZTBE is disabled for persistently high-error users. The earlier idea of "per-user adjustment in the less-sensitive direction" (P2) cost 1.3–3.1 pp FAR for 0.3–1.8 pp FRR and is deferred to v2.x under conditions (spec T2).
 - Never lock out on ZTBE alone. The only action is a step-up.
 
 ## 6. Adaptation and anti-poisoning

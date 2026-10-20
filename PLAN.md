@@ -1,12 +1,86 @@
 # ZTBE research plan
 
-Pass 1 and pass 2, 2026-10-21. Status values:
+Passes 1–3, 2026-10-21. Status values:
 - **open**: not started
 - **lit**: literature collected
 - **checked**: claim checked by calculation or experiment
 - **blocked**: depends on a decision or data
 
 Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `notes/spec-review.md`. Section Q refers to `notes/open-questions.md`.
+
+## Pass 3 outcome and next phase (2026-10-21)
+
+Decisions D1–D7 are recorded in `notes/decisions.md`. D1 is Hossein's; D2–D7 were decided by the research assistant. The spec is `spec/ZTBE-spec-v2-draft.md`.
+
+| Item | Status | Result |
+|---|---|---|
+| Per-user threshold policy | **checked** (Tappy, 29–40 users per config) | One-week per-user thresholds double FRR (P1 pooled 10.7–16.6% vs P0 3.7–7.5%). Calibration-week FRR barely predicts later FRR (Spearman 0.04–0.39). Policy: global τ_g, an `uncertain` abstain band, a trust model for `high`, and disabling ZTBE for persistent goats (spec §6). |
+| Cold start | **checked** (Tappy) | Count windows plateau after ≈ 500–1000 keys; t120 improves up to ≈ 25 min. Enrolment rule: ≥ 1000 keys, ≥ 15 min, ≥ 2 days (spec §5). |
+| Mimicry / synthetic attacks | **lit** | Snoop-forge-replay reaches up to 87.75% success on free-text continuous keystroke verification (rahman2011sfr). Trained mimicry: FAR 0.24 → 0.63 (tey2013). Out of scope for strong claims; added to the eval protocol (spec §2.1, §12). |
+| Signalling | **specified** | COSE_Sign1 assertion → verifier → CAEP `risk-level-change` (LOW/MEDIUM/HIGH) → RFC 9470 step-up |
+| Sample size | **checked** (`experiments/opendata/power.py`) | Intra-user error correlation is ρ ≤ 0.20, so ≈ 90–105 users are needed for ±2 pp on a 5% FRR (and ≥ 86 even with unlimited data per user). |
+
+### Phase 3a: Go MVP (agent + scoring library + verifier)
+
+Single module `github.com/hossein1376/ztbe`; layout as in PROPOSAL §9.1. Durations assume one engineer.
+
+| M | Scope | Tasks | Exit criteria |
+|---|---|---|---|
+| **M0** scoring lib (1 wk) | `internal/features`, `internal/model`, `cmd/ztbe-eval` | T1: port the window features (the 36-feature superset, plus the 21-feature v2 set). T2: scaled Manhattan with shrinkage, K-fusion, trust model. T3: golden tests against `experiments/opendata` | Go and Python feature vectors agree within 1e-6 on LASER and Tappy. EER and trust-model table within ±0.2 pp of `userpolicy_*.txt` |
+| **M1** agent, local only (2 wk) | `internal/capture`, `internal/zone`, `cmd/ztbe-agent` | T1: hooks (evdev on Linux, gohook on macOS/Windows). T2: zone mapping, characters dropped at source. **T3: re-run the experiments with the 21-feature set** (spec §3). **T4: simulate supervised adaptation** (spec §8), since FRR benefit is unmeasured. **T5: injected-event provenance per OS** (spec §3.1). T6: timer-resolution self-test (rollover gate) | CPU < 1% of one core and RSS < 15 MB while typing. A property test shows no key identity reaches `features`. On each OS, injected events are flagged and not scored |
+| **M2** sealing + assertions (2 wk) | `internal/seal`, `internal/attest`, `internal/wire` | T1: TPM 2.0 seal/unseal (go-tpm-tools) and an AK-certified P-256 assertion key (go-attestation). **T2: measure TPM unseal and sign latency.** T3: macOS SE key via sks, plus go-keyring fallback. T4: COSE_Sign1 encoding (go-cose, MPL-2.0; licence review) | `key_protection` correctly reported on 3 platforms. Fuzzed malformed assertions are all rejected |
+| **M3** verifier (2 wk) | `cmd/ztbe-verifier`, `internal/policy` | T1: enrolment binding via WebAuthn (go-webauthn). T2: seq / nonce-epoch / silence checks. T3: SSF transmitter, emitting CAEP `risk-level-change` SETs over RFC 8935 push. T4: sample RP showing an RFC 9470 step-up | Replay, rollback, forged-key and stale-nonce tests fail closed. An end-to-end walk-up demo triggers step-up |
+| **M4** adaptation + policy (1 wk) | `internal/adapt` | Supervised windows (30 min after WebAuthn), anchors, unsupervised guard stack, 180-day re-enrolment, persistent-goat rule | The Go port reproduces `adapt_n200.txt` within ±2 pp. Supervised mode shows week-8 FRR ≤ static |
+| **M5** pilot build (1 wk) | Packaging, status UI, kill switch, data-collection mode (phase 3b) | The user can pause, disable and delete. Research mode uploads only encrypted feature vectors | Security review checklist passed. DPIA draft complete |
+
+### Phase 3b: own consented data collection
+
+Purpose:
+- build the in-domain population prior and τ_g that D3 requires;
+- evaluate cross-day, 8-week and attack performance with CIs.
+
+**Protocol**
+- Participants are adult volunteers, recruited openly (not through an employer chain, per D6). Mixed OS and keyboard types (laptop, external, ergonomic) and mixed typing proficiency.
+- Instrument: the M5 agent in *research mode*. It captures only the zone-mapped timings needed for features: per window, the feature vector plus per-event (zone, down, up) timestamps. Characters are never captured. Timer resolution and OS are logged.
+- Duration: 8 weeks of natural use, at least 3 active days per week. Weeks 1–2 enrolment and calibration, weeks 3–8 test. This mirrors the `userpolicy.py` timeline, with longer calibration to test T2.
+- Supervised labels: each WebAuthn login marks a 30-minute supervised period.
+- Attack sessions (separate consent, scheduled):
+  - zero-effort walk-up on a lab machine;
+  - population-statistics forgery generated offline;
+  - snoop-forge-replay with 100 / 200 / 1000 keystrokes of the victim's timings. The victim consents to their timings being used for forgeries.
+  - Mimicry sub-study: 30 attackers × 3 victims, with a Mimesis-style feedback UI (tey2013). The 30-attacker figure is a proposal, sized to give ≥ 90 attacker–victim pairs.
+- Synthetic injection: OS-level injection by a test harness on lab machines only, to measure provenance flags and the synthetic detector (APCER/BPCER).
+
+**Consent and governance**
+- Ethics board (IRB or equivalent) approval before recruitment. A DPIA (Art. 35) covering research mode.
+- Explicit Art. 9(2)(a) consent. Separate opt-ins for: (1) natural-use collection, (2) attack sessions as attacker, (3) use of the participant's timings to build forgeries against them.
+- Withdrawal at any time, with deletion of the participant's data within 30 days.
+- Data minimisation:
+  - pseudonymous ID;
+  - no characters, no application or window titles, no URLs;
+  - demographics limited to optional age band and handedness (for fairness analysis); no health or disability data.
+- Storage:
+  - encrypted at rest;
+  - access logged;
+  - research retention 24 months (proposal);
+  - no release of per-event data. A public release, if any, contains window feature vectors only and needs separate consent.
+- Payment, if any, is flat and not performance-based, to avoid incentive effects. tey2013 found that monetary incentives change attacker success.
+
+**Size targets** (`experiments/opendata/power.py`, results/power.txt)
+- Intra-user error correlation from Tappy: ρ_FRR ≤ 0.19 and ρ_FAR ≤ 0.20. Design effect: 1 + (m − 1)·ρ.
+- Required users:
+  - FRR 5% ± 2 pp (95% CI): 104 users at 20 blocks each, 87 at 200 blocks. The floor is 86 users however much data each provides.
+  - FRR 5% ± 1 pp: ≈ 350–415 users.
+  - Block FAR 10% ± 3 pp: 80–94 targets.
+- Low-FAR claims: FAR ≤ 1% at 95% needs ≥ 300 independent zero-error impostor attempts (rule of 3). Cross-user pairs are correlated per attacker and target, so impostor attempts must be counted at the effective sample size.
+- **Target:** recruit 130 participants, expecting ≈ 20% attrition, so that ≥ 100 complete 8 weeks with ≥ 50 test blocks each. Of these, 40 also join attack sessions; the mimicry sub-study uses 30 attackers.
+- Priors and τ_g come from a disjoint 50% of participants (a 2-fold swap), as in the experiments.
+
+**Analysis plan.** Spec §12, with every metric reported with clustered CIs. Pre-registered hypotheses:
+- H1: block EER ≤ 9% at K = 4 on weeks 3–8.
+- H2: per-user thresholds with ≥ 4 weeks of calibration and shrinkage (T2) do not reduce p90 user FRR by ≥ 3 pp → keep the global threshold.
+- H3: snoop-forge-replay with 200 keystrokes raises block FAR by ≥ 3× over zero-effort (expected from rahman2011sfr).
+- H4: supervised adaptation gives week-8 FRR ≤ static.
 
 ## Pass 2 outcome (2026-10-21)
 

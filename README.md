@@ -7,6 +7,8 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)** spec v1.0.0-draft: 
 | Path | Content |
 |---|---|
 | [`spec/ZTBE-spec-v1.0.0-draft.md`](spec/ZTBE-spec-v1.0.0-draft.md) | The spec under review, unchanged. Transcribed verbatim from the provided attachment. No hash of the original was available, so byte identity is not machine-verified. |
+| [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) | **v2 spec draft (pass 3).** Risk signal, not a factor (D1). Threat model A1–A8, feature keep/drop with evidence, threshold and trust policy, cold start, sealing, COSE assertion, CAEP/RFC 9470, GDPR/AI Act, eval protocol |
+| [`notes/decisions.md`](notes/decisions.md) | Decisions D1–D7 with rationale and what would change each |
 | [`PROPOSAL.md`](PROPOSAL.md) | **Phase 2: recommended architecture v2.** On-device scoring, sealed template, signed risk assertions, WebAuthn step-up. Includes the threat model, parameters justified by measurements, budgets, honest claims, Go MVP plan and decisions needed |
 | [`notes/experiments-v2.md`](notes/experiments-v2.md) | Phase 2 open-data results (Aalto, LASER-2012, Tappy, SapiMouse, Balabit) |
 | [`notes/design-options.md`](notes/design-options.md) | Phase 2 options O0–O8 (keyless FE, keyed/OPRF, HE, 2PC, embeddings, on-device + attestation, threshold) with an attacker-by-option matrix |
@@ -24,7 +26,8 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)** spec v1.0.0-draft: 
   - Measured open-data results: per-window keystroke EER of 6–16% cross-session and cross-day; FRR@FAR1% of 20–60%; guessing entropy of about 1–4 bits.
   - Spec v1's keyless-FE design is rejected.
   - `PROPOSAL.md` gives the v2 architecture.
-  - Still open: Clarkson II, the TPM latency measurement, mimicry data, and the decisions in PROPOSAL §10.
+  - Still open: Clarkson II, the TPM latency measurement and mimicry data. Decisions D1–D7 are made (`notes/decisions.md`).
+  - Pass 3: `spec/ZTBE-spec-v2-draft.md`; `experiments/opendata/userpolicy.py` (thresholds, trust model, cold start) and `power.py`; PLAN phase 3 (Go MVP and consented data collection).
 
 ### Pass 1 status
 
