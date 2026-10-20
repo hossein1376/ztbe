@@ -46,7 +46,7 @@ Decisions D1–D7 are recorded in `notes/decisions.md`. D1 is Hossein's; D2–D7
 | Item | Status | Result |
 |---|---|---|
 | Per-user threshold policy | **checked** (Tappy, 29–40 users per config) | One-week per-user thresholds double FRR (P1 pooled 10.7–16.6% vs P0 3.7–7.5%). Calibration-week FRR barely predicts later FRR (Spearman 0.04–0.39). Policy: global τ_g, an `uncertain` abstain band, a trust model for `high`, and disabling ZTBE for persistent goats (spec §6). |
-| Cold start | **checked** (Tappy) | Count windows plateau after ≈ 500–1000 keys; t120 improves up to ≈ 25 min. Enrolment rule: ≥ 1000 keys, ≥ 15 min, ≥ 2 days (spec §5). |
+| Cold start | **checked** (Tappy) | Count windows plateau after ≈ 500–1000 keys; t120 improves up to ≈ 25 min. Enrolment rule: ≥ 1000 keys, ≥ 15 min, ≥ 2 days. **Superseded in round 2** by E1: ≥ 20 scored windows and ≥ 7 days (spec §5, D11). |
 | Mimicry / synthetic attacks | **lit** | Snoop-forge-replay reaches up to 87.75% success on free-text continuous keystroke verification (rahman2011sfr). Trained mimicry: FAR 0.24 → 0.63 (tey2013). Out of scope for strong claims; added to the eval protocol (spec §2.1, §12). |
 | Signalling | **specified** | COSE_Sign1 assertion → verifier → CAEP `risk-level-change` (LOW/MEDIUM/HIGH) → RFC 9470 step-up |
 | Sample size | **checked** (`experiments/opendata/power.py`) | Intra-user error correlation is ρ ≤ 0.20, so 87–104 users are needed for ±2 pp on a 5% FRR (20–200 blocks per user) (and ≥ 86 even with unlimited data per user). **Superseded in round 2:** with the bootstrap upper ρ, 164–177 (FRR) and 119–131 (FAR) users. |

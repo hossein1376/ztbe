@@ -2,25 +2,70 @@
 
 Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a review of spec v1.0.0-draft (fuzzy extractors and cancelable templates). That design was rejected. The current direction is [spec v2](spec/ZTBE-spec-v2-draft.md): on-device keystroke scoring that emits a signed risk signal, with WebAuthn step-up. It is a risk signal, not an authentication factor.
 
+## Start here
+
+1. [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) **v2.1** is the single normative spec (D14).
+2. [`notes/decisions.md`](notes/decisions.md) holds D1–D15.
+3. [`PLAN.md`](PLAN.md) lists the remaining work, which is empirical.
+4. [`docs/pilot-protocol.md`](docs/pilot-protocol.md) is the next experiment.
+
 ## Layout
 
 | Path | Content |
 |---|---|
-| [`spec/ZTBE-spec-v1.0.0-draft.md`](spec/ZTBE-spec-v1.0.0-draft.md) | The spec under review, unchanged. Transcribed verbatim from the provided attachment. No hash of the original was available, so byte identity is not machine-verified. |
-| [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) | **v2 spec draft (pass 3).** Risk signal, not a factor (D1). Threat model A1–A8, feature keep/drop with evidence, threshold and trust policy, cold start, sealing, COSE assertion, CAEP/RFC 9470, GDPR/AI Act, eval protocol |
-| [`notes/decisions.md`](notes/decisions.md) | Decisions D1–D7 with rationale and what would change each |
-| [`PROPOSAL.md`](PROPOSAL.md) | **Phase 2: recommended architecture v2.** On-device scoring, sealed template, signed risk assertions, WebAuthn step-up. Includes the threat model, parameters justified by measurements, budgets, honest claims, Go MVP plan and decisions needed |
-| [`notes/experiments-v2.md`](notes/experiments-v2.md) | Phase 2 open-data results (Aalto, LASER-2012, Tappy, SapiMouse, Balabit) |
-| [`notes/design-options.md`](notes/design-options.md) | Phase 2 options O0–O8 (keyless FE, keyed/OPRF, HE, 2PC, embeddings, on-device + attestation, threshold) with an attacker-by-option matrix |
-| [`PLAN.md`](PLAN.md) | Research plan by FR-01..07, NFR-01..05, spec §3–6 and §8, with a prioritized list |
-| [`notes/spec-review.md`](notes/spec-review.md) | Critical review: 14 findings (R1–R14) with sanity numbers |
-| [`notes/archive/open-questions-v1.md`](notes/archive/open-questions-v1.md) | Archived v1 open questions (superseded) |
-| [`references/bibliography.md`](references/bibliography.md) | Spec citation audit (Part A), FOSS licence and Go equivalents check (A.2), Part B sources by topic: B.1–B.9 from pass 1, B.10–B.14 and Go libraries from pass 2 |
-| [`references/references.bib`](references/references.bib) | BibTeX, 181 entries, keys match bibliography.md |
-| [`experiments/`](experiments/) | `sanity/`, `go-bench/`, `cmu-quantization/` (pass 1); `opendata/` (pass 2 evaluation, with `fetch.sh` because no data is committed); `go-he/` (pass 2 Go crypto costs) |
-| `papers/` | Not created. No PDFs are redistributed, because none of the full texts used was confirmed CC-BY. Links only. |
+| [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) | **v2.1, normative.** Threat model A1–A10, the 21-feature rule, provenance/assistive/remote/multi-keyboard rules, research mode, matched-FAR results, trust model, sealing, no adaptation (D8), COSE −9/−19, agent split, heartbeat/SIGNAL_LOST, pause grants, mTLS ingestion, ZTBE-Proof session binding, SSF/CAEP, GDPR/AI Act/fairness, claims and limits L1–L4, eval protocol, Go layout, parameters |
+| [`spec/ZTBE-spec-v1.0.0-draft.md`](spec/ZTBE-spec-v1.0.0-draft.md) | Original v1 spec, unchanged (rejected design) |
+| [`docs/interfaces.md`](docs/interfaces.md) | CDDL wire formats, OpenAPI sketch, error codes, CAEP mapping and example SET, RP integration guide |
+| [`docs/pilot-protocol.md`](docs/pilot-protocol.md) | Same-device feasibility pilot (10–20 people), with the D15 go/stop rule and its resolvable range |
+| [`docs/dpia-outline.md`](docs/dpia-outline.md) | DPIA outline: WP248 screening, Art. 35(7) structure, risks and measures. Not legal advice |
+| [`docs/consent-templates.md`](docs/consent-templates.md) | Pilot consent form and layered end-user notice. Not legal advice |
+| [`notes/decisions.md`](notes/decisions.md) | D1 (Hossein); D2–D15 (research assistant), each with rationale and what would change it |
+| [`notes/experiments-v2.md`](notes/experiments-v2.md) | Open-data results (Aalto, LASER-2012, Tappy, SapiMouse, Balabit); §9 has round-2 re-runs with CIs |
+| [`notes/collector-tradeoffs.md`](notes/collector-tradeoffs.md) | Native agent vs browser vs OS frameworks, per OS (timers, injection flags, permissions, MDM) |
+| [`notes/landscape.md`](notes/landscape.md) | Vendors, OSS and patents. Not legal advice |
+| [`notes/review-round-1.md`](notes/review-round-1.md) | Independent review that drove round 2 |
+| [`PROPOSAL.md`](PROPOSAL.md) | Short non-normative rationale, with pointers to where content moved |
+| [`PLAN.md`](PLAN.md) | Remaining empirical work (E1–E3), Go milestones M0–M5, FR/NFR history |
+| [`notes/design-options.md`](notes/design-options.md) | Historical: options O0–O8 with an attacker-by-option matrix |
+| [`notes/spec-review.md`](notes/spec-review.md) | Historical: v1 review, findings R1–R14 |
+| [`notes/archive/`](notes/archive/) | Archived v1 open questions |
+| [`references/bibliography.md`](references/bibliography.md) | Citation audit, FOSS/licence checks, sources by topic B.1–B.16 |
+| [`references/references.bib`](references/references.bib) | BibTeX, 199 entries; keys match bibliography.md |
+| [`experiments/`](experiments/) | `sanity/`, `go-bench/`, `cmu-quantization/`, `go-he/`, `opendata/`. `opendata/` holds eval2.py, adapt_supervised.py, power.py and pilot_ci.py; results are in `results/`, and no data is committed (`fetch.sh`) |
+| `papers/` | Not created. No PDFs are redistributed. Links only |
 
-## Status (2026-10-21, pass 3 + review round 1)
+## Headline numbers (Tappy, 81 users, spec config; 95% bootstrap CIs over users; zero-effort, **different-device** impostors)
+
+**Block errors at τ_g:**
+
+| Metric | Value |
+|---|---|
+| FRR, pooled | 5.3% [3.7, 7.5] |
+| FRR, macro | 7.9% [5.3, 11.0] |
+| FRR, p90 user | 25.4% [12.9, 33.3] |
+| FAR | 11.7% [8.9, 15.4] |
+| FRR at matched FAR 10% | 6.8% [4.3, 11.2] |
+
+**Trust model:**
+
+| Metric | Value |
+|---|---|
+| Genuine alarms per 60 windows, pooled | 0.64 [0.41, 0.93] |
+| Genuine alarms per 60 windows, macro | 0.93 [0.49, 1.54] |
+| Genuine alarms per 60 windows, p90 user | 2.46 [1.09, 3.46] |
+| Impostor alarm within 5 windows | 81.6% [76.9, 86.2] |
+| Impostor alarm within 10 windows | 88.0% [84.1, 91.7] |
+
+**Other results:**
+- Supervised adaptation: Δ FRR +0.2 [−1.2, +1.7] pp, which is no measurable benefit.
+- Power: FRR 5% ± 2 pp needs 164–177 users; FAR 10% ± 3 pp needs 119–131.
+- **Main limitation:** user and device are confounded in all open data (spec L1). The same-device pilot is the next step.
+
+## Status (2026-10-21, round 2 complete)
+
+Round 2 (autonomous, Hossein asleep) addressed the review: spec v2.1, D8–D15, re-runs with CIs, governance docs, interfaces, landscape. What remains needs people and hardware (PLAN E1–E3).
+
+### Earlier status (pass 3 + review round 1)
 
 Independent review: [`notes/review-round-1.md`](notes/review-round-1.md). It covers consistency, re-runs, citation checks, gaps and a ranked work list. The earlier status notes below are kept for history.
 
