@@ -383,7 +383,7 @@ Further literature or open-data runs only re-bound these (e.g. the timer-quantum
 
 **Rationale.**
 - Hossein asked for a 10–20 person pilot, and stage 1 keeps that.
-- Stage 2 runs only when needed: it is triggered in ≈ 25–90% of cases depending on the true rate, most often in the 0.65–0.80 zone.
+- Stage 2 runs only when needed. It is triggered in 5–94% of simulated pilots depending on the true rate, and in ≥ 61% when the true rate is 0.65–0.80.
 - A futility rule on the point estimate is the only way to make "stop" reachable at this n.
 
 Two alternatives were rejected:

@@ -6,17 +6,29 @@ Passes 1–3 and round 2, 2026-10-21. Status values:
 - **checked**: claim checked by calculation or experiment
 - **blocked**: depends on a decision or data
 
-Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `notes/spec-review.md`. Section Q refers to `notes/archive/open-questions-v1.md` (archived). The normative spec is `spec/ZTBE-spec-v2-draft.md` v2.1; decisions are D1–D15 in `notes/decisions.md`.
+Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `notes/spec-review.md`. Section Q refers to `notes/archive/open-questions-v1.md` (archived). The normative spec is `spec/ZTBE-spec-v2-draft.md` v2.2; decisions are D1–D22 in `notes/decisions.md`.
 
 ## Round 2 outcome and remaining work (2026-10-21)
 
-Review `notes/review-round-1.md` was addressed by spec v2.1 and D8–D15. **The remaining work is empirical.** Further desk research adds little until the three items below produce data.
+Reviews `notes/review-round-1.md` and `notes/review-round-2.md` were addressed by spec v2.1/v2.2 and D8–D22. **The remaining work is empirical.** Further desk research adds little until the three items below produce data.
 
 | # | Remaining item | Why it can't be done from the desk | Protocol / exit |
 |---|---|---|---|
-| E1 | **Same-device impostor pilot**, 10–20 people | Every open dataset confounds user with device (spec L1). The bound (FAR ratio 0.79; 0.59–0.90) is not a measurement | `docs/pilot-protocol.md`; D15 go/stop. Resolvable range in `results/pilot_ci.txt` |
+| E1 | **Same-device impostor pilot**, 16 people (stage 1) + 16 if inconclusive | Every open dataset confounds user with device (spec L1). The bound (FAR ratio 0.86 spec config, 0.79 all features; 0.59–0.90) is not a measurement | `docs/pilot-protocol.md` v2; D21 two-stage go/stop (16 + 16). Operating characteristics in `results/pilot_oc2.txt`; window-yield dry run first |
 | E2 | **Keyboard-capture prototype** (M1 T1, T5, T6): ztbe-capture plus ztbe-svc on Windows, macOS and Linux | Provenance flags, assistive-tool behaviour, MDM/TCC, hook timeouts and timer quanta are partly UNVERIFIED (spec §3.1, `notes/collector-tradeoffs.md`) | Capture-spike metrics in pilot-protocol §5. Injected events flagged on 3 OSes; CPU < 1%; RSS < 15 MB |
 | E3 | **Supervised-adaptation FRR** | Tappy simulation: Δ +0.2 [−1.2, +1.7] pp (no measurable benefit). Real WebAuthn-anchored supervision needs ≥ 8 weeks of data | Powered study (Phase 3b) H4. Adaptation stays off (D8) unless H4 is met |
+
+**Review-round-2 changes (D18–D22):**
+- M2 gains per-RP proof keys and the COSE checklist.
+- M3 gains:
+  - linking (`/device/v1/links`, `/rp/v1/links`);
+  - the RP-scoped registry;
+  - pairwise SSF subjects;
+  - the §9.9 state machine (HIGH latch, stale → `NO_RECENT_SCORE`);
+  - `/user/v1/stepup`;
+  - the split between hygiene and integrity failures.
+- The browser extension registers content scripts only on linked origins. Whether the extension can still be fingerprinted is part of the E2 spike.
+- Pilot (E1): two stages of 16 + 16 participants, preceded by a dry run.
 
 **Round-2 changes to the milestones below:**
 - **M0 T1.** Ship only the 21-feature set (D11).
@@ -59,7 +71,7 @@ Single module `github.com/hossein1376/ztbe`; layout as in spec §14 (the round-2
 |---|---|---|---|
 | **M0** scoring lib (1 wk) | `internal/features`, `internal/model`, `cmd/ztbe-eval` | T1: port the window features (the 36-feature superset, plus the 21-feature v2 set). T2: scaled Manhattan with shrinkage, K-fusion, trust model. T3: golden tests against `experiments/opendata` | Go and Python feature vectors agree within 1e-6 on LASER and Tappy. EER and trust-model table within ±0.2 pp of `userpolicy_*.txt` |
 | **M1** agent, local only (2 wk) | `internal/capture`, `internal/zone`, `cmd/ztbe-agent` | T1: hooks (evdev on Linux, gohook on macOS/Windows). T2: zone mapping, characters dropped at source. **T3: re-run the experiments with the 21-feature set** (spec §3). **T4: simulate supervised adaptation** (spec §8), since FRR benefit is unmeasured. **T5: injected-event provenance per OS** (spec §3.1). T6: timer-resolution self-test (rollover gate) | CPU < 1% of one core and RSS < 15 MB while typing. A property test shows no key identity reaches `features`. On each OS, injected events are flagged and not scored |
-| **M2** sealing + assertions (2 wk) | `internal/seal`, `internal/attest`, `internal/wire` | T1: TPM 2.0 seal/unseal (go-tpm-tools) and an AK-certified P-256 assertion key (go-attestation). **T2: measure TPM unseal and sign latency.** T3: macOS SE key via sks, plus go-keyring fallback. T4: COSE_Sign1 encoding (~~go-cose~~ → in-house on fxamacker/cbor, alg −9/−19, D9) | `key_protection` correctly reported on 3 platforms. Fuzzed malformed assertions are all rejected |
+| **M2** sealing + assertions (2 wk) | `internal/seal`, `internal/attest`, `internal/wire` | T1: TPM 2.0 seal/unseal (go-tpm-tools) and an AK-certified P-256 assertion key (go-attestation). **T2: measure TPM unseal and sign latency.** T3: macOS SE key via sks, plus go-keyring fallback. T4: COSE_Sign1 encoding (~~go-cose~~ → in-house on fxamacker/cbor, alg −9/−19, D9), tested against the 7-item checklist in spec §9.1 (D22). T5: per-RP proof keys and pdid (D18) | `key_protection` correctly reported on 3 platforms. Fuzzed malformed assertions are all rejected |
 | **M3** verifier (2 wk) | `cmd/ztbe-verifier`, `internal/policy` | T1: enrolment binding via WebAuthn (go-webauthn). T2: seq / nonce-epoch / silence checks. T3: SSF transmitter, emitting CAEP `risk-level-change` SETs over RFC 8935 push. T4: sample RP showing an RFC 9470 step-up | Replay, rollback, forged-key and stale-nonce tests fail closed. An end-to-end walk-up demo triggers step-up |
 | **M4** adaptation + policy (1 wk) | `internal/adapt` | Supervised windows (30 min after WebAuthn, experimental, off by default), ~~unsupervised guard stack~~ (withdrawn, D8), 180-day re-enrolment, persistent-goat rule | The Go port reproduces `adapt_n200.txt` within ±2 pp. Supervised mode shows week-8 FRR ≤ static |
 | **M5** pilot build (1 wk) | Packaging, status UI, kill switch, data-collection mode (phase 3b) | The user can pause (WebAuthn-backed grant, spec §9.3), disable and delete. Research mode uploads only encrypted feature vectors | Security review checklist passed. DPIA draft complete |

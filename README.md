@@ -4,8 +4,8 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 
 ## Start here
 
-1. [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) **v2.1** is the single normative spec (D14).
-2. [`notes/decisions.md`](notes/decisions.md) holds D1–D17.
+1. [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) **v2.2** is the single normative spec (D14).
+2. [`notes/decisions.md`](notes/decisions.md) holds D1–D22.
 3. [`PLAN.md`](PLAN.md) lists the remaining work, which is empirical.
 4. [`docs/pilot-protocol.md`](docs/pilot-protocol.md) is the next experiment.
 
@@ -13,13 +13,13 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 
 | Path | Content |
 |---|---|
-| [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) | **v2.1, normative.** Threat model A1–A10, the 21-feature rule, provenance/assistive/remote/multi-keyboard rules, research mode, matched-FAR results, trust model, sealing, no adaptation (D8), COSE −9/−19, agent split, heartbeat/SIGNAL_LOST, pause grants, mTLS ingestion, ZTBE-Proof session binding, SSF/CAEP, GDPR/AI Act/fairness, claims and limits L1–L4, eval protocol, Go layout, parameters |
+| [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) | **v2.2, normative.** Threat model A1–A10, the 21-feature rule, provenance/assistive/remote/multi-keyboard rules, research mode, matched-FAR results, trust model, sealing, no adaptation (D8), COSE −9/−19, agent split, heartbeat/SIGNAL_LOST, pause grants, mTLS ingestion, pairwise per-RP ZTBE-Proof session binding, signal state machine (HIGH latch, stale), SSF/CAEP, GDPR/AI Act/fairness, claims and limits L1–L5, eval protocol, Go layout, parameters |
 | [`spec/ZTBE-spec-v1.0.0-draft.md`](spec/ZTBE-spec-v1.0.0-draft.md) | Original v1 spec, unchanged (rejected design) |
 | [`docs/interfaces.md`](docs/interfaces.md) | CDDL wire formats, OpenAPI sketch, error codes, CAEP mapping and example SET, RP integration guide |
-| [`docs/pilot-protocol.md`](docs/pilot-protocol.md) | Same-device feasibility pilot (10–20 people), with the D15 go/stop rule and its resolvable range |
+| [`docs/pilot-protocol.md`](docs/pilot-protocol.md) | Same-device feasibility pilot: two stages (16 + 16), D21 go/stop rule with simulated operating characteristics, genuine same-task control |
 | [`docs/dpia-outline.md`](docs/dpia-outline.md) | DPIA outline: WP248 screening, Art. 35(7) structure, risks and measures. Not legal advice |
 | [`docs/consent-templates.md`](docs/consent-templates.md) | Pilot consent form and layered end-user notice. Not legal advice |
-| [`notes/decisions.md`](notes/decisions.md) | D1 (Hossein); D2–D17 (research assistant), each with rationale and what would change it |
+| [`notes/decisions.md`](notes/decisions.md) | D1 (Hossein); D2–D22 (research assistant), each with rationale and what would change it |
 | [`notes/experiments-v2.md`](notes/experiments-v2.md) | Open-data results (Aalto, LASER-2012, Tappy, SapiMouse, Balabit); §9 has round-2 re-runs with CIs |
 | [`notes/collector-tradeoffs.md`](notes/collector-tradeoffs.md) | Native agent vs browser vs OS frameworks, per OS (timers, injection flags, permissions, MDM) |
 | [`notes/landscape.md`](notes/landscape.md) | Vendors, OSS and patents. Not legal advice |
@@ -32,7 +32,7 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 | [`notes/archive/`](notes/archive/) | Archived v1 open questions |
 | [`references/bibliography.md`](references/bibliography.md) | Citation audit, FOSS/licence checks, sources by topic B.1–B.16 |
 | [`references/references.bib`](references/references.bib) | BibTeX, 199 entries; keys match bibliography.md |
-| [`experiments/`](experiments/) | `sanity/`, `go-bench/`, `cmu-quantization/`, `go-he/`, `opendata/`. `opendata/` holds eval2.py, adapt_supervised.py, power.py and pilot_ci.py; results are in `results/`, and no data is committed (`fetch.sh`) |
+| [`experiments/`](experiments/) | `sanity/`, `go-bench/`, `cmu-quantization/`, `go-he/`, `opendata/`. `opendata/` holds eval2.py, adapt_supervised.py, power.py, window_duration.py and pilot_oc2.py (pilot_ci.py / pilot_oc.py are earlier versions); results are in `results/`, and no data is committed (`fetch.sh`) |
 | `papers/` | Not created. No PDFs are redistributed. Links only |
 
 ## Headline numbers (Tappy, 81 users, spec config; 95% bootstrap CIs over users; zero-effort, **different-device** impostors)
@@ -61,6 +61,20 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 - Supervised adaptation: Δ FRR +0.2 [−1.2, +1.7] pp, which is no measurable benefit.
 - Power: FRR 5% ± 2 pp needs 164–177 users; FAR 10% ± 3 pp needs 119–131.
 - **Main limitation:** user and device are confounded in all open data (spec L1). The same-device pilot is the next step.
+
+## Status: desk phase complete (2026-10-21)
+
+Two independent reviews agree that more desk research adds little (D17; `notes/review-round-2.md` §6). Their must-fix items H1, H2, H3 and H9 are fixed in spec v2.2, `docs/interfaces.md`, `docs/dpia-outline.md` and `docs/pilot-protocol.md` v2 (D18–D21). The should-fix items H4–H8 are covered by D22.
+
+**What's next** (empirical; PLAN "Round 2 outcome"):
+
+| # | Work | Needs |
+|---|---|---|
+| E1 | Same-device impostor pilot. A dry run, then stage 1 with 16 participants, then stage 2 with 16 more if inconclusive (D21) | Ethics approval, DPIA, consent, volunteers, M5 research build |
+| E2 | Keyboard-capture prototype on Windows, macOS and Linux: provenance flags, assistive tools, timers, hook timeouts, extension fingerprinting (M1 T1/T5/T6) | Hardware and OS test matrix |
+| E3 | Supervised-adaptation FRR on real WebAuthn-anchored data (H4 of Phase 3b) | 8 weeks of data; only after an E1 "go" |
+
+Also open: a legal opinion on workplace proportionality (WP29 2/2017 §5.4.1) before any workforce use, and an FTO review by counsel (`notes/landscape.md`).
 
 ## Status (2026-10-21, round 2 complete)
 
