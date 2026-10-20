@@ -275,7 +275,7 @@ Not yet located/verified: Buffalo free-text keystroke dataset (shadman2025 lists
 | coker2011 | G. Coker et al., "Principles of remote attestation", Int. J. Information Security 10(2):63–81, 2011. DOI [10.1007/s10207-011-0124-7](https://doi.org/10.1007/s10207-011-0124-7) | M | Attestation principles (fresh, comprehensive, constrained disclosure) |
 | rfc9334 | H. Birkholz, D. Thaler, M. Richardson, N. Smith, W. Pan, "Remote ATtestation procedureS (RATS) Architecture", RFC 9334, 2023. DOI [10.17487/RFC9334](https://doi.org/10.17487/RFC9334) | M | Attester/Verifier/Relying-Party roles for the on-device design |
 | webauthn3 | W3C, *Web Authentication: An API for accessing Public Key Credentials Level 3*, W3C Recommendation, 25 Aug 2026. <https://www.w3.org/TR/webauthn-3/> | A | Device-bound, attested credentials; BE/BS flags distinguish synced from device-bound keys |
-| fido-bio | FIDO Alliance, *FIDO Biometrics Requirements* v4.1 (final draft, 2025-01-06). <https://fidoalliance.org/specs/biometric/requirements/Biometrics-Requirements-v4.1-fd-20250106.html> (v5.0 review draft 2026-09-01 exists) | A (requirements table) | Lab-tested FAR 1% (BioLevel 1/2) or 0.01% (1+/2+), FRR 7%/5%, self-attested FAR ≤ 1/10000. Behavioural ZTBE is far from these. |
+| fidobio | FIDO Alliance, *FIDO Biometrics Requirements* v4.1 (final draft, 2025-01-06). <https://fidoalliance.org/specs/biometric/requirements/Biometrics-Requirements-v4.1-fd-20250106.html> (v5.0 review draft 2026-09-01 exists) | A (requirements table) | Lab-tested FAR 1% (BioLevel 1/2) or 0.01% (1+/2+), FRR 7%/5%, self-attested FAR ≤ 1/10000. Behavioural ZTBE is far from these. |
 
 ### B.13 Adaptation and drift (additional)
 

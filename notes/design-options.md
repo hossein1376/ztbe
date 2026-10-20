@@ -27,7 +27,7 @@ Consequences:
    - Its biometric definition explicitly includes keystroke patterns and mouse movements, which must meet FMR ≤ 1/10000 and be used only together with a physical authenticator.
    - Fraud/risk indicators "do not … substitute for an authentication factor".
 
-   FIDO biometric certification needs a lab FAR of 1% at FRR 7%, or 0.01% at FRR 5% (fido-bio, A). ZTBE windows are nowhere near either point.
+   FIDO biometric certification needs a lab FAR of 1% at FRR 7%, or 0.01% at FRR 5% (fidobio, A). ZTBE windows are nowhere near either point.
 
 ## 1. Attackers
 
