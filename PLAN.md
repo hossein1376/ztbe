@@ -110,7 +110,7 @@ Citation keys refer to `references/bibliography.md`. Findings R1–R14 are in `n
 | Dataset | Use | Access | Status |
 |---|---|---|---|
 | CMU (killourhy2009) | Quantization, BER | public, no licence (citation requested) | used |
-| Clarkson II (murphy2017) | In the wild, keyboard + mouse, long-term drift | on request | **request needed** (email: draft for Hossein, not sent) |
+| Clarkson II (murphy2017) | In the wild, keyboard + mouse, long-term drift | on request | **request needed** (not sent) |
 | Aalto 136M (dhakal2018) | Free text, population priors | non-commercial | to download |
 | BB-MAS (belman2019) | Cross-device | IEEE DataPort login | to request |
 | SapiMouse / Balabit | Mouse | public, licence unclear | to download |
