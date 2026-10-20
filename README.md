@@ -24,6 +24,7 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 | [`notes/collector-tradeoffs.md`](notes/collector-tradeoffs.md) | Native agent vs browser vs OS frameworks, per OS (timers, injection flags, permissions, MDM) |
 | [`notes/landscape.md`](notes/landscape.md) | Vendors, OSS and patents. Not legal advice |
 | [`notes/review-round-1.md`](notes/review-round-1.md) | Independent review that drove round 2 |
+| [`notes/review-round-2.md`](notes/review-round-2.md) | Final desk review: round-1 resolution, new holes H1–H9, must-fix list, D17 verdict |
 | [`PROPOSAL.md`](PROPOSAL.md) | Short non-normative rationale, with pointers to where content moved |
 | [`PLAN.md`](PLAN.md) | Remaining empirical work (E1–E3), Go milestones M0–M5, FR/NFR history |
 | [`notes/design-options.md`](notes/design-options.md) | Historical: options O0–O8 with an attacker-by-option matrix |
