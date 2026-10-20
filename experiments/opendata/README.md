@@ -81,3 +81,26 @@ Timeline: enrol on days 0–6, calibrate on days 7–13 (genuine only), test on 
 
 ## power.py (added 2026-10-21)
 Sample-size planning for the consented data collection. Uses the per-user error counts from `userpolicy.py` to estimate the intra-user error correlation, then the design effect, then the number of users needed. Also gives rule-of-3 counts. Output: `results/power.txt`.
+
+## Round 2 (2026-10-21): eval2.py, extract_tappy_v2.py, adapt_supervised.py
+
+These scripts respond to review round 1 items M1, M2, M4–M7 and M9.
+
+- `extract_tappy_v2.py` builds Tappy windows with the **spec v2 rules**, written to `$DATA/derived/tappy_{hyb,s60}.npz`:
+  - idle gaps > 5 s are removed;
+  - a hybrid window (`hyb`) closes at 200 keys or 60 s of active typing, whichever comes first;
+  - windows with fewer than 40 keys are not scored.
+
+  It also labels each user's timer quantum, computed over all of that user's hold times.
+- `eval2.py <cfg> <all|v21> <all|q3.9> [K] [B]` is the round-2 harness. Output: `results/eval2_<cfg>_<feats>_<subset>.txt`. It provides:
+  - user-fold calibration: priors, τ_g and τ_w come only from the other fold's users;
+  - 95% bootstrap CIs over users;
+  - pooled and macro metrics;
+  - policies compared at matched pooled FAR;
+  - the trust model reset per day;
+  - the timer-quantum confound split;
+  - cold start at the fold-calibrated τ_g.
+
+  `run_eval2.sh` runs all 11 configurations.
+- `adapt_supervised.py <cfg> [B]` measures the FRR benefit of supervised adaptation. The "login" is a proxy: the first S windows of each day. Output: `results/adapt_supervised_<cfg>.txt`.
+- `userpolicy.py` results are kept for traceability. Their τ values came from the same users' calibration week, so where the two disagree, `eval2` supersedes them.

@@ -1,0 +1,15 @@
+# supervised adaptation, tappy t60: 86 users with >= 28 days span; 2 user folds
+window FRR by week since enrolment at user-fold tau (5% of other-fold week-2 windows): pooled [macro]
+S supervised windows/day | wk1 | wk2 | wk4 | wk6 | wk8
+0 (static) | 4.8% [8.7%] | 5.2% [9.0%] | 5.8% [8.2%] | 4.4% [11.1%] | 4.8% [10.2%]
+2 | 4.6% [8.3%] | 5.8% [9.3%] | 4.6% [7.1%] | 4.3% [10.3%] | 5.1% [8.8%]
+5 | 4.6% [8.3%] | 5.2% [8.9%] | 4.7% [6.4%] | 4.5% [11.1%] | 5.3% [8.9%]
+10 | 4.6% [8.3%] | 5.8% [9.4%] | 5.1% [7.2%] | 4.9% [11.8%] | 6.8% [9.7%]
+
+paired difference (supervised - static), weeks 6-8 pooled window FRR, 95% bootstrap CI over users
+S=2: +0.2 pp [-1.2, +1.7] (static wk6-8 pooled FRR 5.0%)
+S=5: +0.5 pp [-0.8, +1.8] (static wk6-8 pooled FRR 5.0%)
+S=10: +1.3 pp [-0.3, +3.1] (static wk6-8 pooled FRR 5.0%)
+
+Caveats: strong-auth proxy = first S windows/day (no timestamps in derived data); one anchor; no attacker in this run
+(supervised updates are only reachable by an attacker who has passed WebAuthn, spec §8).

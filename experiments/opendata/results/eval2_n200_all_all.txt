@@ -1,0 +1,35 @@
+# eval2: tappy n200, features=all (34), subset=all, K=4, user-fold calibration (2 folds, seed 20261021), bootstrap B=1000
+users in file 214; eligible (enrol>=3 win, calib>=2 blocks, test>=2 blocks) 67
+evaluated users 67; tau_g per fold [np.float64(1.301), np.float64(1.496)]; tau_w per fold [np.float64(1.316), np.float64(1.402)]
+
+## A. policies at nominal settings (user-fold calibrated tau_g); 95% bootstrap CI over users
+policy | FRR pooled | FRR macro | FRR p90 user | Gini FRR | FAR pooled | FAR macro
+P0 global tau_g (5% of other-fold calib. blocks) | 5.2% [3.6, 7.8] | 9.0% [5.3, 13.5] | 25.0% [13.5, 46.7] | 0.76 [0.67, 0.82] | 8.7% [6.2, 11.9] | 8.6% [6.0, 12.0]
+P1 per-user q95 own calib. | 16.9% [13.0, 22.8] | 23.3% [18.3, 28.9] | 56.9% [46.9, 70.6] | 0.54 [0.47, 0.61] | 7.9% [4.3, 12.2] | 8.0% [4.3, 12.7]
+P5 shrinkage (n0=20) to tau_g | 8.1% [6.2, 11.1] | 11.2% [7.3, 16.0] | 26.9% [16.9, 53.0] | 0.68 [0.58, 0.75] | 7.3% [4.9, 10.4] | 7.3% [4.8, 10.6]
+P3 z-norm, z=1.645 | 16.1% [12.0, 21.3] | 21.7% [16.5, 26.9] | 50.0% [43.3, 64.7] | 0.53 [0.45, 0.59] | 7.9% [4.0, 12.3] | 8.1% [4.1, 12.5]
+
+## B. policies at matched pooled FAR (each policy's knob swept; FRR interpolated where pooled FAR = target). Point estimate + bootstrap CI (knob re-matched per resample)
+policy | FRR pooled @FAR 10% | FRR macro @FAR 10% | FRR pooled @FAR 5% | FRR macro @FAR 5%
+P0 | 4.6% [2.8, 7.5] | 8.1% [4.2, 12.9] | 10.1% [5.4, 18.4] | 15.9% [8.1, 25.1]
+P1 | 10.7% [8.6, 30.2] | 19.5% [16.0, 31.6] | 30.1% [16.3, 43.4] | 32.9% [21.1, 44.9]
+P5 | 6.1% [4.4, 9.4] | 8.1% [4.1, 14.6] | 13.0% [7.6, 23.4] | 17.1% [9.9, 27.6]
+P3 | 11.8% [5.6, 20.8] | 17.1% [8.1, 25.7] | 25.6% [15.2, 41.0] | 29.6% [19.7, 46.2]
+
+## C. trust model (tau_w = q90 of other-fold calib. windows; a=40, P=40, R=5; reset per day and after alarm)
+genuine alarms per 60 windows: pooled 0.44 [0.24, 0.75]; macro 0.88 [0.32, 1.65]; p90 user 1.53 [0.84, 3.92]
+impostor (different device, zero-effort) alarm within 5 windows 83.0% [77.6, 87.5]; within 10 89.7% [85.2, 93.6]; within 30 94.6% [90.7, 97.6]
+
+## D. device-confound bound: impostor blocks accepted (score <= tau_g) by whether attacker's timer quantum == target's
+same-quantum impostor blocks 1572: FAR 7.2% [3.9, 11.7]; different/unknown-quantum blocks 4102: FAR 9.2% [6.3, 13.0]
+ratio same/different FAR (point) = 0.78
+
+## E. cold start (template from first m windows; tau_g from other fold with m-window templates; users with >= m pre-test windows and >= 2 test blocks)
+m | users | block EER (a-posteriori) | FRR @ fold tau_g | FAR @ fold tau_g
+1 | 96 | 15.6% | 6.2% | 50.5%
+2 | 96 | 15.1% | 9.8% | 35.6%
+3 | 94 | 12.5% | 8.8% | 35.6%
+5 | 89 | 9.0% | 3.7% | 32.5%
+8 | 84 | 9.0% | 4.9% | 27.9%
+12 | 74 | 8.0% | 3.3% | 27.0%
+20 | 66 | 7.7% | 2.8% | 19.2%
