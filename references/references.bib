@@ -1,0 +1,645 @@
+% ZTBE references. Keys match references/bibliography.md.
+% Only fields that were checked are included. Unchecked fields are omitted or flagged in `note` as UNVERIFIED.
+
+% Titles, years and pages of all 85 DOI-bearing entries were cross-checked against Crossref on 2026-10-21 (experiments-free script; differences: canetti2021joc online 2020 / issue 2021; Crossref truncates subtitles of alamelou2018, pisani2019).
+% ---------------- Part A: references cited in the spec ----------------
+@misc{iso24745,
+  title        = {{ISO/IEC} 24745:2022 Information security, cybersecurity and privacy protection --- Biometric information protection},
+  author       = {{ISO/IEC JTC 1/SC 27}},
+  year         = {2022},
+  url          = {https://www.iso.org/standard/75302.html}
+}
+@misc{iso30136,
+  title        = {{ISO/IEC} 30136:2018 Information technology --- Performance testing of biometric template protection schemes},
+  author       = {{ISO/IEC JTC 1/SC 37}},
+  year         = {2018},
+  url          = {https://www.iso.org/standard/53256.html},
+  note         = {Under revision as ISO/IEC DIS 30136, https://www.iso.org/standard/88841.html}
+}
+@article{dodis2008,
+  author  = {Dodis, Yevgeniy and Ostrovsky, Rafail and Reyzin, Leonid and Smith, Adam},
+  title   = {Fuzzy Extractors: How to Generate Strong Keys from Biometrics and Other Noisy Data},
+  journal = {SIAM Journal on Computing},
+  volume  = {38}, number = {1}, pages = {97--139}, year = {2008},
+  doi     = {10.1137/060651380},
+  url     = {https://eprint.iacr.org/2003/235}
+}
+@inproceedings{dodis2004,
+  author    = {Dodis, Yevgeniy and Reyzin, Leonid and Smith, Adam},
+  title     = {Fuzzy Extractors: How to Generate Strong Keys from Biometrics and Other Noisy Data},
+  booktitle = {Advances in Cryptology -- EUROCRYPT 2004},
+  series    = {LNCS}, volume = {3027}, pages = {523--540}, year = {2004},
+  doi       = {10.1007/978-3-540-24676-3_31}
+}
+@article{canetti2021joc,
+  author  = {Canetti, Ran and Fuller, Benjamin and Paneth, Omer and Reyzin, Leonid and Smith, Adam},
+  title   = {Reusable Fuzzy Extractors for Low-Entropy Distributions},
+  journal = {Journal of Cryptology},
+  volume  = {34}, number = {1}, pages = {2}, year = {2021},
+  doi     = {10.1007/s00145-020-09367-8},
+  url     = {https://eprint.iacr.org/2014/243},
+  note    = {Article no. 2; published online 23 Nov 2020. Page range 1--46 as cited in spec is UNVERIFIED.}
+}
+@inproceedings{canetti2016,
+  author    = {Canetti, Ran and Fuller, Benjamin and Paneth, Omer and Reyzin, Leonid and Smith, Adam},
+  title     = {Reusable Fuzzy Extractors for Low-Entropy Distributions},
+  booktitle = {Advances in Cryptology -- EUROCRYPT 2016},
+  series    = {LNCS}, volume = {9665}, pages = {117--146}, year = {2016},
+  doi       = {10.1007/978-3-662-49890-3_5}
+}
+@inproceedings{boyen2004,
+  author    = {Boyen, Xavier},
+  title     = {Reusable Cryptographic Fuzzy Extractors},
+  booktitle = {Proc. 11th ACM Conference on Computer and Communications Security (CCS)},
+  pages     = {82--91}, year = {2004},
+  doi       = {10.1145/1030083.1030096}
+}
+@inproceedings{juels1999,
+  author    = {Juels, Ari and Wattenberg, Martin},
+  title     = {A Fuzzy Commitment Scheme},
+  booktitle = {Proc. 6th ACM Conference on Computer and Communications Security (CCS)},
+  pages     = {28--36}, year = {1999},
+  doi       = {10.1145/319709.319714}
+}
+@inproceedings{rathgeb2013icb,
+  author    = {Rathgeb, Christian and Breitinger, Frank and Busch, Christoph},
+  title     = {Alignment-Free Cancelable Iris Biometric Templates Based on Adaptive {Bloom} Filters},
+  booktitle = {Proc. International Conference on Biometrics (ICB)},
+  pages     = {1--8}, year = {2013},
+  doi       = {10.1109/ICB.2013.6612976}
+}
+@article{rathgeb2014iet,
+  author  = {Rathgeb, Christian and Breitinger, Frank and Busch, Christoph and Baier, Harald},
+  title   = {On Application of {Bloom} Filters to Iris Biometrics},
+  journal = {IET Biometrics},
+  volume  = {3}, number = {4}, pages = {207--218}, year = {2014},
+  doi     = {10.1049/iet-bmt.2013.0049}
+}
+@article{teoh2004,
+  author  = {Teoh, Andrew B. J. and Ngo, David C. L. and Goh, Alwyn},
+  title   = {BioHashing: Two Factor Authentication Featuring Fingerprint Data and Tokenised Random Number},
+  journal = {Pattern Recognition},
+  volume  = {37}, number = {11}, pages = {2245--2255}, year = {2004},
+  doi     = {10.1016/j.patcog.2004.04.011}
+}
+@article{gomezbarrero2018tifs,
+  author  = {Gomez-Barrero, Marta and Galbally, Javier and Rathgeb, Christian and Busch, Christoph},
+  title   = {General Framework to Evaluate Unlinkability in Biometric Template Protection Systems},
+  journal = {IEEE Transactions on Information Forensics and Security},
+  volume  = {13}, number = {6}, pages = {1406--1420}, year = {2018},
+  doi     = {10.1109/TIFS.2017.2788000},
+  eprint  = {2311.04633}, archiveprefix = {arXiv}
+}
+@article{monrose2002,
+  author  = {Monrose, Fabian and Reiter, Michael K. and Wetzel, Susanne},
+  title   = {Password Hardening Based on Keystroke Dynamics},
+  journal = {International Journal of Information Security},
+  volume  = {1}, number = {2}, pages = {69--83}, year = {2002},
+  doi     = {10.1007/s102070100006},
+  url     = {https://reitermk.github.io/papers/2002/IJIS.pdf}
+}
+@inproceedings{monrose1999ccs,
+  author    = {Monrose, Fabian and Reiter, Michael K. and Wetzel, Susanne},
+  title     = {Password Hardening Based on Keystroke Dynamics},
+  booktitle = {Proc. 6th ACM Conference on Computer and Communications Security (CCS)},
+  pages     = {73--82}, year = {1999},
+  doi       = {10.1145/319709.319720}
+}
+@article{ballard2007,
+  author  = {Ballard, Lucas and Lopresti, Daniel and Monrose, Fabian},
+  title   = {Forgery Quality and Its Implications for Behavioral Biometric Security},
+  journal = {IEEE Transactions on Systems, Man, and Cybernetics, Part B (Cybernetics)},
+  volume  = {37}, number = {5}, pages = {1107--1118}, year = {2007},
+  doi     = {10.1109/TSMCB.2007.903539}
+}
+@inproceedings{biggio2012,
+  author    = {Biggio, Battista and Fumera, Giorgio and Roli, Fabio and Didaci, Luca},
+  title     = {Poisoning Adaptive Biometric Systems},
+  booktitle = {Structural, Syntactic, and Statistical Pattern Recognition (S+SSPR 2012)},
+  series    = {LNCS}, volume = {7626}, pages = {417--425}, year = {2012},
+  doi       = {10.1007/978-3-642-34166-3_46}
+}
+
+% ---------------- B.1 Keystroke & mouse dynamics ----------------
+@inproceedings{killourhy2009,
+  author = {Killourhy, Kevin S. and Maxion, Roy A.},
+  title = {Comparing Anomaly-Detection Algorithms for Keystroke Dynamics},
+  booktitle = {Proc. IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)},
+  pages = {125--134}, year = {2009}, doi = {10.1109/DSN.2009.5270346},
+  url = {https://www.cs.cmu.edu/~keystroke/}
+}
+@inproceedings{dhakal2018,
+  author = {Dhakal, Vivek and Feit, Anna Maria and Kristensson, Per Ola and Oulasvirta, Antti},
+  title = {Observations on Typing from 136 Million Keystrokes},
+  booktitle = {Proc. CHI Conference on Human Factors in Computing Systems},
+  pages = {1--12}, year = {2018}, doi = {10.1145/3173574.3174220},
+  url = {https://userinterfaces.aalto.fi/136Mkeystrokes/}
+}
+@inproceedings{palin2019,
+  author = {Palin, Kseniia and Feit, Anna Maria and Kim, Sunjun and Kristensson, Per Ola and Oulasvirta, Antti},
+  title = {How Do People Type on Mobile Devices?},
+  booktitle = {Proc. MobileHCI}, year = {2019}, doi = {10.1145/3338286.3340120}
+}
+@article{acien2022typenet,
+  author = {Acien, Alejandro and Morales, Aythami and Monaco, John V. and Vera-Rodriguez, Ruben and Fierrez, Julian},
+  title = {{TypeNet}: Deep Learning Keystroke Biometrics},
+  journal = {IEEE Transactions on Biometrics, Behavior, and Identity Science},
+  volume = {4}, number = {1}, pages = {57--70}, year = {2022}, doi = {10.1109/TBIOM.2021.3112540},
+  eprint = {2101.05570}, archiveprefix = {arXiv}
+}
+@article{gunetti2005,
+  author = {Gunetti, Daniele and Picardi, Claudia},
+  title = {Keystroke Analysis of Free Text},
+  journal = {ACM Transactions on Information and System Security},
+  volume = {8}, number = {3}, pages = {312--347}, year = {2005}, doi = {10.1145/1085126.1085129}
+}
+@article{banerjee2012,
+  author = {Banerjee, Salil P. and Woodard, Damon},
+  title = {Biometric Authentication and Identification Using Keystroke Dynamics: A Survey},
+  journal = {Journal of Pattern Recognition Research},
+  volume = {7}, number = {1}, pages = {116--139}, year = {2012}, doi = {10.13176/11.427}
+}
+@article{teh2013,
+  author = {Teh, Pin Shen and Teoh, Andrew Beng Jin and Yue, Shigang},
+  title = {A Survey of Keystroke Dynamics Biometrics},
+  journal = {The Scientific World Journal}, volume = {2013}, pages = {408280}, year = {2013},
+  doi = {10.1155/2013/408280}
+}
+@article{shadman2025,
+  author = {Shadman, Rashik and Wahab, Ahmed Anu and Manno, Michael and Lukaszewski, Matthew and Hou, Daqing and Hussain, Faraz},
+  title = {Keystroke Dynamics: Concepts, Techniques, and Applications},
+  journal = {ACM Computing Surveys}, volume = {57}, number = {11}, pages = {1--35}, year = {2025},
+  doi = {10.1145/3733103}
+}
+@article{ahmed2007,
+  author = {Ahmed, Ahmed Awad E. and Traore, Issa},
+  title = {A New Biometric Technology Based on Mouse Dynamics},
+  journal = {IEEE Transactions on Dependable and Secure Computing},
+  volume = {4}, number = {3}, pages = {165--179}, year = {2007}, doi = {10.1109/TDSC.2007.70207}
+}
+@inproceedings{zheng2011,
+  author = {Zheng, Nan and Paloski, Aaron and Wang, Haining},
+  title = {An Efficient User Verification System via Mouse Movements},
+  booktitle = {Proc. 18th ACM Conference on Computer and Communications Security (CCS)},
+  pages = {139--150}, year = {2011}, doi = {10.1145/2046707.2046725},
+  note = {Extended version: ACM TISSEC 18(3), 2016, doi:10.1145/2893185}
+}
+@article{shen2013,
+  author = {Shen, Chao and Cai, Zhongmin and Guan, Xiaohong and Du, Youtian and Maxion, Roy A.},
+  title = {User Authentication Through Mouse Dynamics},
+  journal = {IEEE Transactions on Information Forensics and Security},
+  volume = {8}, number = {1}, pages = {16--30}, year = {2013}, doi = {10.1109/TIFS.2012.2223677}
+}
+@article{shen2014,
+  author = {Shen, Chao and Cai, Zhongmin and Guan, Xiaohong and Maxion, Roy},
+  title = {Performance Evaluation of Anomaly-Detection Algorithms for Mouse Dynamics},
+  journal = {Computers \& Security}, volume = {45}, pages = {156--171}, year = {2014},
+  doi = {10.1016/j.cose.2014.05.002}
+}
+@article{antal2019,
+  author = {Antal, Margit and Egyed-Zsigmond, El{\H{o}}d},
+  title = {Intrusion Detection Using Mouse Dynamics},
+  journal = {IET Biometrics}, volume = {8}, number = {5}, pages = {285--294}, year = {2019},
+  doi = {10.1049/iet-bmt.2018.5126}, eprint = {1810.04668}, archiveprefix = {arXiv}
+}
+@article{mondal2017,
+  author = {Mondal, Soumik and Bours, Patrick},
+  title = {A Study on Continuous Authentication Using a Combination of Keystroke and Mouse Biometrics},
+  journal = {Neurocomputing}, volume = {230}, pages = {1--22}, year = {2017},
+  doi = {10.1016/j.neucom.2016.11.031}
+}
+@article{bours2012,
+  author = {Bours, Patrick},
+  title = {Continuous Keystroke Dynamics: A Different Perspective Towards Biometric Evaluation},
+  journal = {Information Security Technical Report}, volume = {17}, number = {1--2}, pages = {36--43}, year = {2012},
+  doi = {10.1016/j.istr.2012.02.001}
+}
+@inproceedings{eberz2017,
+  author = {Eberz, Simon and Rasmussen, Kasper B. and Lenders, Vincent and Martinovic, Ivan},
+  title = {Evaluating Behavioral Biometrics for Continuous Authentication: Challenges and Metrics},
+  booktitle = {Proc. ACM Asia Conference on Computer and Communications Security (AsiaCCS)},
+  pages = {386--399}, year = {2017}, doi = {10.1145/3052973.3053032}
+}
+@inproceedings{sugrim2019,
+  author = {Sugrim, Shridatt and Liu, Can and McLean, Meghan and Lindqvist, Janne},
+  title = {Robust Performance Metrics for Authentication Systems},
+  booktitle = {Proc. Network and Distributed System Security Symposium (NDSS)},
+  year = {2019}, doi = {10.14722/ndss.2019.23351}
+}
+@article{stylios2021,
+  author = {Stylios, Ioannis and Kokolakis, Spyros and Thanou, Olga and Chatzis, Sotirios},
+  title = {Behavioral Biometrics \& Continuous User Authentication on Mobile Devices: A Survey},
+  journal = {Information Fusion}, volume = {66}, pages = {76--99}, year = {2021},
+  doi = {10.1016/j.inffus.2020.08.021}
+}
+@article{yampolskiy2008,
+  author = {Yampolskiy, Roman V. and Govindaraju, Venu},
+  title = {Behavioural Biometrics: A Survey and Classification},
+  journal = {International Journal of Biometrics}, volume = {1}, number = {1}, pages = {81}, year = {2008},
+  doi = {10.1504/IJBM.2008.018665},
+  note = {End page (113) UNVERIFIED}
+}
+@article{monaco2018,
+  author = {Monaco, John V. and Tappert, Charles C.},
+  title = {The Partially Observable Hidden {Markov} Model and Its Application to Keystroke Dynamics},
+  journal = {Pattern Recognition}, volume = {76}, pages = {449--462}, year = {2018},
+  doi = {10.1016/j.patcog.2017.11.021}
+}
+
+% ---------------- B.2 Datasets ----------------
+@inproceedings{vural2014,
+  author = {Vural, Esra and Huang, Jiaju and Hou, Daqing and Schuckers, Stephanie},
+  title = {Shared Research Dataset to Support Development of Keystroke Authentication},
+  booktitle = {Proc. IEEE International Joint Conference on Biometrics (IJCB)},
+  pages = {1--8}, year = {2014}, doi = {10.1109/BTAS.2014.6996259}
+}
+@inproceedings{murphy2017,
+  author = {Murphy, Christopher and Huang, Jiaju and Hou, Daqing and Schuckers, Stephanie},
+  title = {Shared Dataset on Natural Human-Computer Interaction to Support Continuous Authentication Research},
+  booktitle = {Proc. IEEE International Joint Conference on Biometrics (IJCB)},
+  pages = {525--530}, year = {2017}, doi = {10.1109/BTAS.2017.8272738}
+}
+@misc{belman2019,
+  author = {Belman, Amith K. and others},
+  title = {Insights from {BB-MAS} -- A Large Dataset for Typing, Gait and Swipes of the Same Person on Desktop, Tablet and Phone},
+  year = {2019}, eprint = {1912.02736}, archiveprefix = {arXiv},
+  note = {Dataset: IEEE DataPort, doi:10.21227/rpaz-0h66. Full author list not reproduced here.}
+}
+@misc{balabit2016,
+  author = {{Balabit}},
+  title = {Balabit Mouse Dynamics Challenge Data Set},
+  howpublished = {GitHub repository},
+  url = {https://github.com/balabit/Mouse-Dynamics-Challenge},
+  note = {No licence file. Year UNVERIFIED (key suffix is nominal).}
+}
+@inproceedings{antal2021sapimouse,
+  author = {Antal, Margit and Fej{\'e}r, Norbert and Buza, Krisztian},
+  title = {{SapiMouse}: Mouse Dynamics-Based User Authentication Using Deep Feature Learning},
+  booktitle = {Proc. IEEE 15th International Symposium on Applied Computational Intelligence and Informatics (SACI)},
+  pages = {61--66}, year = {2021}, doi = {10.1109/SACI51354.2021.9465583}
+}
+@article{antal2021sapiagent,
+  author = {Antal, Margit and Buza, Krisztian and Fej{\'e}r, Norbert},
+  title = {{SapiAgent}: A Bot Based on Deep Learning to Generate Human-Like Mouse Trajectories},
+  journal = {IEEE Access}, volume = {9}, pages = {124396--124408}, year = {2021},
+  doi = {10.1109/ACCESS.2021.3111098}
+}
+
+% ---------------- B.3 Entropy ----------------
+@inproceedings{ballard2008usenix,
+  author = {Ballard, Lucas and Kamara, Seny and Reiter, Michael K.},
+  title = {The Practical Subtleties of Biometric Key Generation},
+  booktitle = {Proc. 17th USENIX Security Symposium},
+  year = {2008},
+  url = {https://www.usenix.org/legacy/events/sec08/tech/full_papers/ballard/ballard.pdf}
+}
+@inproceedings{ballard2008ccs,
+  author = {Ballard, Lucas and Kamara, Seny and Monrose, Fabian and Reiter, Michael K.},
+  title = {Towards Practical Biometric Key Generation with Randomized Biometric Templates},
+  booktitle = {Proc. 15th ACM Conference on Computer and Communications Security (CCS)},
+  pages = {235--244}, year = {2008}, doi = {10.1145/1455770.1455801}
+}
+@inproceedings{monrose2001voice,
+  author = {Monrose, Fabian and Reiter, Michael K. and Li, Qi and Wetzel, Susanne},
+  title = {Cryptographic Key Generation from Voice},
+  booktitle = {Proc. IEEE Symposium on Security and Privacy},
+  pages = {202--213}, year = {2001}, doi = {10.1109/SECPRI.2001.924299}
+}
+@article{daugman2006,
+  author = {Daugman, John},
+  title = {Probing the Uniqueness and Randomness of {IrisCodes}: Results From 200 Billion Iris Pair Comparisons},
+  journal = {Proceedings of the IEEE}, volume = {94}, number = {11}, pages = {1927--1935}, year = {2006},
+  doi = {10.1109/JPROC.2006.884092}
+}
+@article{fuller2020when,
+  author = {Fuller, Benjamin and Reyzin, Leonid and Smith, Adam},
+  title = {When Are Fuzzy Extractors Possible?},
+  journal = {IEEE Transactions on Information Theory}, volume = {66}, number = {8}, pages = {5282--5298}, year = {2020},
+  doi = {10.1109/TIT.2020.2984751}
+}
+
+% ---------------- B.4 Fuzzy extractors ----------------
+@inproceedings{canetti2010locker,
+  author = {Canetti, Ran and Kalai, Yael Tauman and Varia, Mayank and Wichs, Daniel},
+  title = {On Symmetric Encryption and Point Obfuscation},
+  booktitle = {Theory of Cryptography (TCC 2010)}, series = {LNCS},
+  pages = {52--71}, year = {2010}, doi = {10.1007/978-3-642-11799-2_4}
+}
+@inproceedings{canetti2008dakdouk,
+  author = {Canetti, Ran and Dakdouk, Ronny Ramzi},
+  title = {Obfuscating Point Functions with Multibit Output},
+  booktitle = {Advances in Cryptology -- EUROCRYPT 2008}, series = {LNCS},
+  pages = {489--508}, year = {2008},
+  note = {Verified via reference list of canetti2021joc only; DOI UNVERIFIED}
+}
+@inproceedings{fuller2013comp,
+  author = {Fuller, Benjamin and Meng, Xianrui and Reyzin, Leonid},
+  title = {Computational Fuzzy Extractors},
+  booktitle = {Advances in Cryptology -- ASIACRYPT 2013}, series = {LNCS},
+  pages = {174--193}, year = {2013}, doi = {10.1007/978-3-642-42033-7_10},
+  note = {Journal version: Information and Computation 275:104602, 2020, doi:10.1016/j.ic.2020.104602}
+}
+@article{fuller2024impossible,
+  author = {Fuller, Benjamin},
+  title = {Impossibility of Efficient Information-Theoretic Fuzzy Extraction},
+  journal = {Designs, Codes and Cryptography}, volume = {92}, number = {7}, pages = {1983--2009}, year = {2024},
+  doi = {10.1007/s10623-024-01376-z}
+}
+@inproceedings{apon2017,
+  author = {Apon, Daniel and Cho, Chongwon and Eldefrawy, Karim and Katz, Jonathan},
+  title = {Efficient, Reusable Fuzzy Extractors from {LWE}},
+  booktitle = {Cyber Security Cryptography and Machine Learning (CSCML 2017)}, series = {LNCS},
+  pages = {1--18}, year = {2017}, doi = {10.1007/978-3-319-60080-2_1}
+}
+@inproceedings{wen2018,
+  author = {Wen, Yunhua and Liu, Shengli},
+  title = {Robustly Reusable Fuzzy Extractor from Standard Assumptions},
+  booktitle = {Advances in Cryptology -- ASIACRYPT 2018}, series = {LNCS},
+  pages = {459--489}, year = {2018}, doi = {10.1007/978-3-030-03332-3_17}
+}
+@article{blanton2013,
+  author = {Blanton, Marina and Aliasgari, Mehrdad},
+  title = {Analysis of Reusability of Secure Sketches and Fuzzy Extractors},
+  journal = {IEEE Transactions on Information Forensics and Security},
+  volume = {8}, number = {9}, pages = {1433--1445}, year = {2013}, doi = {10.1109/TIFS.2013.2272786}
+}
+@inproceedings{alamelou2018,
+  author = {Alam{\'e}lou, Quentin and Berthier, Paul-Edmond and Cachet, Chlo{\'e} and Cauchie, St{\'e}phane and Fuller, Benjamin and Gaborit, Philippe and Simhadri, Sailesh},
+  title = {Pseudoentropic Isometries: A New Framework for Fuzzy Extractor Reusability},
+  booktitle = {Proc. ACM Asia Conference on Computer and Communications Security (AsiaCCS)},
+  pages = {673--684}, year = {2018}, doi = {10.1145/3196494.3196530}
+}
+@inproceedings{simhadri2019,
+  author = {Simhadri, Sailesh and Steel, James and Fuller, Benjamin},
+  title = {Cryptographic Authentication from the Iris},
+  booktitle = {Information Security (ISC 2019)}, series = {LNCS},
+  pages = {465--485}, year = {2019}, doi = {10.1007/978-3-030-30215-3_23}
+}
+@inproceedings{shukla2025,
+  author = {Shukla, Ameya and Demarest, Luke and Fuller, Benjamin and Ahmad, Sohaib and Manicke, Caleb and Russell, Alexander and Chen, Sixia},
+  title = {Fuzzy Extractors are Practical: Cryptographic Strength Key Derivation from the Iris},
+  booktitle = {Proc. ACM SIGSAC Conference on Computer and Communications Security (CCS)},
+  pages = {3605--3619}, year = {2025}, doi = {10.1145/3719027.3765098},
+  url = {https://eprint.iacr.org/2024/100}
+}
+@inproceedings{zhu2022,
+  author = {Zhu, F. and Shen, P. and Chen, K. and Ma, Y. and Chen, C.},
+  title = {A Secure and Practical Sample-then-lock Scheme for Iris Recognition},
+  booktitle = {Proc. 26th International Conference on Pattern Recognition (ICPR)},
+  pages = {833--839}, year = {2022}, doi = {10.1109/ICPR56361.2022.9956077},
+  note = {Author given names not checked}
+}
+@misc{zhang2021face,
+  author = {Zhang, Kai and Cui, Hui and Yu, Yu},
+  title = {Facial Template Protection via Lattice-based Fuzzy Extractors},
+  howpublished = {Cryptology ePrint Archive, Paper 2021/1559}, year = {2021},
+  url = {https://eprint.iacr.org/2021/1559},
+  note = {Metadata as cited by shukla2025; page not opened}
+}
+@inproceedings{buhan2007,
+  author = {Buhan, Ileana and Doumen, Jeroen and Hartel, Pieter and Veldhuis, Raymond},
+  title = {Fuzzy Extractors for Continuous Distributions},
+  booktitle = {Proc. ACM Symposium on Information, Computer and Communications Security (ASIACCS)},
+  pages = {353--355}, year = {2007}, doi = {10.1145/1229285.1229325}
+}
+@inproceedings{linnartz2003,
+  author = {Linnartz, Jean-Paul and Tuyls, Pim},
+  title = {New Shielding Functions to Enhance Privacy and Prevent Misuse of Biometric Templates},
+  booktitle = {Audio- and Video-Based Biometric Person Authentication (AVBPA 2003)}, series = {LNCS},
+  pages = {393--402}, year = {2003}, doi = {10.1007/3-540-44887-X_47}
+}
+@misc{templateprotection-ksd,
+  author = {{templateprotection}},
+  title = {secure-keystroke-dynamics},
+  howpublished = {GitHub repository (no licence; unpublished)},
+  url = {https://github.com/templateprotection/secure-keystroke-dynamics},
+  note = {Grey literature; results UNVERIFIED}
+}
+
+% ---------------- B.5 Quantization ----------------
+@article{lim2013lssc,
+  author = {Lim, Meng-Hui and Teoh, Andrew Beng Jin},
+  title = {A Novel Encoding Scheme for Effective Biometric Discretization: Linearly Separable Subcode},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume = {35}, number = {2}, pages = {300--313}, year = {2013}, doi = {10.1109/TPAMI.2012.122}
+}
+@article{chen2009droba,
+  author = {Chen, Chun and Veldhuis, Raymond N. J. and Kevenaar, Tom A. M. and Akkermans, Anton H. M.},
+  title = {Biometric Quantization through Detection Rate Optimized Bit Allocation},
+  journal = {EURASIP Journal on Advances in Signal Processing}, volume = {2009}, pages = {784834}, year = {2009},
+  doi = {10.1155/2009/784834}
+}
+@article{kelkboom2010,
+  author = {Kelkboom, Emile J. C. and Garcia Molina, Gary and Breebaart, Jeroen and Veldhuis, Raymond N. J. and Kevenaar, Tom A. M. and Jonker, Willem},
+  title = {Binary Biometrics: An Analytic Framework to Estimate the Performance Curves Under {Gaussian} Assumption},
+  journal = {IEEE Transactions on Systems, Man, and Cybernetics -- Part A: Systems and Humans},
+  volume = {40}, number = {3}, pages = {555--571}, year = {2010}, doi = {10.1109/TSMCA.2010.2041657}
+}
+@article{kelkboom2012,
+  author = {Kelkboom, Emile J. C. and Breebaart, Jeroen and Buhan, Ileana and Veldhuis, Raymond N. J.},
+  title = {Maximum Key Size and Classification Performance of Fuzzy Commitment for {Gaussian} Modeled Biometric Sources},
+  journal = {IEEE Transactions on Information Forensics and Security},
+  volume = {7}, number = {4}, pages = {1225--1241}, year = {2012}, doi = {10.1109/TIFS.2012.2191961}
+}
+@article{goh2008,
+  author = {Goh, K.-I. and Barab{\'a}si, A.-L.},
+  title = {Burstiness and Memory in Complex Systems},
+  journal = {EPL (Europhysics Letters)}, volume = {81}, number = {4}, pages = {48002}, year = {2008},
+  doi = {10.1209/0295-5075/81/48002}
+}
+
+% ---------------- B.6 Attacks ----------------
+@inproceedings{hermans2014,
+  author = {Hermans, Jens and Mennink, Bart and Peeters, Roel},
+  title = {When a {Bloom} Filter is a Doom Filter: Security Assessment of a Novel Iris Biometric Template Protection System},
+  booktitle = {Proc. BIOSIG 2014}, series = {LNI}, volume = {230},
+  pages = {63--74}, year = {2014},
+  url = {https://www.cs.ru.nl/~bmennink/pubs/14biosig3.pdf}
+}
+@inproceedings{bringer2015,
+  author = {Bringer, Julien and Morel, Constance and Rathgeb, Christian},
+  title = {Security Analysis of {Bloom} Filter-Based Iris Biometric Template Protection},
+  booktitle = {Proc. International Conference on Biometrics (ICB)},
+  pages = {527--534}, year = {2015}, doi = {10.1109/ICB.2015.7139069}
+}
+@article{bringer2017,
+  author = {Bringer, Julien and Morel, Constance and Rathgeb, Christian},
+  title = {Security Analysis and Improvement of Some Biometric Protected Templates Based on {Bloom} Filters},
+  journal = {Image and Vision Computing}, volume = {58}, pages = {239--253}, year = {2017},
+  doi = {10.1016/j.imavis.2016.08.002}
+}
+@article{gomezbarrero2016,
+  author = {Gomez-Barrero, Marta and Rathgeb, Christian and Galbally, Javier and Busch, Christoph and Fierrez, Julian},
+  title = {Unlinkable and Irreversible Biometric Template Protection Based on {Bloom} Filters},
+  journal = {Information Sciences}, volume = {370--371}, pages = {18--32}, year = {2016},
+  doi = {10.1016/j.ins.2016.06.046}
+}
+@article{gomezbarrero2018fusion,
+  author = {Gomez-Barrero, Marta and Rathgeb, Christian and Li, Guoqiang and Raghavendra, Ramachandra and Galbally, Javier and Busch, Christoph},
+  title = {Multi-Biometric Template Protection Based on {Bloom} Filters},
+  journal = {Information Fusion}, volume = {42}, pages = {37--50}, year = {2018},
+  doi = {10.1016/j.inffus.2017.10.003}
+}
+@article{ignatenko2010,
+  author = {Ignatenko, Tanya and Willems, Frans M. J.},
+  title = {Information Leakage in Fuzzy Commitment Schemes},
+  journal = {IEEE Transactions on Information Forensics and Security},
+  volume = {5}, number = {2}, pages = {337--348}, year = {2010}, doi = {10.1109/TIFS.2010.2046984}
+}
+@article{kelkboom2011,
+  author = {Kelkboom, Emile J. C. and Breebaart, Jeroen and Kevenaar, Tom A. M. and Buhan, Ileana and Veldhuis, Raymond N. J.},
+  title = {Preventing the Decodability Attack Based Cross-Matching in a Fuzzy Commitment Scheme},
+  journal = {IEEE Transactions on Information Forensics and Security},
+  volume = {6}, number = {1}, pages = {107--121}, year = {2011}, doi = {10.1109/TIFS.2010.2091637}
+}
+@inproceedings{simoens2009,
+  author = {Simoens, Koen and Tuyls, Pim and Preneel, Bart},
+  title = {Privacy Weaknesses in Biometric Sketches},
+  booktitle = {Proc. IEEE Symposium on Security and Privacy},
+  pages = {188--203}, year = {2009}, doi = {10.1109/SP.2009.24}
+}
+@inproceedings{rathgeb2011stat,
+  author = {Rathgeb, Christian and Uhl, Andreas},
+  title = {Statistical Attack Against Iris-Biometric Fuzzy Commitment Schemes},
+  booktitle = {Proc. IEEE CVPR Workshops},
+  pages = {23--30}, year = {2011}, doi = {10.1109/CVPRW.2011.5981720}
+}
+@article{kong2006,
+  author = {Kong, Adams and Cheung, King-Hong and Zhang, David and Kamel, Mohamed and You, Jane},
+  title = {An Analysis of {BioHashing} and Its Variants},
+  journal = {Pattern Recognition}, volume = {39}, number = {7}, pages = {1359--1368}, year = {2006},
+  doi = {10.1016/j.patcog.2005.10.025}
+}
+@inproceedings{lacharme2013,
+  author = {Lacharme, Patrick and Cherrier, Estelle and Rosenberger, Christophe},
+  title = {Preimage Attack on {BioHashing}},
+  booktitle = {Proc. International Conference on Security and Cryptography (SECRYPT)},
+  pages = {363--370}, year = {2013}, doi = {10.5220/0004524103630370}
+}
+@article{galbally2010,
+  author = {Galbally, Javier and McCool, Chris and Fierrez, Julian and Marcel, Sebastien and Ortega-Garcia, Javier},
+  title = {On the Vulnerability of Face Verification Systems to Hill-Climbing Attacks},
+  journal = {Pattern Recognition}, volume = {43}, number = {3}, pages = {1027--1038}, year = {2010},
+  doi = {10.1016/j.patcog.2009.08.022}
+}
+@article{mai2019,
+  author = {Mai, Guangcan and Cao, Kai and Yuen, Pong C. and Jain, Anil K.},
+  title = {On the Reconstruction of Face Images from Deep Face Templates},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume = {41}, number = {5}, pages = {1188--1202}, year = {2019}, doi = {10.1109/TPAMI.2018.2827389}
+}
+@inproceedings{tey2013,
+  author = {Tey, Chee Meng and Gupta, Payas and Gao, Debin},
+  title = {I Can Be You: Questioning the Use of Keystroke Dynamics as Biometrics},
+  booktitle = {Proc. Network and Distributed System Security Symposium (NDSS)},
+  year = {2013},
+  url = {https://www.ndss-symposium.org/ndss2013/ndss-2013-programme/i-can-be-you-questioning-use-keystroke-dynamics-biometrics/}
+}
+@article{serwadda2013,
+  author = {Serwadda, Abdul and Phoha, Vir V.},
+  title = {Examining a Large Keystroke Biometrics Dataset for Statistical-Attack Openings},
+  journal = {ACM Transactions on Information and System Security},
+  volume = {16}, number = {2}, pages = {1--30}, year = {2013}, doi = {10.1145/2516960}
+}
+
+% ---------------- B.7 BTP surveys ----------------
+@article{jain2008,
+  author = {Jain, Anil K. and Nandakumar, Karthik and Nagar, Abhishek},
+  title = {Biometric Template Security},
+  journal = {EURASIP Journal on Advances in Signal Processing}, volume = {2008}, pages = {579416}, year = {2008},
+  doi = {10.1155/2008/579416}
+}
+@article{rathgeb2011survey,
+  author = {Rathgeb, Christian and Uhl, Andreas},
+  title = {A Survey on Biometric Cryptosystems and Cancelable Biometrics},
+  journal = {EURASIP Journal on Information Security}, volume = {2011}, pages = {3}, year = {2011},
+  doi = {10.1186/1687-417X-2011-3}
+}
+@article{nandakumar2015,
+  author = {Nandakumar, Karthik and Jain, Anil K.},
+  title = {Biometric Template Protection: Bridging the Performance Gap Between Theory and Practice},
+  journal = {IEEE Signal Processing Magazine}, volume = {32}, number = {5}, pages = {88--100}, year = {2015},
+  doi = {10.1109/MSP.2015.2427849}
+}
+@article{hahn2023,
+  author = {Krivoku{\'c}a Hahn, Vedrana and Marcel, S{\'e}bastien},
+  title = {Biometric Template Protection for Neural-Network-Based Face Recognition Systems: A Survey of Methods and Evaluation Techniques},
+  journal = {IEEE Transactions on Information Forensics and Security}, volume = {18}, pages = {639--666}, year = {2023},
+  doi = {10.1109/TIFS.2022.3228494}
+}
+
+% ---------------- B.8 Adaptation / poisoning ----------------
+@inproceedings{biggio2013,
+  author = {Biggio, Battista and Didaci, Luca and Fumera, Giorgio and Roli, Fabio},
+  title = {Poisoning Attacks to Compromise Face Templates},
+  booktitle = {Proc. International Conference on Biometrics (ICB)},
+  pages = {1--7}, year = {2013}, doi = {10.1109/ICB.2013.6613006},
+  url = {https://zenodo.org/record/3431388}
+}
+@article{biggio2015spm,
+  author = {Biggio, Battista and Fumera, Giorgio and Russu, Paolo and Didaci, Luca and Roli, Fabio},
+  title = {Adversarial Biometric Recognition: A Review on Biometric System Security from the Adversarial Machine-Learning Perspective},
+  journal = {IEEE Signal Processing Magazine}, volume = {32}, number = {5}, pages = {31--41}, year = {2015},
+  doi = {10.1109/MSP.2015.2426728}
+}
+@inproceedings{rattani2009,
+  author = {Rattani, Ajita and Freni, Biagio and Marcialis, Gian Luca and Roli, Fabio},
+  title = {Template Update Methods in Adaptive Biometric Systems: A Critical Review},
+  booktitle = {Advances in Biometrics (ICB 2009)}, series = {LNCS},
+  pages = {847--856}, year = {2009}, doi = {10.1007/978-3-642-01793-3_86}
+}
+@article{didaci2014,
+  author = {Didaci, Luca and Marcialis, Gian Luca and Roli, Fabio},
+  title = {Analysis of Unsupervised Template Update in Biometric Recognition Systems},
+  journal = {Pattern Recognition Letters}, volume = {37}, pages = {151--160}, year = {2014},
+  doi = {10.1016/j.patrec.2013.05.021}
+}
+@article{uludag2004,
+  author = {Uludag, Umut and Ross, Arun and Jain, Anil},
+  title = {Biometric Template Selection and Update: A Case Study in Fingerprints},
+  journal = {Pattern Recognition}, volume = {37}, number = {7}, pages = {1533--1542}, year = {2004},
+  doi = {10.1016/j.patcog.2003.11.012}
+}
+@article{pisani2019,
+  author = {Pisani, Paulo Henrique and others},
+  title = {Adaptive Biometric Systems: Review and Perspectives},
+  journal = {ACM Computing Surveys}, volume = {52}, number = {5}, pages = {1--38}, year = {2019},
+  doi = {10.1145/3344255}
+}
+@article{mhenni2019,
+  author = {Mhenni, Abir and Cherrier, Estelle and Rosenberger, Christophe and Essoukri Ben Amara, Najoua},
+  title = {Double Serial Adaptation Mechanism for Keystroke Dynamics Authentication Based on a Single Password},
+  journal = {Computers \& Security}, volume = {83}, pages = {151--166}, year = {2019},
+  doi = {10.1016/j.cose.2019.02.002}
+}
+@inproceedings{kang2007,
+  author = {Kang, Pilsung and Hwang, Seong-seob and Cho, Sungzoon},
+  title = {Continual Retraining of Keystroke Dynamics Based Authenticator},
+  booktitle = {Advances in Biometrics (ICB 2007)}, series = {LNCS},
+  pages = {1203--1211}, year = {2007}, doi = {10.1007/978-3-540-74549-5_125}
+}
+
+% ---------------- B.9 Regulation ----------------
+@misc{gdpr2016,
+  author = {{European Parliament and Council of the European Union}},
+  title = {Regulation (EU) 2016/679 (General Data Protection Regulation)},
+  year = {2016}, url = {https://eur-lex.europa.eu/eli/reg/2016/679/oj}
+}
+@misc{edpb2020dpbd,
+  author = {{European Data Protection Board}},
+  title = {Guidelines 4/2019 on Article 25 Data Protection by Design and by Default, Version 2.0},
+  year = {2020}, note = {Adopted 20 October 2020},
+  url = {https://www.edpb.europa.eu/system/files/documents/files/file1/edpb_guidelines_201904_dataprotection_by_design_and_by_default_v2.0_en.pdf}
+}
+@misc{wp193,
+  author = {{Article 29 Data Protection Working Party}},
+  title = {Opinion 3/2012 on Developments in Biometric Technologies (WP193)},
+  year = {2012},
+  url = {https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2012/wp193_en.pdf}
+}
+@misc{ico-biometric,
+  author = {{UK Information Commissioner's Office}},
+  title = {Biometric Data Guidance: Biometric Recognition},
+  url = {https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/biometric-data-guidance-biometric-recognition/},
+  note = {Accessed 2026-10-21}
+}
