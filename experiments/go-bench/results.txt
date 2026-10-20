@@ -1,0 +1,18 @@
+=== RUN   TestStorage
+    bench_test.go:145: ell=1000: explicit 120000 B (117.2 KiB), nonce-only 56000 B (54.7 KiB), minimal 40000 B (39.1 KiB)
+    bench_test.go:145: ell=1500: explicit 180000 B (175.8 KiB), nonce-only 84000 B (82.0 KiB), minimal 60000 B (58.6 KiB)
+--- PASS: TestStorage (0.00s)
+goos: linux
+goarch: amd64
+pkg: github.com/hossein1376/ztbe/experiments/go-bench
+cpu: Intel(R) Xeon(R) Processor
+BenchmarkRepHKDF_l1000
+BenchmarkRepHKDF_l1000-8   	     706	   1746915 ns/op	 1464034 B/op	   21000 allocs/op
+BenchmarkRepHKDF_l1500
+BenchmarkRepHKDF_l1500-8   	     452	   2664302 ns/op	 2196042 B/op	   31500 allocs/op
+BenchmarkRepHMAC_l1500
+BenchmarkRepHMAC_l1500-8   	     644	   1814530 ns/op	 1260017 B/op	   18000 allocs/op
+BenchmarkBloomDistance
+BenchmarkBloomDistance-8   	 6993469	       169.6 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/hossein1376/ztbe/experiments/go-bench	5.667s

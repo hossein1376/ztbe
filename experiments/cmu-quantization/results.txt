@@ -1,0 +1,175 @@
+######## NW=10 FEAT=musigma MASK=0
+subjects: pop=25 eval=26; window=10 reps; FEAT=musigma D=62; MASK=0
+
+== m=1 bits/feature, edges=gauss, n=62 bits; max |bin occupancy - 2^-m| = 0.292
+genuine frac-HD: mean 0.322  p50 0.323  p90 0.453  p95 0.516
+impostor frac-HD: mean 0.491  p1 0.226  p5 0.306   Daugman DoF ~ 20.5
+EER 22.4% at HD 0.404;  @t=0.18n: FRR 90.8% FAR 0.44%;  FAR@0.243n 1.6%  FAR@0.423n 28.2%
+
+== m=1 bits/feature, edges=empirical, n=62 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.328  p50 0.323  p90 0.452  p95 0.516
+impostor frac-HD: mean 0.499  p1 0.242  p5 0.306   Daugman DoF ~ 19.7
+EER 21.1% at HD 0.404;  @t=0.18n: FRR 93.0% FAR 0.29%;  FAR@0.243n 1.3%  FAR@0.423n 26.4%
+
+== m=2 bits/feature, edges=gauss, n=124 bits; max |bin occupancy - 2^-m| = 0.520
+genuine frac-HD: mean 0.338  p50 0.331  p90 0.452  p95 0.492
+impostor frac-HD: mean 0.471  p1 0.290  p5 0.347   Daugman DoF ~ 47.2
+EER 20.6% at HD 0.404;  @t=0.18n: FRR 97.4% FAR 0.05%;  FAR@0.243n 0.3%  FAR@0.423n 24.9%
+
+== m=2 bits/feature, edges=empirical, n=124 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.367  p50 0.363  p90 0.484  p95 0.521
+impostor frac-HD: mean 0.498  p1 0.315  p5 0.371   Daugman DoF ~ 48.7
+EER 20.4% at HD 0.435;  @t=0.18n: FRR 99.0% FAR 0.02%;  FAR@0.243n 0.1%  FAR@0.423n 15.0%
+   sample-then-lock k_sub=32, l=1500: genuine FRR ~ 97.68%  impostor FAR ~ 0.04%  (per-locker brute force <= 2^32)
+   sample-then-lock k_sub=16, l=1500: genuine FRR ~ 50.82%  impostor FAR ~ 6.38%  (per-locker brute force <= 2^16)
+   sample-then-lock k_sub=8, l=1500: genuine FRR ~ 1.01%  impostor FAR ~ 88.82%  (per-locker brute force <= 2^8)
+
+== m=3 bits/feature, edges=gauss, n=186 bits; max |bin occupancy - 2^-m| = 0.467
+genuine frac-HD: mean 0.372  p50 0.376  p90 0.468  p95 0.498
+impostor frac-HD: mean 0.477  p1 0.333  p5 0.382   Daugman DoF ~ 77.2
+EER 21.7% at HD 0.430;  @t=0.18n: FRR 99.7% FAR 0.00%;  FAR@0.243n 0.1%  FAR@0.423n 16.8%
+
+== m=3 bits/feature, edges=empirical, n=186 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.399  p50 0.403  p90 0.489  p95 0.511
+impostor frac-HD: mean 0.498  p1 0.360  p5 0.409   Daugman DoF ~ 88.7
+EER 21.6% at HD 0.457;  @t=0.18n: FRR 99.9% FAR 0.02%;  FAR@0.243n 0.0%  FAR@0.423n 7.9%
+######## NW=10 FEAT=mu MASK=0
+subjects: pop=25 eval=26; window=10 reps; FEAT=mu D=31; MASK=0
+
+== m=1 bits/feature, edges=gauss, n=31 bits; max |bin occupancy - 2^-m| = 0.292
+genuine frac-HD: mean 0.265  p50 0.258  p90 0.452  p95 0.516
+impostor frac-HD: mean 0.497  p1 0.097  p5 0.226   Daugman DoF ~ 9.3
+EER 23.9% at HD 0.355;  @t=0.18n: FRR 69.7% FAR 2.84%;  FAR@0.243n 5.9%  FAR@0.423n 36.2%
+
+== m=1 bits/feature, edges=empirical, n=31 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.264  p50 0.258  p90 0.452  p95 0.516
+impostor frac-HD: mean 0.504  p1 0.097  p5 0.226   Daugman DoF ~ 8.6
+EER 22.5% at HD 0.355;  @t=0.18n: FRR 69.6% FAR 2.67%;  FAR@0.243n 6.1%  FAR@0.423n 34.8%
+
+== m=2 bits/feature, edges=gauss, n=62 bits; max |bin occupancy - 2^-m| = 0.419
+genuine frac-HD: mean 0.298  p50 0.306  p90 0.469  p95 0.516
+impostor frac-HD: mean 0.496  p1 0.226  p5 0.306   Daugman DoF ~ 21.3
+EER 21.5% at HD 0.404;  @t=0.18n: FRR 78.8% FAR 0.48%;  FAR@0.243n 1.5%  FAR@0.423n 25.9%
+
+== m=2 bits/feature, edges=empirical, n=62 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.308  p50 0.306  p90 0.500  p95 0.557
+impostor frac-HD: mean 0.500  p1 0.226  p5 0.306   Daugman DoF ~ 20.7
+EER 22.4% at HD 0.419;  @t=0.18n: FRR 79.5% FAR 0.68%;  FAR@0.243n 2.0%  FAR@0.423n 24.2%
+   sample-then-lock k_sub=32, l=1500: genuine FRR ~ 84.45%  impostor FAR ~ 0.44%  (per-locker brute force <= 2^32)
+   sample-then-lock k_sub=16, l=1500: genuine FRR ~ 42.73%  impostor FAR ~ 8.98%  (per-locker brute force <= 2^16)
+   sample-then-lock k_sub=8, l=1500: genuine FRR ~ 3.59%  impostor FAR ~ 74.67%  (per-locker brute force <= 2^8)
+
+== m=3 bits/feature, edges=gauss, n=93 bits; max |bin occupancy - 2^-m| = 0.359
+genuine frac-HD: mean 0.338  p50 0.344  p90 0.484  p95 0.516
+impostor frac-HD: mean 0.496  p1 0.290  p5 0.355   Daugman DoF ~ 36.3
+EER 22.2% at HD 0.430;  @t=0.18n: FRR 90.8% FAR 0.26%;  FAR@0.243n 0.4%  FAR@0.423n 19.5%
+
+== m=3 bits/feature, edges=empirical, n=93 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.348  p50 0.355  p90 0.495  p95 0.544
+impostor frac-HD: mean 0.499  p1 0.290  p5 0.355   Daugman DoF ~ 37.2
+EER 23.2% at HD 0.441;  @t=0.18n: FRR 91.2% FAR 0.31%;  FAR@0.243n 0.4%  FAR@0.423n 17.5%
+######## NW=50 FEAT=mu MASK=0
+subjects: pop=25 eval=26; window=50 reps; FEAT=mu D=31; MASK=0
+
+== m=1 bits/feature, edges=gauss, n=31 bits; max |bin occupancy - 2^-m| = 0.270
+genuine frac-HD: mean 0.257  p50 0.258  p90 0.452  p95 0.515
+impostor frac-HD: mean 0.489  p1 0.097  p5 0.226   Daugman DoF ~ 9.5
+EER 23.7% at HD 0.355;  @t=0.18n: FRR 69.2% FAR 2.54%;  FAR@0.243n 6.2%  FAR@0.423n 38.5%
+
+== m=1 bits/feature, edges=empirical, n=31 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.264  p50 0.258  p90 0.452  p95 0.547
+impostor frac-HD: mean 0.494  p1 0.097  p5 0.226   Daugman DoF ~ 8.4
+EER 25.3% at HD 0.355;  @t=0.18n: FRR 69.8% FAR 3.00%;  FAR@0.243n 6.8%  FAR@0.423n 37.8%
+
+== m=2 bits/feature, edges=gauss, n=62 bits; max |bin occupancy - 2^-m| = 0.395
+genuine frac-HD: mean 0.293  p50 0.290  p90 0.484  p95 0.516
+impostor frac-HD: mean 0.493  p1 0.226  p5 0.306   Daugman DoF ~ 21.3
+EER 22.8% at HD 0.404;  @t=0.18n: FRR 76.4% FAR 0.38%;  FAR@0.243n 1.7%  FAR@0.423n 26.3%
+
+== m=2 bits/feature, edges=empirical, n=62 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.300  p50 0.306  p90 0.500  p95 0.548
+impostor frac-HD: mean 0.493  p1 0.194  p5 0.306   Daugman DoF ~ 19.9
+EER 23.6% at HD 0.404;  @t=0.18n: FRR 75.8% FAR 0.62%;  FAR@0.243n 2.5%  FAR@0.423n 27.0%
+   sample-then-lock k_sub=32, l=1500: genuine FRR ~ 80.65%  impostor FAR ~ 0.52%  (per-locker brute force <= 2^32)
+   sample-then-lock k_sub=16, l=1500: genuine FRR ~ 42.38%  impostor FAR ~ 9.99%  (per-locker brute force <= 2^16)
+   sample-then-lock k_sub=8, l=1500: genuine FRR ~ 2.74%  impostor FAR ~ 76.33%  (per-locker brute force <= 2^8)
+
+== m=3 bits/feature, edges=gauss, n=93 bits; max |bin occupancy - 2^-m| = 0.375
+genuine frac-HD: mean 0.329  p50 0.333  p90 0.483  p95 0.505
+impostor frac-HD: mean 0.495  p1 0.290  p5 0.354   Daugman DoF ~ 34.6
+EER 23.1% at HD 0.430;  @t=0.18n: FRR 88.5% FAR 0.31%;  FAR@0.243n 0.3%  FAR@0.423n 20.4%
+
+== m=3 bits/feature, edges=empirical, n=93 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.338  p50 0.355  p90 0.494  p95 0.537
+impostor frac-HD: mean 0.494  p1 0.269  p5 0.355   Daugman DoF ~ 35.4
+EER 24.0% at HD 0.430;  @t=0.18n: FRR 88.5% FAR 0.31%;  FAR@0.243n 0.5%  FAR@0.423n 19.5%
+######## NW=50 FEAT=musigma MASK=0
+subjects: pop=25 eval=26; window=50 reps; FEAT=musigma D=62; MASK=0
+
+== m=1 bits/feature, edges=gauss, n=62 bits; max |bin occupancy - 2^-m| = 0.330
+genuine frac-HD: mean 0.295  p50 0.290  p90 0.435  p95 0.467
+impostor frac-HD: mean 0.483  p1 0.226  p5 0.306   Daugman DoF ~ 19.9
+EER 18.9% at HD 0.371;  @t=0.18n: FRR 82.4% FAR 0.46%;  FAR@0.243n 1.7%  FAR@0.423n 31.6%
+
+== m=1 bits/feature, edges=empirical, n=62 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.316  p50 0.306  p90 0.466  p95 0.515
+impostor frac-HD: mean 0.495  p1 0.226  p5 0.323   Daugman DoF ~ 19.5
+EER 19.2% at HD 0.388;  @t=0.18n: FRR 90.1% FAR 0.08%;  FAR@0.243n 2.0%  FAR@0.423n 28.2%
+
+== m=2 bits/feature, edges=gauss, n=124 bits; max |bin occupancy - 2^-m| = 0.575
+genuine frac-HD: mean 0.332  p50 0.339  p90 0.452  p95 0.475
+impostor frac-HD: mean 0.477  p1 0.290  p5 0.355   Daugman DoF ~ 45.8
+EER 19.3% at HD 0.412;  @t=0.18n: FRR 95.6% FAR 0.08%;  FAR@0.243n 0.1%  FAR@0.423n 23.1%
+
+== m=2 bits/feature, edges=empirical, n=124 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.353  p50 0.347  p90 0.483  p95 0.508
+impostor frac-HD: mean 0.493  p1 0.315  p5 0.363   Daugman DoF ~ 47.7
+EER 20.4% at HD 0.427;  @t=0.18n: FRR 99.5% FAR 0.00%;  FAR@0.243n 0.1%  FAR@0.423n 17.1%
+   sample-then-lock k_sub=32, l=1500: genuine FRR ~ 97.47%  impostor FAR ~ 0.02%  (per-locker brute force <= 2^32)
+   sample-then-lock k_sub=16, l=1500: genuine FRR ~ 44.62%  impostor FAR ~ 7.08%  (per-locker brute force <= 2^16)
+   sample-then-lock k_sub=8, l=1500: genuine FRR ~ 0.66%  impostor FAR ~ 89.56%  (per-locker brute force <= 2^8)
+
+== m=3 bits/feature, edges=gauss, n=186 bits; max |bin occupancy - 2^-m| = 0.400
+genuine frac-HD: mean 0.363  p50 0.366  p90 0.457  p95 0.484
+impostor frac-HD: mean 0.483  p1 0.339  p5 0.382   Daugman DoF ~ 75.3
+EER 19.6% at HD 0.430;  @t=0.18n: FRR 99.5% FAR 0.00%;  FAR@0.243n 0.1%  FAR@0.423n 13.9%
+
+== m=3 bits/feature, edges=empirical, n=186 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.388  p50 0.392  p90 0.489  p95 0.505
+impostor frac-HD: mean 0.494  p1 0.355  p5 0.403   Daugman DoF ~ 85.5
+EER 20.2% at HD 0.447;  @t=0.18n: FRR 100.0% FAR 0.00%;  FAR@0.243n 0.1%  FAR@0.423n 9.1%
+######## NW=50 FEAT=mu MASK=16
+subjects: pop=25 eval=26; window=50 reps; FEAT=mu D=31; MASK=16
+
+== m=1 bits/feature, edges=gauss, n=16 bits; max |bin occupancy - 2^-m| = 0.270
+genuine frac-HD: mean 0.152  p50 0.125  p90 0.369  p95 0.375
+impostor frac-HD: mean 0.492  p1 0.062  p5 0.184   Daugman DoF ~ 5.8
+EER 17.2% at HD 0.250;  @t=0.18n: FRR 41.2% FAR 5.00%;  FAR@0.243n 9.7%  FAR@0.423n 34.4%
+
+== m=1 bits/feature, edges=empirical, n=16 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.160  p50 0.125  p90 0.375  p95 0.438
+impostor frac-HD: mean 0.489  p1 0.000  p5 0.125   Daugman DoF ~ 5.6
+EER 18.6% at HD 0.250;  @t=0.18n: FRR 45.6% FAR 5.46%;  FAR@0.243n 9.3%  FAR@0.423n 36.1%
+
+== m=2 bits/feature, edges=gauss, n=32 bits; max |bin occupancy - 2^-m| = 0.395
+genuine frac-HD: mean 0.235  p50 0.219  p90 0.438  p95 0.530
+impostor frac-HD: mean 0.502  p1 0.125  p5 0.248   Daugman DoF ~ 11.9
+EER 18.7% at HD 0.375;  @t=0.18n: FRR 60.4% FAR 2.54%;  FAR@0.243n 5.0%  FAR@0.423n 26.5%
+
+== m=2 bits/feature, edges=empirical, n=32 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.234  p50 0.219  p90 0.438  p95 0.530
+impostor frac-HD: mean 0.483  p1 0.094  p5 0.219   Daugman DoF ~ 12.2
+EER 20.8% at HD 0.375;  @t=0.18n: FRR 59.3% FAR 3.31%;  FAR@0.243n 6.1%  FAR@0.423n 30.2%
+   sample-then-lock k_sub=32, l=1500: genuine FRR ~ 91.76%  impostor FAR ~ 0.23%  (per-locker brute force <= 2^32)
+   sample-then-lock k_sub=16, l=1500: genuine FRR ~ 37.35%  impostor FAR ~ 9.65%  (per-locker brute force <= 2^16)
+   sample-then-lock k_sub=8, l=1500: genuine FRR ~ 4.04%  impostor FAR ~ 64.06%  (per-locker brute force <= 2^8)
+
+== m=3 bits/feature, edges=gauss, n=48 bits; max |bin occupancy - 2^-m| = 0.375
+genuine frac-HD: mean 0.279  p50 0.271  p90 0.458  p95 0.500
+impostor frac-HD: mean 0.503  p1 0.188  p5 0.292   Daugman DoF ~ 19.6
+EER 18.9% at HD 0.396;  @t=0.18n: FRR 74.7% FAR 0.77%;  FAR@0.243n 2.1%  FAR@0.423n 21.8%
+
+== m=3 bits/feature, edges=empirical, n=48 bits; max |bin occupancy - 2^-m| = 0.000
+genuine frac-HD: mean 0.283  p50 0.292  p90 0.458  p95 0.500
+impostor frac-HD: mean 0.490  p1 0.166  p5 0.292   Daugman DoF ~ 20.9
+EER 20.5% at HD 0.396;  @t=0.18n: FRR 74.2% FAR 1.23%;  FAR@0.243n 2.3%  FAR@0.423n 24.5%

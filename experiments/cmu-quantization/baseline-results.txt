@@ -1,0 +1,3 @@
+(a) unprotected scaled-Manhattan on window means, enroll=session1, probe=sessions2-8: EER 21.4%
+(b) m=1: genuine BER same-session mean 0.159 (p90 0.290); session-8 vs session-1 mean 0.359
+(b) m=2: genuine BER same-session mean 0.209 (p90 0.332); session-8 vs session-1 mean 0.401

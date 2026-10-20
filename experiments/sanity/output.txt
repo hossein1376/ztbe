@@ -1,0 +1,79 @@
+
+### 1. Sample-then-lock correctness (n=512, k_sub=32)
+t/n=0.150 (t=77): p_clean exact=4.540e-03 approx=5.513e-03; l=1000: FRR exact=1.057e-02  spec-bound exp(-l(1-t/n)^k)=4.033e-03
+t/n=0.150 (t=77): p_clean exact=4.540e-03 approx=5.513e-03; l=1500: FRR exact=1.086e-03  spec-bound exp(-l(1-t/n)^k)=2.561e-04
+   lockers needed for FRR<=0.01: 1013
+   lockers needed for FRR<=0.001: 1519
+t/n=0.180 (t=92): p_clean exact=1.415e-03 approx=1.746e-03; l=1000: FRR exact=2.427e-01  spec-bound exp(-l(1-t/n)^k)=1.745e-01
+t/n=0.180 (t=92): p_clean exact=1.415e-03 approx=1.746e-03; l=1500: FRR exact=1.196e-01  spec-bound exp(-l(1-t/n)^k)=7.288e-02
+   lockers needed for FRR<=0.01: 3253
+   lockers needed for FRR<=0.001: 4879
+t/n=0.243 (t=124): p_clean exact=1.011e-04 approx=1.352e-04; l=1000: FRR exact=9.038e-01  spec-bound exp(-l(1-t/n)^k)=8.735e-01
+t/n=0.243 (t=124): p_clean exact=1.011e-04 approx=1.352e-04; l=1500: FRR exact=8.593e-01  spec-bound exp(-l(1-t/n)^k)=8.164e-01
+   lockers needed for FRR<=0.01: 45548
+   lockers needed for FRR<=0.001: 68322
+spec example check: 0.85^32 = 0.00551  1500*0.85^32 = 8.270  e^-8.28 = 2.535e-04
+
+### 1b. Offline brute force of ONE locker (security is capped by k_sub)
+k_sub=16: <=2^16 guesses x 1560 ns = 0.102 core-seconds (2.84e-05 core-hours)
+k_sub=24: <=2^24 guesses x 1560 ns = 26.2 core-seconds (0.00727 core-hours)
+k_sub=32: <=2^32 guesses x 1560 ns = 6.7e+03 core-seconds (1.86 core-hours)
+k_sub=48: <=2^48 guesses x 1560 ns = 4.39e+08 core-seconds (1.22e+05 core-hours)
+k_sub=64: <=2^64 guesses x 1560 ns = 2.88e+13 core-seconds (7.99e+09 core-hours)
+Argon2id-per-locker budget for 20 ms Rep at l=1500: 13.3 us/locker
+
+### 2. Binary BCH dimension k for n=511 (GF(2^9)), designed t
+BER 0.05: t= 26 -> BCH(511,295); syndrome n-k=216 bits (27 B); residual-entropy bound beta-(n-k) needs beta >= 296 for 80-bit security
+BER 0.10: t= 51 -> BCH(511,157); syndrome n-k=354 bits (44 B); residual-entropy bound beta-(n-k) needs beta >= 434 for 80-bit security
+BER 0.15: t= 77 -> BCH(511, 76); syndrome n-k=435 bits (54 B); residual-entropy bound beta-(n-k) needs beta >= 515 for 80-bit security
+BER 0.18: t= 92 -> BCH(511, 49); syndrome n-k=462 bits (58 B); residual-entropy bound beta-(n-k) needs beta >= 542 for 80-bit security
+BER 0.25: t=128 -> BCH(511,  1); syndrome n-k=510 bits (64 B); residual-entropy bound beta-(n-k) needs beta >= 590 for 80-bit security
+Spec 5.4 '128-byte syndrome' = 1024 bits > n=512: inconsistent with n=512 (max n-k is 511 bits = 64 B).
+
+### 3. Reflected Gray code: Hamming distance vs bin distance (m=3)
+q=0: 0 1 2 1 2 3 2 1
+q=1: 1 0 1 2 3 2 1 2
+q=2: 2 1 0 1 2 1 2 3
+q=3: 1 2 1 0 1 2 3 2
+q=4: 2 3 2 1 0 1 2 1
+q=5: 3 2 1 2 1 0 1 2
+q=6: 2 1 2 3 2 1 0 1
+q=7: 1 2 3 2 1 2 1 0
+e.g. bins 0 and 7 (opposite tails) differ in 1 bit; bins 0 and 3 differ in 1 bit.
+
+### 4. Bloom-filter pre-image count = surjections; and a trivial accepting pre-image
+N_b=32, W_b=8: expected wt(BF)=30; surjections = 2.993e+37 (~2^124.5) per block
+N_b=16, W_b=8: expected wt(BF)=16; surjections = 2.092e+13 (~2^44.3) per block
+N_b=10, W_b=4: expected wt(BF)=8; surjections = 3.024e+07 (~2^24.8) per block
+brute-force check N_b=5, |BF|=3: 150 == formula 150
+Note: column ORDER does not matter for verification; ANY sequence covering the set bits reproduces BF exactly,
+so an attacker holding BF can build an accepting binary template in O(N_b) per block (no search).
+
+### 5. Storage
+CBF 32 blocks x 256 slots x 4 bit = 4096 B;  binary BF = 1024 B
+lockers l=1000 x 24 B = 23.4 KiB
+lockers l=1000 x 40 B = 39.1 KiB
+lockers l=1500 x 40 B = 58.6 KiB
+lockers l=1500 x 92 B = 134.8 KiB
+Hybrid L1(CBF 4 KiB)+L2(>=24 KiB)+anchor FE  vs NFR-04 <= 2 KiB
+
+### 6. Exponentially weighted Welford (spec 3.2) vs direct weighted moments
+recursive mu=94.480902 var=188.712652 | direct mu=94.480902 var=188.712652  (sum w = 1.000000)
+
+### 7. Update leakage demo with BCH(31,16,t=3): syndrome AND code-offset both leak the drift vector
+g(x) degree 15 -> BCH(31,16), t=3
+attacker recovers exact drift vector: syndrome 1000/1000, code-offset(fresh c) 1000/1000
+
+### 8. Drift envelope implied by spec 6.1-6.3 (fractions of n)
+gamma_gate=0.45: t_adapt=0.081n
+gamma_gate=0.65: t_adapt=0.117n
+t_anchor = 1.35*t_verify = 0.243n; working template may sit up to 0.243n from anchor, and accepts probes up to 0.180n from itself
+=> an impostor within 0.423n of the anchor can eventually be accepted; V_max=0.02n/day reaches 0.243n in 13 days
+
+### 9. Ephemeral per-session state estimate
+C=6 zones, K=6 states: digraph 1152 + dwell 96 + Markov 144 + bit counters 512 = 1904 B
+C=6 zones, K=10 states: digraph 1152 + dwell 96 + Markov 400 + bit counters 512 = 2160 B
+C=8 zones, K=6 states: digraph 2048 + dwell 128 + Markov 144 + bit counters 512 = 2832 B
+C=8 zones, K=10 states: digraph 2048 + dwell 128 + Markov 400 + bit counters 512 = 3088 B
+C=10 zones, K=6 states: digraph 3200 + dwell 160 + Markov 144 + bit counters 512 = 4016 B
+C=10 zones, K=10 states: digraph 3200 + dwell 160 + Markov 400 + bit counters 512 = 4272 B
