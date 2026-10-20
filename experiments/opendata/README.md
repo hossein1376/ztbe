@@ -73,3 +73,8 @@ python3 aggregate.py > /tmp/agg.md && cat experiments-v2.head.md /tmp/agg.md > .
   - Tappy timer resolution is about 15.6 ms.
   - Aalto is transcription typing in one session.
   - Mouse features are deliberately simple.
+
+## userpolicy.py: per-user thresholds, trust model, menagerie, cold start (added 2026-10-21)
+`python3 userpolicy.py <cfg> 4` for cfg in t60 t120 n100 n200 → `results/userpolicy_<cfg>_K4.txt`.
+Tappy only, cross-day. Priors come from a disjoint half of Tappy users, standing in for the "own consented population" of D3.
+Timeline: enrol on days 0–6, calibrate on days 7–13 (genuine only), test on day ≥14. Each run evaluates only 29–40 users and uses one random split (seed 20261021), so treat the numbers as indicative.

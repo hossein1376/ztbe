@@ -1,0 +1,36 @@
+# per-user policy study: tappy n200, K=4 windows per decision block, 34 eval users (priors: 107 disjoint Tappy users)
+
+## threshold policies (flag = block score above threshold; FRR = genuine blocks flagged, FAR = impostor blocks NOT flagged)
+policy | FRR pooled | FRR mean/user | FRR p90 user | users FRR>20% | Gini FRR | FAR pooled | FAR p90 target | targets FAR>30% | uncertain gen | uncertain imp
+P0 global (5% of calib. blocks) | 7.5% | 12.2% | 28.9% | 21% | 0.72 | 6.6% | 20.6% | 3%
+P1 per-user q95 of own calib. | 13.9% | 22.4% | 50.0% | 38% | 0.53 | 8.9% | 20.7% | 6%
+P2 per-user, floor=P0, cap=q99 pooled calib. | 5.7% | 9.4% | 27.7% | 18% | 0.72 | 9.7% | 25.7% | 6%
+P2 per-user, floor=P0, cap=q99.5 pooled calib. | 5.6% | 9.3% | 27.7% | 18% | 0.72 | 11.9% | 27.7% | 9%
+P3 z-norm on calib. scores | 11.2% | 19.7% | 50.0% | 38% | 0.55 | 10.2% | 24.2% | 9%
+P4 bands: high only (P2 cap .995 + margin) | 2.6% | 5.6% | 19.8% | 12% | 0.81 | 18.4% | 41.8% | 21% | 3.0% | 6.4%
+P5 shrinkage q95 toward P0 (n0=10) | 9.9% | 14.1% | 32.3% | 21% | 0.65 | 6.8% | 22.4% | 3%
+P5 shrinkage q95 toward P0 (n0=20) | 9.2% | 13.6% | 30.9% | 18% | 0.66 | 6.2% | 17.7% | 0%
+
+## trust model over single windows: trust in [0,100], start 100; delta = clip(a*(tau - s), -P, +R); alarm when trust < 50 -> step-up, trust reset to 100
+tau (pooled calib. window quantile) | a | P | R | genuine alarms per 60 active windows (mean / p90 user) | impostor: P(alarm within 5 windows) / within 10 | mean windows to alarm
+q80 (1.17) | 40 | 40 | 5 | 2.21 / 4.99 | 91% / 95% | 3.5
+q80 (1.17) | 25 | 30 | 5 | 1.54 / 3.39 | 81% / 92% | 4.8
+q90 (1.33) | 40 | 40 | 5 | 1.49 / 2.92 | 80% / 86% | 5.6
+q90 (1.33) | 25 | 30 | 3 | 1.11 / 1.96 | 73% / 84% | 6.6
+q95 (1.52) | 50 | 50 | 5 | 1.20 / 1.66 | 70% / 78% | 7.8
+
+## biometric menagerie on test period (per user: mean genuine block score vs mean score when attacked)
+users 34; expected per class if independent: 2.1; observed: worms 3, chameleons 3, phantoms 3, doves 2
+Spearman(mean genuine, mean impostor) = 0.08
+per-user FRR at P0: calibration week vs test period Spearman = 0.39; of users with calib FRR>20%, 2/5 still >20% in test
+
+## cold start: template from the first m windows (any day < 14), test blocks from day >= 14, global threshold
+m windows | approx. active typing | users | EER (K=1) | FRR@FAR1% (K=1) | EER (K=4 blocks) | FAR@FRR5% (K=4)
+1 | 200 keys | 30 | 14.1% | 57.9% | 11.3% | 22.0%
+2 | 400 keys | 30 | 11.0% | 47.4% | 8.2% | 12.1%
+3 | 600 keys | 30 | 10.4% | 50.3% | 7.5% | 10.9%
+5 | 1000 keys | 30 | 10.5% | 53.8% | 7.5% | 10.7%
+8 | 1600 keys | 30 | 10.2% | 50.1% | 7.1% | 9.6%
+12 | 2400 keys | 30 | 10.3% | 51.6% | 7.2% | 10.0%
+20 | 4000 keys | 30 | 10.1% | 60.2% | 7.4% | 9.8%
+30 | 6000 keys | 30 | 10.0% | 55.0% | 7.2% | 9.1%
