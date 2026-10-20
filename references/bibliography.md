@@ -359,3 +359,18 @@ Levels: A = abstract read, F = full text read, M = metadata only (Crossref, Sema
 - Part B: **82 unique new sources** (literature, datasets, regulation). This includes 1 grey/unpublished repo (templateprotection-ksd), 1 dataset-only repo (balabit2016), and 2 entries verified only through a reference list: canetti2008dakdouk (Springer JoC reference list; DOI UNVERIFIED) and zhang2021face (ePrint citation in Shukla et al.).
 - Total distinct verified scholarly/standard/regulatory sources (Part A + Part B, counting conference and journal versions once): **94** (12 from Part A + 82 from Part B).
 - Checked at A or F level (abstract or full text read): **~28**. The rest are M (metadata only). Claims in the notes rely only on A/F-level sources unless marked otherwise.
+
+### B.16 Round 2: session binding, COSE algorithms, GDPR guidance, capture APIs (2026-10-21)
+
+| Key | Level | Used for |
+|---|---|---|
+| song2001ssh | A (USENIX abstract) | Keystroke timing reveals typed content → research mode stores window vectors only (spec §3.3) |
+| rfc9864 | M (RFC Editor metadata; content checked in round 2) | −7/−8 deprecated; ESP256 (−9), Ed25519 (−19) |
+| rfc9449, rfc8705 | M | Sender-constrained OAuth tokens (spec §9.5) |
+| w3c-dbsc, google2026dbsc | F (ED read; blog read) | Device-bound browser sessions; Chrome 146 Windows |
+| rfc8610, rfc9457 | M | CDDL and problem+json in `docs/interfaces.md` |
+| edpb2020consent | F (§3.1.1 read) | Employee consent generally not freely given (para 21) |
+| wp29opinion2017work | F (§3.1.1, §5.4.1 read) | Logging keystrokes and mouse movements disproportionate; consent not the basis at work |
+| wp248dpia | F (criteria read) | Nine DPIA criteria; two usually trigger a DPIA |
+| ico-dpia, ico-monitoring | M (pages resolve) | UK DPIA and worker-monitoring guidance |
+| ms-kbdllhook, ms-gettickcount, apple-pppc, w3c-hrtime, linux-input | F (API docs read) | `notes/collector-tradeoffs.md` |
