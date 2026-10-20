@@ -35,7 +35,7 @@ Date: 2026-10-21 (Asia/Tehran).
 
 **Rollover fraction on Tappy.** It does **not** survive there (ratio 1.19). A plausible but untested cause is the roughly 15.6 ms timer resolution.
 
-**Least stable features.** All per-transition SD features and burstiness have ratio ≥ 0.9 on every dataset.
+**Least stable features.** All per-transition SD features and burstiness have ratio ≥ 0.9 cross-session (LASER) and cross-day (Tappy). On Aalto (intra-session) the per-transition SDs range from 0.75 to 1.22 and burstiness is 1.21.
 
 **Normality.** Population ICCs are high, but features are non-Gaussian (phase-1 CMU result; belman2019). For that reason the quantizers use empirical equiprobable edges.
 
