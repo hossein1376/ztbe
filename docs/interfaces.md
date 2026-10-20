@@ -120,8 +120,10 @@ paths:
       responses: { '201': { description: "ZTBE-PauseGrant (COSE_Sign1 by verifier)" } }
   /user/v1/ztbe:
     delete:
-      summary: Withdraw consent / disable ZTBE for all of the user's devices; deletes device records
-      responses: { '204': { description: done } }
+      summary: Withdraw consent / disable ZTBE for all of the user's devices; deletes device records. Requires a fresh WebAuthn assertion, like consent (spec §9.3)
+      responses:
+        '204': { description: done }
+        '401': { description: "no or stale WebAuthn assertion", $ref: '#/components/responses/Problem' }
   /rp/v1/devices/{user}:
     get:
       summary: Device keys registered to a user (for ZTBE-Proof verification); JWK set
