@@ -115,6 +115,8 @@ Purpose:
 
 ## Pass 2 outcome (2026-10-21)
 
+> Historical (pass 2). Superseded where it differs from spec v2.1: the architecture now lives in the spec, not `PROPOSAL.md` (D14); row 4's template is < 1 KB per keyboard class (spec §7); row 6's "9% = baseline" held only against a non-adaptive attacker, and adaptation is now off by default with unsupervised mode withdrawn (D8, spec §8); row 9's milestones are Phase 3a above.
+
 The direction has changed. Spec v1, a keyless FE that derives keys from behaviour, is **rejected on measured evidence**. The replacement is the v2 architecture in `PROPOSAL.md`: on-device scoring, a sealed template, signed risk assertions, and WebAuthn step-up. Evidence: `notes/experiments-v2.md` and `notes/design-options.md`.
 
 | P | Item | Status | Result / next |
