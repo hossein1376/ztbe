@@ -181,6 +181,7 @@ The verifier is the SSF Transmitter. Each RP or IdP is a Receiver. Events are SE
 | band → high (trust alarm) | HIGH | DEVICE | `BEHAVIOUR_DEVIATION` |
 | silence ≥ 150 s while active, or `capture_lost`, or `paused` without a grant | HIGH | DEVICE | `SIGNAL_LOST` |
 | `synthetic_suspect` | MEDIUM | DEVICE | `SYNTHETIC_INPUT_SUSPECT` |
+| `unscored_assistive` for a user without an assistive profile, outside a supervised period (spec §3.1) | MEDIUM | DEVICE | `UNSCORED_CHANGE` |
 | `integrity_suspect` | MEDIUM | DEVICE | `ASSERTION_INVALID` |
 | enrolling / disabled / unscored / remote / locked / paused with a grant | No risk event. A ZTBE-specific `signal-status` event MAY be sent (not standard CAEP) | — | — |
 

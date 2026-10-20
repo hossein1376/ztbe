@@ -152,6 +152,7 @@ OS signals used:
 How assistive tools actually appear on each OS is **UNVERIFIED** and is the MVP capture-spike task (PLAN M1-T5).
 
 Further rules:
+- **Evasion guard (assistive profile).** A walk-up attacker could switch to an on-screen keyboard to get "no signal". Therefore `unscored_assistive` is treated as "no signal" only if the user's **assistive profile** is set. The profile is set during a supervised period (§5 E3), by the user's declaration, or because allowlisted input was observed there. For other users, a switch from scored input to allowlisted injected input outside a supervised period yields **MEDIUM** (reason `UNSCORED_CHANGE`). That step-up is for sensitive operations only, never HIGH. The profile is a local flag in the sealed template. It is not sent to the server except as the per-period flag.
 - **Remote sessions.** The agent MUST NOT score input inside a remote-desktop or VDI guest; Windows `GetSystemMetrics(SM_REMOTESESSION)` reports this. It reports `status=active`, flag `remote_session`, and no band. Deployments that need ZTBE for VDI run the agent on the **client endpoint**, where the physical keyboard is.
 - **Opt-out without penalty.** A user who relies on assistive input, or who does not want ZTBE, can disable it (status `disabled`). The RP's non-biometric session policy then applies: the GDPR alternative (EDPB 3/2019) and the NIST 800-63B-4 non-biometric alternative. The reason for opting out is **not recorded**.
 - The agent MUST NOT infer disability, health or emotion from provenance or timing (D7).
@@ -444,7 +445,7 @@ The verifier is an SSF **Transmitter** (openid-ssf, Final). Events are SETs (RFC
 - `current_level` ∈ {LOW, MEDIUM, HIGH};
 - `previous_level`;
 - `principal` = `DEVICE` (the verifier does not know RP session IDs; RPs map devices to sessions via verified proofs, `docs/interfaces.md` §3);
-- `risk_reason` ∈ {`BEHAVIOUR_OK`, `BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `SIGNAL_LOST`, `ASSERTION_INVALID`}. "No signal" states (enrolling, disabled, unscored, remote, locked) are not risk events.
+- `risk_reason` ∈ {`BEHAVIOUR_OK`, `BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `UNSCORED_CHANGE`, `SIGNAL_LOST`, `ASSERTION_INVALID`}. "No signal" states (enrolling, disabled, unscored, remote, locked) are not risk events.
 
 `sub_id` uses RFC 9493 formats (`iss_sub` or `opaque`). Only changes are sent. The mapping with example SETs is in `docs/interfaces.md`.
 

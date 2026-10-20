@@ -217,7 +217,7 @@ Cost: genuine silence (crash, network loss, unannounced sleep) now causes step-u
 **Decision.**
 - Classify input as physical, injected-allowlisted or injected-unknown.
   - Only physical input is scored.
-  - Allowlisted assistive or automation input → **no signal**, never suspect.
+  - Allowlisted assistive or automation input → **no signal**, never suspect, for users with an assistive profile (set in a supervised period). For other users, a switch to allowlisted input outside supervision → MEDIUM (`UNSCORED_CHANGE`). Otherwise a walk-up attacker could evade by using an on-screen keyboard.
   - Unknown injection → `synthetic_suspect` → MEDIUM (not HIGH).
 - No scoring inside remote-desktop guests.
 - Opt-out without a stated reason and without penalty.
