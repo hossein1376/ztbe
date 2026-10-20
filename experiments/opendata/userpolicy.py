@@ -154,3 +154,7 @@ for m in (1, 2, 3, 5, 8, 12, 20, 30):
     unit = int(cfg[1:]); act = f"{m*unit/60:.0f} min" if cfg[0] == "t" else f"{m*unit} keys"
     log(f"{m} | {act} | {len(ok)} | {m1['eer']*100:.1f}% | {m1['frr_far1']*100:.1f}% | {mk['eer']*100:.1f}% | {mk['far_frr5']*100:.1f}%")
 open(f"{OUT}/userpolicy_{cfg}_K{K}.txt", "w").write("\n".join(out) + "\n")
+import json
+json.dump({"cfg": cfg, "K": K, "genuine": [[int(len(G[u])), int((G[u] > tg).sum())] for u in ul],
+           "impostor": [[int(len(I[u])), int((I[u] <= tg).sum())] for u in ul]},
+          open(f"{OUT}/userpolicy_{cfg}_K{K}_counts.json", "w"))

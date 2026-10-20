@@ -78,3 +78,6 @@ python3 aggregate.py > /tmp/agg.md && cat experiments-v2.head.md /tmp/agg.md > .
 `python3 userpolicy.py <cfg> 4` for cfg in t60 t120 n100 n200 → `results/userpolicy_<cfg>_K4.txt`.
 Tappy only, cross-day. Priors come from a disjoint half of Tappy users, standing in for the "own consented population" of D3.
 Timeline: enrol on days 0–6, calibrate on days 7–13 (genuine only), test on day ≥14. Each run evaluates only 29–40 users and uses one random split (seed 20261021), so treat the numbers as indicative.
+
+## power.py (added 2026-10-21)
+Sample-size planning for the consented data collection. Uses the per-user error counts from `userpolicy.py` to estimate the intra-user error correlation, then the design effect, then the number of users needed. Also gives rule-of-3 counts. Output: `results/power.txt`.
