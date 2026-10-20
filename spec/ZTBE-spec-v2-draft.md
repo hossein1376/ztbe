@@ -1,6 +1,12 @@
-# ZTBE v2.1: Specification (draft)
+# ZTBE v2.2: Specification (draft)
 
-Status: draft v2.1, 2026-10-21 (round 2). It supersedes `ZTBE-spec-v1.0.0-draft.md` and the v2.0 draft (see git history). This is the **single normative document**; `PROPOSAL.md` is now only a rationale note. Normative words (MUST, SHOULD, MAY) follow RFC 2119.
+Status: draft v2.2, 2026-10-21 (round 2 + review round 2 fixes). It supersedes `ZTBE-spec-v1.0.0-draft.md` and the v2.0 draft (see git history). This is the **single normative document**; `PROPOSAL.md` is now only a rationale note. Normative words (MUST, SHOULD, MAY) follow RFC 2119.
+
+Changes in v2.2 (after `notes/review-round-2.md`, D18–D22):
+- **H1 privacy:** per-RP pairwise device IDs and per-RP proof keys; the extension answers only linked, user-approved RPs; proofs carry no assistive/remote/paused detail; the device registry is scoped to the RP's own subjects; SSF subjects are pairwise (§9.5, §9.7, D18);
+- **H2:** HIGH latches until a verifier-confirmed step-up or an OS lock → unlock; signal state machine (§9.9, D19);
+- **H3:** band for "nothing scored" defined (stale after 10 min → MEDIUM `NO_RECENT_SCORE`), score age in proofs, non-typing walk-up limit stated in A4 (§9.9, D20);
+- H4 request-binding limit stated (A3, §9.5); H5 assertion hygiene vs integrity counter (§9.4); H6 COSE implementation checklist (§9.1); H7 assistive-evasion limits (§11 L5); H8 paused semantics (§9.9).
 
 Changes in v2.1 (round 2, after `notes/review-round-1.md`):
 - agent integrity: no unauthenticated pause, heartbeat, silence → HIGH (§9.3, §9.6);
@@ -16,7 +22,7 @@ Changes in v2.1 (round 2, after `notes/review-round-1.md`):
 Evidence:
 - `notes/experiments-v2.md` (§9 "Round 2" holds the re-runs);
 - `experiments/opendata/results/eval2_*.txt`, `adapt_supervised_*.txt`, `adapt_adaptive_n200.txt`, `power.txt`;
-- `notes/decisions.md` (D1–D17), `notes/collector-tradeoffs.md`, `docs/interfaces.md`, `docs/dpia-outline.md`, `docs/pilot-protocol.md`.
+- `notes/decisions.md` (D1–D22), `notes/collector-tradeoffs.md`, `docs/interfaces.md`, `docs/dpia-outline.md`, `docs/pilot-protocol.md`.
 
 Citation keys refer to `references/references.bib`. Numbers come from our own runs or from sources read at abstract level or better. Anything else is marked UNVERIFIED.
 
@@ -63,8 +69,8 @@ Assets:
 |---|---|---|---|---|---|
 | A1 | DB dump (verifier or RP) | Reads all server state | Templates, profiling | The server stores **no templates and no features**: device public keys, attestation results, band history (≤ 30 days, D6), sequence state | Nothing behavioural to steal, by construction |
 | A2 | Server compromise (active) | Runs verifier code | Forge "ok"; read templates | Assertions and proofs are signed by a device key (D2); templates never leave the device; RPs verify proofs against device keys themselves (§9.5) | A2 can ignore ZTBE for services it controls. It cannot make another RP accept a forged proof without the device key, and cannot obtain templates |
-| A3 | Session hijack (stolen cookie or token used on another machine) | Valid session, no device key | Use the session | (a) RP-challenge-bound presence proof on sensitive operations and every `proof_interval` (§9.5); (b) sender-constrained session where available: DBSC for browsers, DPoP (RFC 9449) or mTLS (RFC 8705) for API clients | **Mitigated only if the RP enforces §9.5.** The thief cannot produce a proof bound to the RP's challenge and origin, so the RP steps up. Residual risk: relay through code on the victim's device (out of scope). Not behavioural |
-| A4 | Unattended terminal (insider walks up to an unlocked, enrolled machine) | Physical input on the device | Act as the user | Score → trust model → band `high` → WebAuthn step-up. The attacker cannot pause the agent without WebAuthn (§9.6). Stopping it yields `SIGNAL_LOST` → HIGH | Zero-effort, **different-device** impostors: alarm within 5 windows in 81.6% [76.9, 86.2] of runs (within 10: 88.0%), at 0.64 [0.41, 0.93] genuine alarms per 60 windows (§6.5). **The same-device rate is unknown (§11 L1). Not a guarantee** |
+| A3 | Session hijack (stolen cookie or token used on another machine) | Valid session, no device key | Use the session | (a) RP-challenge-bound presence proof on sensitive operations and every `proof_interval` (§9.5); (b) sender-constrained session where available: DBSC for browsers, DPoP (RFC 9449) or mTLS (RFC 8705) for API clients | **Mitigated only if the RP enforces §9.5 *and* sender-constrains the session** (DBSC, DPoP or mTLS). Proofs alone are periodic: a thief sharing the cookie can ride along on non-sensitive requests while the victim's browser answers the periodic proofs; only per-operation proofs (sensitive operations) or sender-constraining bind *requests*. A thief can also force step-ups on the victim by withholding proofs (nuisance, not compromise). Residual: relay through code on the victim's device (out of scope). Not behavioural |
+| A4 | Unattended terminal (insider walks up to an unlocked, enrolled machine) | Physical input on the device | Act as the user | Score → trust model → band `high` → WebAuthn step-up. The attacker cannot pause the agent without WebAuthn (§9.6). Stopping it yields `SIGNAL_LOST` → HIGH | Zero-effort, **different-device** impostors: alarm within 5 windows in 81.6% [76.9, 86.2] of runs (within 10: 88.0%), at 0.64 [0.41, 0.93] genuine alarms per 60 windows (§6.5). **The same-device rate is unknown (§11 L1). Not a guarantee.** HIGH latches until step-up or lock → unlock (§9.9). **Not covered:** an attacker who does not type (mouse only) or types < 40 keys per window is never scored; the victim's last band stays in force for up to `T_stale` = 10 min of unlocked time after the last scored window, then the device becomes MEDIUM `NO_RECENT_SCORE`. Sensitive operations SHOULD require a score age ≤ 5 min (§9.9). Mouse scoring is out of scope for v2. Assistive-profile users get no A4 coverage when input is allowlisted (§11 L5) |
 | A5 | Imitation / mimicry | Observes the victim; replays captured timings | Pass as `ok` | None strong. Partly mitigated by long windows, the trust model and step-up on sensitive operations | Mimicry raises FAR several-fold (§2.1). **ZTBE does not resist a trained, targeted imitator** |
 | A6 | Synthetic input injection / bots | Injects events through OS APIs or virtual HID | Pass as `ok` | Injected events are never scored (§3.1). Unexplained injection sets `synthetic_suspect` | OS flags catch API-level injection. Hardware HID emulators are not detectable by provenance. Detector performance is quoted from the literature (§2.1), not measured |
 | A7 | Malicious operator (verifier or RP admin) | Reads band streams, sets policy | Profile or surveil employees | 3-level band only; no score or feature API; ≤ 30-day retention; purpose limitation (D6) | Limits what can be learned per person. It cannot stop punitive use; that is a legal and organisational control (§10) |
@@ -141,7 +147,7 @@ Each event is classified at capture:
 | Class | How it is recognised (per OS, `notes/collector-tradeoffs.md`) | Scored? | Effect |
 |---|---|---|---|
 | `physical` | Not flagged as injected; from a HID keyboard device | Yes | — |
-| `injected-allowlisted` | Flagged as injected, and the source matches the deployment allowlist: on-screen keyboard, dictation, AT software, password-manager auto-type, configured KVM tools | No | Excluded from features and from the 40-key minimum. If allowlisted events are > 50% of a period's events, the assertion carries `unscored_assistive` and **no band**. RPs MUST treat this as "no signal", **never as suspect** |
+| `injected-allowlisted` | Flagged as injected, and the source matches the deployment allowlist: on-screen keyboard, dictation, AT software, password-manager auto-type, configured KVM tools | No | Excluded from features and from the 40-key minimum. If allowlisted events are > 50% of a period's events, the period is unscored: the assertion carries `status=unscored` and **no band**. The reason (assistive) stays on the device, in the user-visible local log only. RPs MUST treat this as "no signal", **never as suspect** |
 | `injected-unknown` | Flagged as injected, source not allowlisted or unidentifiable | No | Sets `synthetic_suspect` → CAEP **MEDIUM** with reason `SYNTHETIC_INPUT_SUSPECT`. It is not HIGH, because benign tools are common |
 
 OS signals used:
@@ -152,8 +158,8 @@ OS signals used:
 How assistive tools actually appear on each OS is **UNVERIFIED** and is the MVP capture-spike task (PLAN M1-T5).
 
 Further rules:
-- **Evasion guard (assistive profile).** A walk-up attacker could switch to an on-screen keyboard to get "no signal". Therefore `unscored_assistive` is treated as "no signal" only if the user's **assistive profile** is set. The profile is set during a supervised period (§5 E3), by the user's declaration, or because allowlisted input was observed there. For other users, a switch from scored input to allowlisted injected input outside a supervised period yields **MEDIUM** (reason `UNSCORED_CHANGE`). That step-up is for sensitive operations only, never HIGH. The profile is a local flag in the sealed template. It is not sent to the server except as the per-period flag.
-- **Remote sessions.** The agent MUST NOT score input inside a remote-desktop or VDI guest; Windows `GetSystemMetrics(SM_REMOTESESSION)` reports this. It reports `status=active`, flag `remote_session`, and no band. Deployments that need ZTBE for VDI run the agent on the **client endpoint**, where the physical keyboard is.
+- **Evasion guard (assistive profile).** A walk-up attacker could switch to an on-screen keyboard to get "no signal". Therefore an assistive-unscored period is reported as `status=unscored` ("no signal") only if the user's **assistive profile** is set. The profile is set during a supervised period (§5 E3), by the user's declaration, or because allowlisted input was observed there. For other users, a switch from scored input to allowlisted injected input outside a supervised period sets flag `unscored_change` and yields **MEDIUM** (reason `UNSCORED_CHANGE`). That step-up is for sensitive operations only, never HIGH. The profile is a local flag in the sealed template. It is **never sent** to the verifier or any RP (D18); the verifier sees only `status=unscored` or `unscored_change`.
+- **Remote sessions.** The agent MUST NOT score input inside a remote-desktop or VDI guest; Windows `GetSystemMetrics(SM_REMOTESESSION)` reports this. It reports `status=unscored` and no band; the reason (remote session) stays in the local log (D18). Deployments that need ZTBE for VDI run the agent on the **client endpoint**, where the physical keyboard is.
 - **Opt-out without penalty.** A user who relies on assistive input, or who does not want ZTBE, can disable it (status `disabled`). The RP's non-biometric session policy then applies: the GDPR alternative (EDPB 3/2019) and the NIST 800-63B-4 non-biometric alternative. The reason for opting out is **not recorded**.
 - The agent MUST NOT infer disability, health or emotion from provenance or timing (D7).
 
@@ -267,7 +273,7 @@ Spec configuration (hyb, v21): P0 FRR 5.3% [3.7, 7.5] pooled, 7.9% [5.3, 11.0] m
 |---|---|---|---|---|
 | `ok` | Block score ≤ τ_g and no trust alarm | No action | ≈ 94.7% (1 − FRR 5.3% [3.7, 7.5]) | 11.7% [8.9, 15.4] get `ok` |
 | `uncertain` | Block score > τ_g, no trust alarm | MAY require step-up for **sensitive operations only** | ≈ 5.3% | Most of the rest, until the trust alarm |
-| `high` | Trust alarm in this period, or `SIGNAL_LOST` (§9.6) | Step-up (WebAuthn) now | §6.5 | §6.5 |
+| `high` | Trust alarm, or `SIGNAL_LOST` (§9.6); **latched** until cleared (§9.9) | Step-up (WebAuthn) now | §6.5 | §6.5 |
 
 CAEP mapping: `ok` → LOW, `uncertain` → MEDIUM, `high` → HIGH (openid-caep §3.8).
 
@@ -281,7 +287,7 @@ alarm ⇔ trust < 50  → band=high
 ```
 
 - `τ_w` is the q90 of genuine window scores of disjoint calibration users. Defaults: `a = 40`, `P = 40`, `R = 5`.
-- Trust is reset to 100 at every strong authentication, at OS unlock, at the first window of each day, and after an alarm.
+- Trust is reset to 100 at a verifier-confirmed strong authentication, at OS unlock, and at the first window of each day. **After an alarm, the device latches `band=high`** (§9.9); trust is reset to 100 only when the latch clears.
 - Trust is never persisted beyond the session.
 
 ### 6.5 Measured trust-model operating points (default parameters, reset per day)
@@ -357,10 +363,12 @@ payload (CBOR map, integer keys):
   4  nonce   bstr  current verifier epoch nonce (16 B, rotated every 10 min)
   5  t0, 6 t1 uint window span, Unix seconds
   7  nwin    uint  scored windows in this assertion (0 for a heartbeat)
-  8  status  uint  0=active 1=enrolling 2=disabled 3=paused 4=locked 5=capture_lost
-  9  band    uint  0=ok 1=uncertain 2=high (present only if status=active and scored)
-  10 flags   uint  bit0 synthetic_suspect, bit1 (reserved), bit2 rollover_disabled,
-                   bit3 unscored_assistive, bit4 remote_session, bit5 device_change, bit6 idle
+  8  status  uint  0=active 1=enrolling 2=disabled 3=paused 4=locked 5=capture_lost 6=unscored
+                   (unscored = assistive profile or remote session; the reason is never sent, D18)
+  9  band    uint  0=ok 1=uncertain 2=high (the device's effective band, §9.9; absent if status≠active)
+  10 flags   uint  bit0 synthetic_suspect, bit1 latched, bit2 rollover_disabled,
+                   bit3 unscored_change, bit4 (reserved), bit5 device_change, bit6 idle, bit7 unlocked_since_last
+  18 lsw     uint  end of the last scored window, Unix seconds (absent if none since unlock)
   11 kp      uint  0=hw_attested 1=hw_unattested 2=software
   12 model, 13 policy  tstr  model_ver, policy_ver
   14 pgrant  bstr  SHA-256 of the verifier pause grant (present only if status=paused)
@@ -373,7 +381,16 @@ The full CDDL is in `docs/interfaces.md`.
 - Ed25519 is used for software keys.
 - Verifiers MUST reject −7 and −8.
 - veraison/go-cose (v1.3.0, MPL-2.0; last release 2024-09-27) supports neither −9 nor −19. Its issue #224 and PR #225 ("Add fully specified algorithms") were still open on 2026-10-21.
-- ZTBE therefore implements COSE_Sign1 itself on fxamacker/cbor (MIT, v2.9.6): ≈ 200 lines, Sig_structure per RFC 9052 §4.4, deterministic encoding, tested against RFC 9052 examples re-signed with −9/−19. This also removes the MPL dependency.
+- ZTBE therefore implements COSE_Sign1 itself on fxamacker/cbor (MIT, v2.9.6): ≈ 200 lines, Sig_structure per RFC 9052 §4.4, deterministic encoding. This also removes the MPL dependency.
+
+**COSE implementation checklist (MUST; test plan for PLAN M2 T4, review H6).**
+1. ESP256 signatures are raw `r‖s` (64 B, fixed-width big-endian). Go `crypto.Signer`, TPM and Secure Enclave return ASN.1 DER: convert on sign, and on verify reject anything that is not exactly 64 B.
+2. Verify over the **received** protected-header bstr; never re-encode it.
+3. Check `alg` against the registered key type (P-256 ↔ −9, Ed25519 ↔ −19); reject −7, −8 and any other value.
+4. Reject unknown `crit` (label 2) entries, a non-empty unprotected map, untagged messages (only tag 18), duplicate map keys, indefinite-length items and non-deterministic encodings (fxamacker DecMode with duplicate-key and canonical checks), and unknown payload keys in schema v2.
+5. ECDSA is randomised: tests pin Sig_structure bytes and verify/round-trip signatures; they cannot pin ESP256 signature bytes. Ed25519 test vectors can be byte-exact.
+6. Negative fuzzing: truncated, bit-flipped, wrong-alg, wrong-kid, swapped payload type (assertion presented as proof and vice versa, prevented by the content-type header `3`).
+7. **Key use.** RFC 9864 Security Considerations: a key "MUST be used with only a single algorithm unless the use of the same key with different algorithms is proven secure". The device key signs TLS 1.3 client CertificateVerify and COSE assertions with the *same* algorithm (ECDSA P-256/SHA-256, or Ed25519). The signed inputs are domain-separated: TLS 1.3 signs 64 × 0x20 followed by the context string "TLS 1.3, client CertificateVerify" (RFC 8446 §4.4.3), and a COSE Sig_structure starts with the CBOR array header 0x84 and the text "Signature1". Proofs use separate per-RP keys (§9.5), so the device key never signs RP-visible material.
 
 Assertion rules:
 - No score, features, keystroke counts or content are ever included (D6).
@@ -408,34 +425,47 @@ Assertion rules:
   3. `nonce` is the current or previous epoch.
   4. `t1 ≤ now + 30 s`.
   5. `pgrant` is valid if `status=paused`.
-- **Failure handling.** A failed check → **drop, count, never change the band**. If more than 10 invalid assertions arrive from one authenticated device within 1 h, the verifier alerts the operator and sets the device's `integrity_suspect` state (CAEP MEDIUM, reason `ASSERTION_INVALID`). It does not set HIGH.
+- **Failure handling.** A failed check → **drop and count**; the band is not changed by the failure itself. Failures are split:
+  - **Hygiene failures** (`stale-seq`, `bad-nonce`, `future-time`) also occur genuinely: queued assertions after > 20 min offline, clock skew, restore from backup. The 409 response carries the verifier time and current epoch. They are logged for diagnostics and do **not** count toward `integrity_suspect`.
+  - **Integrity failures** (`bad-signature`, `kid` ≠ mTLS identity, `bad-alg`, malformed COSE) cannot be produced by a correct agent. If more than 10 arrive from one authenticated device within 1 h, the verifier alerts the operator and sets `integrity_suspect` (CAEP MEDIUM, `ASSERTION_INVALID`). It does not set HIGH.
+- **Device hygiene (MUST).**
+  - Refetch `/epoch` on every reconnect and after any 409; compute a clock offset from the verifier time.
+  - Never send queued assertions whose nonce is older than the previous epoch: drop them locally and send one fresh assertion.
+  - `seq` is persisted monotonically: `seq = max(last_seq + 1, unix_ms · 2^10)` with `last_seq` written to sealed storage before the assertion is sent, so restarts and clock moves never reuse a value. Reinstall, restore to a new machine or a cleared TPM means a new device key and re-enrolment (§9.2), which starts a new `seq` space.
+- **Effective outcome.** If an agent keeps failing hygiene checks, no *valid* assertion arrives, and after 150 s the device reaches `SIGNAL_LOST` → HIGH (§9.6). So "never changes the band" holds only for isolated failures; the resync rules above exist to avoid this.
 
-### 9.5 Session binding: RP-challenge-bound presence proofs (D-b, A3)
+### 9.5 Session binding: RP-challenge-bound presence proofs (D-b, A3; pairwise per D18)
 
-Push events (§9.7) tell an RP that risk changed. They do not prove that a *request* comes from the enrolled device. For that, conforming RPs use **pull proofs**:
+Push events (§9.7) tell an RP that risk changed. They do not prove that a *request* comes from the enrolled device. For that, conforming RPs use **pull proofs**.
 
+**Privacy rule (D18).** Proofs are visible to the RP's web origin. They MUST NOT let any party link the user across RPs or learn sensitive state. Therefore:
+- **Per-RP proof keys.** For each linked RP the service creates a separate proof key (TPM / SE / software, same `key_protection` rules as §7). Its `kid` is a **pairwise device ID** `pdid = HMAC-SHA-256(k_verifier, rp_id ‖ dev)[:16]`, assigned by the verifier. The global `dev` and the device key never appear in proofs or in anything an RP receives.
+- **Linking.** An RP becomes *linked* only when (1) the user starts the link **in the agent or extension UI** (not by a page script), (2) the user approves the RP's origin in an agent dialog, and (3) the RP redeems the resulting one-time link code at `/rp/v1/links` with its own subject identifier for the user (`rp_sub`). The verifier MUST check that `rp_sub` belongs to the device's user: if the verifier is the IdP, `rp_sub` MUST equal the (pairwise) `sub` it issues to that RP; otherwise the RP presents an ID token for the user from the IdP. Unlinking is available to the user at any time in the same UI.
+- **Extension allowlist.** The browser extension registers its content script **only** for linked origins, exposes no web-accessible resources, and does not respond on any other origin. An unlinked page cannot obtain a proof or probe the extension through ZTBE's interfaces. (Other extension-fingerprinting side channels are UNVERIFIED; PLAN E2.)
+- **Minimal content.** A proof carries only a 4-valued signal, a coarse score age and `key_protection`. Assistive, remote-session, paused, enrolling and disabled all appear as the same `no_signal` value. No `seq`, `model_ver`, `policy_ver` or flags (these are linkable or sensitive).
+- **Scoped registry.** `/rp/v1/subjects/{rp_sub}/devices` returns only proof keys linked to the calling RP (client credentials bound to `rp_id`) for that RP's own subject. There is no lookup by global user or device ID.
+
+Procedure:
 1. On a sensitive operation, and at least every `proof_interval` (default 5 min) for sessions under ZTBE policy, the RP issues a random `chal` (≥ 16 B), bound server-side to the session.
 2. The RP's client obtains a **`ZTBE-Proof`** from the local agent:
-   - browsers: the ZTBE browser extension, via native messaging; the extension passes the requesting **origin** as seen by the browser;
-   - native and API clients: local IPC with peer-credential checks.
-3. The proof is a COSE_Sign1 by the device key, with the payload of §9.1 plus:
-   - `15 aud` (RP origin or client_id);
-   - `16 chal`;
-   - `17 iat`.
+   - browsers: the ZTBE browser extension (linked origins only), via native messaging; the extension passes the requesting **origin** as seen by the browser;
+   - native and API clients: local IPC with peer-credential checks; `aud` = the linked `client_id`.
+3. The proof is a COSE_Sign1 by the **per-RP proof key** (`kid` = pdid) with payload: `1 v`, `15 aud`, `16 chal`, `17 iat`, `19 sig` ∈ {`low`, `medium`, `high`, `no_signal`} (the effective state of §9.9), `20 age` ∈ {0: ≤ 2 min, 1: ≤ 5 min, 2: ≤ 10 min, 3: > 10 min or none} since the last scored window, `11 kp`. CDDL in `docs/interfaces.md`.
+4. The RP verifies the proof against the proof key from its scoped registry. It checks `aud`, `chal`, `iat ≤ 60 s` old, and that `kid` is linked to the session's `rp_sub`.
+5. **No valid proof** (no agent, unlinked origin, wrong device, wrong origin, timeout) → treat as HIGH (step-up). A thief on another machine cannot produce a proof. A phishing page in the victim's browser is unlinked and gets nothing.
+6. **Freshness.** For sensitive operations, RPs SHOULD require `age ≤ 1` (`max_score_age` = 5 min, RP-configurable) and step up otherwise (§9.9, A4 non-typing limit).
 
-   It carries the **current** status, band and flags.
-4. The RP verifies the proof against the device key registered for this user (from the verifier's device registry API, `docs/interfaces.md`). It checks `aud`, `chal`, `iat ≤ 60 s` old, and that the device belongs to the session's user.
-5. **No valid proof** (no agent, wrong device, wrong origin, timeout) → treat as HIGH (step-up). This is the A3 control. A thief on another machine cannot produce a proof. A phishing page in the victim's browser gets a proof with the wrong `aud`.
-
-In addition, RPs SHOULD sender-constrain the session itself:
+**Request binding (review H4).** A periodic proof shows only that *some* holder of the session reached the enrolled device in the last 5 min. A thief sharing the cookie can ride along on **non-sensitive** requests while the victim's browser answers the periodic proofs. Requests are bound only by per-operation proofs or by sender-constraining. Therefore **any "A3 mitigated" claim requires sender-constrained sessions** (MUST for that claim):
 - browsers: DBSC (W3C Editor's Draft, 2026-09-08). It is available on Windows: Chrome for Developers announced it for Chrome 145 (<https://developer.chrome.com/blog/dbsc-windows-announcement>, page last updated 2026-03-03), and Google's security blog of 2026-04-09 announced public availability in Chrome 146. macOS support is reported from Chrome 147 (secondary source; UNVERIFIED);
 - OAuth clients: DPoP (RFC 9449) or mTLS certificate-bound tokens (RFC 8705).
 
-Proofs bind the *ZTBE signal* to the device. Sender-constraining binds the *session credential* to a device. Both are needed for a clean A3 story, and neither is behavioural.
+Without them, A3 is reduced to "sensitive operations are protected; ordinary requests are not". Withholding proofs lets a cookie thief force step-ups on the victim (nuisance only).
+
+Proofs bind the *ZTBE signal* to the device. Sender-constraining binds the *session credential* to a device. Neither is behavioural.
 
 ### 9.6 Silence and signal loss (D-a, A10)
 
-- If no valid assertion arrives for `2·hb + 30 s = 150 s` and the last status was `active` (not `locked`, `paused` with a valid grant, or `disabled`), the verifier sets **`SIGNAL_LOST` → CAEP HIGH** for the device's sessions. The same applies to `status=capture_lost`.
+- If no valid assertion arrives for `2·hb + 30 s = 150 s` and the last status was `active` or `unscored` (not `locked`, `paused` with a valid grant, or `disabled`), the verifier sets **`SIGNAL_LOST` → CAEP HIGH** for the device. The same applies to `status=capture_lost`. Like any HIGH it **latches** (§9.9): resumed heartbeats do not clear it.
 - RPs MAY downgrade `SIGNAL_LOST` to MEDIUM for scopes they classify as non-sensitive. They MUST NOT for sensitive scopes.
 - The genuine cost (crashes, network loss, sleep without notification) is unmeasured and is a pilot metric (`docs/pilot-protocol.md`).
 
@@ -445,18 +475,45 @@ The verifier is an SSF **Transmitter** (openid-ssf, Final). Events are SETs (RFC
 - `current_level` ∈ {LOW, MEDIUM, HIGH};
 - `previous_level`;
 - `principal` = `DEVICE` (the verifier does not know RP session IDs; RPs map devices to sessions via verified proofs, `docs/interfaces.md` §3);
-- `risk_reason` ∈ {`BEHAVIOUR_OK`, `BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `UNSCORED_CHANGE`, `SIGNAL_LOST`, `ASSERTION_INVALID`}. "No signal" states (enrolling, disabled, unscored, remote, locked) are not risk events.
+- `risk_reason` ∈ {`BEHAVIOUR_OK`, `BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `UNSCORED_CHANGE`, `NO_RECENT_SCORE`, `SIGNAL_LOST`, `ASSERTION_INVALID`, `STEP_UP_OK`, `UNLOCK`}. The last two mark a verifier-confirmed latch clear (§9.9). "No signal" states (enrolling, disabled, unscored, paused, locked) are not risk events.
 
-`sub_id` is an SSF Complex Subject (`format` = `complex`, openid-ssf §3.3) whose `user` member uses the RFC 9493 `iss_sub` format and whose `device` member uses `opaque`. Only changes are sent. The mapping with example SETs is in `docs/interfaces.md`.
+`sub_id` is an SSF Complex Subject (`format` = `complex`, openid-ssf §3.3) whose `user` member uses the RFC 9493 `iss_sub` format with **the receiving RP's own `rp_sub`** and whose `device` member uses `opaque` with the **pairwise `pdid`** for that RP (D18). Events go only to linked RPs. Two RPs receive unrelated identifiers for the same user and device. Only changes are sent. The mapping with example SETs is in `docs/interfaces.md`.
 
 ### 9.8 RP behaviour (normative for conforming RPs)
 
-- **HIGH** → step-up. OAuth resource servers return `401` with `WWW-Authenticate: Bearer error="insufficient_user_authentication"` and `acr_values` / `max_age` (RFC 9470). The IdP runs a WebAuthn ceremony with user verification. A successful step-up resets trust (and opens a supervised period if U1 is enabled).
+- **HIGH** → step-up. HIGH is **latched** (§9.9): the RP MUST NOT clear a pending ZTBE step-up because of a later LOW or MEDIUM event. It clears it only after its own successful step-up, or on a verifier event with reason `STEP_UP_OK` or `UNLOCK`. The device latch clears only on a verifier-confirmed WebAuthn (§9.9), so an RP whose step-up the verifier does not see will get `sig = high` again in the next proof. RPs SHOULD therefore run the step-up at the IdP that reports it to the verifier (`/user/v1/stepup`). OAuth resource servers return `401` with `WWW-Authenticate: Bearer error="insufficient_user_authentication"` and `acr_values` / `max_age` (RFC 9470). The IdP runs a WebAuthn ceremony with user verification. A successful step-up resets trust (and opens a supervised period if U1 is enabled).
 - A failed or abandoned step-up is handled by the RP's existing session policy. **ZTBE defines no lockout** (D1).
 - **MEDIUM** → the RP MAY shorten session lifetime and MAY require step-up for designated sensitive operations. It MUST NOT terminate the session on MEDIUM alone.
 - **LOW** → no action. LOW MUST NOT raise the session's assurance level.
-- **No signal** (`enrolling`, `disabled`, `unscored_assistive`, `remote_session`) → the RP's normal non-ZTBE policy applies. It MUST NOT be treated as suspect.
+- **No signal** (proof `sig = no_signal`; device `enrolling`, `disabled`, `unscored`, `paused` with a grant, `locked`) → the RP's normal non-ZTBE policy applies. It MUST NOT be treated as suspect. Because LOW never raises assurance, LOW and no-signal are equivalent for non-sensitive requests; for sensitive operations the proof's `age` decides (§9.9).
 - Bands MUST NOT be stored for longer than 30 days, and per-person band reports MUST NOT be exposed (D6).
+
+### 9.9 Signal state machine (normative; D19, D20)
+
+The device and the verifier run the same state machine. The device's copy drives proofs; the verifier's copy drives CAEP events. Inputs: scored windows (via the trust model, §6.4), heartbeats, OS lock/unlock notifications, pause grants, verifier-confirmed WebAuthn (`/user/v1/stepup`, called by the IdP's step-up flow or the agent UI), and silence.
+
+| State | Entered on | Proof `sig` | CAEP level (reason) |
+|---|---|---|---|
+| `LOW` | last block `ok` and no other condition | `low` | LOW (`BEHAVIOUR_OK`) |
+| `MEDIUM` | last block `uncertain`; or `synthetic_suspect`; or `unscored_change`; or `integrity_suspect` (verifier only); or **stale** (below) | `medium` | MEDIUM (`BEHAVIOUR_DEVIATION` / `SYNTHETIC_INPUT_SUSPECT` / `UNSCORED_CHANGE` / `ASSERTION_INVALID` / `NO_RECENT_SCORE`) |
+| `HIGH` (**latched**) | trust alarm; `SIGNAL_LOST` (silence ≥ 150 s while active/unscored, `capture_lost`, `paused` without grant) | `high` | HIGH (`BEHAVIOUR_DEVIATION` / `SIGNAL_LOST`) |
+| `NO_SIGNAL` | `enrolling`, `disabled`, `unscored` (profile/remote), `paused` with a valid grant, `locked` | `no_signal` | no event |
+
+Transition rules:
+1. **Latch (H2).** From `HIGH`, the **only** exits are:
+   - **(a)** a WebAuthn ceremony verified by the verifier for the device's user (`STEP_UP_OK`);
+   - **(b)** an OS lock followed by an OS unlock on the device (`UNLOCK`; the device reports `locked` and then sets `unlocked_since_last`).
+
+   Scored `ok` blocks, resumed heartbeats, pause requests and the start of a new day do **not** clear it. While latched, the device keeps sending `band=high` with flag `latched`, and scoring continues (windows are scored but the band stays high).
+   On exit: trust := 100, the latch is cleared on the device (the verifier returns a signed clear receipt in the next assertion response for case (a)), and the state becomes `LOW` until the next block is scored.
+   A pause grant requires WebAuthn, so obtaining one while `HIGH` is itself exit (a).
+2. **Stale (H3).** Let `ref = max(end of last scored window, last OS unlock, last verifier-confirmed WebAuthn)`. If the device is unlocked and active and `now − ref > T_stale = 10 min`, the state is `MEDIUM` with reason `NO_RECENT_SCORE`. This covers both "nobody is typing" (mouse-only use, reading, or an unattended unlocked screen) and windows with < 40 keys, which are never scored. A new scored block leaves the stale state. `HIGH` is not affected (the latch wins).
+3. **Band for unscored periods.** A period with `nwin = 0` (no scored window) does **not** refresh the band. Until `T_stale` the state stays at the last value; after it, rule 2 applies. The proof's `age` lets an RP require fresher evidence (§9.5 step 6).
+4. **No signal.** Entering `NO_SIGNAL` from `LOW` or `MEDIUM` sends no CAEP event. RPs treat LOW and no-signal alike, since LOW never raises assurance. Entering `NO_SIGNAL` from `HIGH` is impossible except via the exits of rule 1. `locked` is the lock half of exit (b); `paused` needs WebAuthn; `disabled` needs WebAuthn (§9.3).
+5. **Paused (H8).** While paused with a valid grant, proofs carry `sig = no_signal` and `age = 3`. CAEP receives nothing. When the grant expires without a new one, the device returns to `active`, and with no scored window yet rule 2 applies from the grant's start, so a sensitive operation steps up.
+6. **Priority.** `HIGH` > `MEDIUM` (any reason) > `LOW`; `NO_SIGNAL` applies only when not latched.
+
+Parameters: `T_stale` = 10 min (proposal; the pilot measures the fraction of unlocked time spent stale, `docs/pilot-protocol.md` §5); `max_score_age` = 5 min for sensitive operations (RP-configurable).
 
 ## 10. Privacy, GDPR and the EU AI Act
 
@@ -507,7 +564,13 @@ Key limitations:
   - **The same-device impostor rate is unknown** and is the go/no-go experiment (`docs/pilot-protocol.md`).
 - **L2. Small n.** 63–82 users per configuration; one dataset of mostly older adults, about a third with Parkinson's disease (Tappy).
 - **L3. Zero-effort only.** The attacks in §2.1 are not evaluated.
-- **L4. Window correlation.** Block FAR does not correct for within-session correlation (§4).
+- **L4. Window correlation.** Block FAR does not correct for within-session correlation (§4). The eval2 bootstrap resamples targets, not attackers, so FAR CIs ignore attacker clustering and are somewhat narrow.
+- **L5. Assistive and non-typing evasion (review H3, H7).**
+  - For users **with** the assistive profile, a walk-up attacker using allowlisted input (on-screen keyboard, dictation) gets `no_signal`, i.e. no A4 protection.
+  - For other users, the switch yields MEDIUM `UNSCORED_CHANGE`, not HIGH, so the attacker avoids step-up on non-sensitive operations.
+  - Mixing physical and allowlisted input around the > 50% allowlisted threshold is gameable.
+  - A non-typing attacker inherits the victim's last band for up to `T_stale` (§9.9).
+  - These are accepted for v2 and MUST be stated in deployment documentation.
 
 Does **not** make:
 - an authentication factor or AAL claim. FRR@FAR1% is far above NIST/FIDO bars;
@@ -596,6 +659,10 @@ Licences: go-tpm family, memguard and sks are Apache-2.0; go-webauthn is BSD-3; 
 | Pause grant | ≤ 60 min, after WebAuthn | §9.3 |
 | `proof_interval` | 5 min, plus every sensitive operation; proof age ≤ 60 s | §9.5 |
 | Epoch nonce | 10 min | §9.1 |
-| Invalid-assertion alert | > 10 per device per hour | §9.4 |
+| Invalid-assertion alert | > 10 *integrity* failures per device per hour (hygiene failures excluded) | §9.4 |
 | COSE alg | −9 (hardware), −19 (software) | §9.1, D9 |
 | Retention | ≤ 30 days of bands | D6 |
+| `T_stale` | 10 min unlocked without a scored window → MEDIUM `NO_RECENT_SCORE` | §9.9 (proposal) |
+| `max_score_age` | 5 min for sensitive operations (proof `age ≤ 1`) | §9.5, §9.9 (proposal) |
+| HIGH latch exits | verifier-confirmed WebAuthn, or OS lock → unlock | §9.9, D19 |
+| Proof identifiers | pairwise `pdid` and per-RP proof key; no global IDs | §9.5, D18 |
