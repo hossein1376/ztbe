@@ -45,7 +45,7 @@ Assets:
 | A1 | DB dump (verifier or RP storage) | Reads all server state | Templates, profiling | The server stores **no templates and no features**, only device public keys, attestation results, the band history (≤ 30 days, D6) and sequence state | Nothing behavioural to steal. v1's helper-data leakage problem disappears by construction rather than by a fuzzy extractor. |
 | A2 | Server compromise (active) | Runs verifier code | Forge "ok" for a stolen session; read templates | Assertions are signed by a device key (hardware-backed where possible, D2); templates never leave the device | A2 can *ignore* ZTBE for services it controls, but cannot make another RP accept a forged device assertion without the device key. A2 cannot obtain templates. |
 | A3 | Session hijack (stolen cookie or token used from another machine) | Valid session, no device key | Use the session | The RP binds the session to the device key (assertions MUST arrive for active sessions, §9.4) | No fresh signed assertions arrive, so the session is degraded after `max_silence`. This is a device-binding control, not a behavioural one. |
-| A4 | Unattended terminal (insider walks up to an unlocked machine) | Physical input on the enrolled device | Act as the user | Behavioural score → trust model → band `high` → WebAuthn step-up | Detection probability against **zero-effort** impostors: 72–93% within 5 windows, at 0.3–2.2 false alarms per 60 genuine windows (§6.5, Tappy). Not a guarantee. |
+| A4 | Unattended terminal (insider walks up to an unlocked machine) | Physical input on the enrolled device | Act as the user | Behavioural score → trust model → band `high` → WebAuthn step-up | Detection probability against **zero-effort** impostors with the default trust parameters: 72–88% within 5 windows, at 0.51–1.49 false alarms per 60 genuine windows (§6.5, Tappy; the q80 row gives 83–93% at 1.35–2.21). Not a guarantee. |
 | A5 | Imitation / mimicry (human trains on the victim's rhythm) | Observes the victim, e.g. by shoulder surfing or replaying captured timings | Pass as `ok` | None strong. Partly mitigated by multi-feature, long windows, the trust model and step-up on sensitive operations | Literature (§2.1): mimicry raises FAR several-fold. **ZTBE does not resist a trained, targeted imitator**, and the spec says so. |
 | A6 | Synthetic input injection / bots (OS-level injected events, timing forgeries) | Injects events through OS APIs or virtual HID | Pass as `ok`, or poison adaptation | Injected-event provenance check (§4.4), a liveness/synthetic detector as a separate signal, and supervised adaptation only | Provenance flags catch naive injection (OS-flagged events). Hardware-level injection (USB HID emulators) is not detectable by provenance. Detector performance on open data is quoted in §2.1, not measured by us. |
 | A7 | Malicious insider (operator or admin of the verifier or RP) | Reads band streams, sets policy | Profile or surveil employees | 3-level band only, no score/feature API, ≤ 30-day retention, purpose limitation in RP terms (D6) | Limits what can be learned per person. It cannot stop an employer from *using* bands punitively; that is a legal and organisational control (§10). |
@@ -225,7 +225,7 @@ Here `τ_w` is the q90 of pooled genuine *window* scores in calibration. Default
 
 Reading the default row:
 - For t60 windows (60 windows ≈ 1 h of active typing), the default gives 1.05 step-ups per active hour for the mean user and 2.78 for the p90 user. Across configs the range is 0.51–1.49 alarms per 60 windows.
-- An unattended-terminal impostor is caught within 5 minutes of typing in 72–88% of cases.
+- For t60 windows, an unattended-terminal impostor raises `high` within 5 windows (≈ 5 min of active typing) in 80% of cases. Across window types the range is 72–88% within 5 windows, where 5 windows means 5–10 min (t60/t120) or 500–1,000 keystrokes (n100/n200).
 
 That step-up rate is high for daily use. Hence:
 - **T5.** The RP SHOULD rate-limit step-ups caused by ZTBE to ≤ 2 per hour per user. Beyond that, it SHOULD fall back to the `uncertain` treatment.
@@ -368,8 +368,8 @@ Legal analysis below is the research assistant's reading of the sources, not leg
 ## 11. Claims ZTBE v2 makes, and does not make
 
 Makes, with the measured, zero-effort, open-data evidence above:
-1. a continuous signal with ≈ 7–9% block EER on cross-day free text (indicative, N ≤ 75);
-2. detection of a zero-effort walk-up impostor within 5 windows in ≈ 72–88% of cases, at ≈ 0.5–1.5 genuine alarms per 60 windows (t60: ≈ 1 per active hour);
+1. a continuous signal with ≈ 7–9% block EER on cross-day free text (indicative; Tappy only, 28–117 users per run);
+2. detection of a zero-effort walk-up impostor within 5 windows in ≈ 72–88% of cases (80% for t60, i.e. ≈ 5 min of active typing), at ≈ 0.5–1.5 genuine alarms per 60 windows (t60: ≈ 1 per active hour);
 3. no behavioural data at the server;
 4. signed and replay-protected assertions.
 
