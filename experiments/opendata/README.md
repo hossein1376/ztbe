@@ -32,7 +32,7 @@ python3 extract_mouse.py      # SapiMouse + Balabit
 ./run_all.sh                  # every run_keystroke.py configuration -> results/<tag>.{txt,json}
 python3 adapt.py n200         # adaptation + poisoning on Tappy -> results/adapt_n200.txt
 python3 fuse.py laser t30     # k-window decision fusion -> results/fuse_<ds>_<cfg>.txt
-python3 aggregate.py          # markdown tables for notes/experiments-v2.md
+python3 aggregate.py > /tmp/agg.md && cat experiments-v2.head.md /tmp/agg.md > ../../notes/experiments-v2.md
 ```
 
 ## Files

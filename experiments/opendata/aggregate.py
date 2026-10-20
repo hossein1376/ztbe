@@ -74,3 +74,13 @@ for f in fn:
         v = D[t]["feature_var"].get(f)
         cells.append(f"{v['icc']:.2f} / {v['within']/max(v['between'],1e-6):.2f}" if v else "-")
     print(f"| {f} | " + " | ".join(cells) + " |")
+
+print("\n### Decision fusion over k consecutive windows (fuse.py)\n")
+for f in sorted(glob.glob(f"{R}/fuse_*.txt")):
+    L = open(f).read().strip().splitlines()
+    print(f"**{os.path.basename(f)[:-4]}**: {L[0].lstrip('# ')}\n")
+    print("| " + L[1] + " |"); print("|" + "---|" * len(L[1].split("|")))
+    for l in L[2:]: print("| " + l + " |")
+    print()
+print("### Adaptation and poisoning (adapt.py, Tappy n200)\n")
+print("```"); print(open(f"{R}/adapt_n200.txt").read().strip()); print("```")
