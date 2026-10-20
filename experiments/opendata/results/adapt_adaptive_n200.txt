@@ -1,0 +1,18 @@
+# adaptive poisoning vs full guard stack, Tappy n200, 75 users, 225 victim-attacker pairs
+thr_v 1.550, thr_a 1.031, r_anchor 1.046; no-attack takeover on these pairs 5.3%
+policy | lambda | attack days | takeover (attacker windows accepted >= 50%) | median attacker acceptance
+gated+anchor+velocity+sanitize | 0.0 | 1 | 5.8% | 0.0%
+gated+anchor+velocity+sanitize | 0.0 | 7 | 13.8% | 1.0%
+gated+anchor+velocity+sanitize | 0.0 | 14 | 6.2% | 0.0%
+gated+anchor+velocity+sanitize | 0.0 | 28 | 6.7% | 0.0%
+gated+anchor+velocity+sanitize | 0.0 | 56 | 9.8% | 0.2%
+gated+anchor+velocity+sanitize | 2.0 | 1 | 5.8% | 0.0%
+gated+anchor+velocity+sanitize | 2.0 | 7 | 8.4% | 0.0%
+gated+anchor+velocity+sanitize | 2.0 | 14 | 12.0% | 0.2%
+gated+anchor+velocity+sanitize | 2.0 | 28 | 16.0% | 0.5%
+gated+anchor+velocity+sanitize | 2.0 | 56 | 23.6% | 2.4%
+gated+anchor+velocity+sanitize | 3.0 | 1 | 5.3% | 0.0%
+gated+anchor+velocity+sanitize | 3.0 | 7 | 12.0% | 0.5%
+gated+anchor+velocity+sanitize | 3.0 | 14 | 19.6% | 2.5%
+gated+anchor+velocity+sanitize | 3.0 | 28 | 31.6% | 16.0%
+gated+anchor+velocity+sanitize | 3.0 | 56 | 32.0% | 16.7%

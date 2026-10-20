@@ -1,0 +1,7 @@
+# Tappy hold-time quantisation per user (first two monthly files, users with >= 500 keystrokes)
+quantum | users
+3.90625 ms | 106
+finer or irregular | 80
+15.625 ms | 7
+7.8125 ms | 2
+total | 195
