@@ -443,8 +443,8 @@ Proofs bind the *ZTBE signal* to the device. Sender-constraining binds the *sess
 The verifier is an SSF **Transmitter** (openid-ssf, Final). Events are SETs (RFC 8417) delivered by push (RFC 8935) or poll (RFC 8936). Each change emits a CAEP **`risk-level-change`**:
 - `current_level` ∈ {LOW, MEDIUM, HIGH};
 - `previous_level`;
-- `principal` = `SESSION` (or `USER`);
-- `risk_reason` ∈ {`BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `SIGNAL_LOST`, `ASSERTION_INVALID`, `ENROLMENT_INCOMPLETE`, `UNSCORED`}.
+- `principal` = `DEVICE` (the verifier does not know RP session IDs; RPs map devices to sessions via verified proofs, `docs/interfaces.md` §3);
+- `risk_reason` ∈ {`BEHAVIOUR_OK`, `BEHAVIOUR_DEVIATION`, `SYNTHETIC_INPUT_SUSPECT`, `SIGNAL_LOST`, `ASSERTION_INVALID`}. "No signal" states (enrolling, disabled, unscored, remote, locked) are not risk events.
 
 `sub_id` uses RFC 9493 formats (`iss_sub` or `opaque`). Only changes are sent. The mapping with example SETs is in `docs/interfaces.md`.
 
