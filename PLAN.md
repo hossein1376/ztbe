@@ -18,7 +18,7 @@ Decisions D1–D7 are recorded in `notes/decisions.md`. D1 is Hossein's; D2–D7
 | Cold start | **checked** (Tappy) | Count windows plateau after ≈ 500–1000 keys; t120 improves up to ≈ 25 min. Enrolment rule: ≥ 1000 keys, ≥ 15 min, ≥ 2 days (spec §5). |
 | Mimicry / synthetic attacks | **lit** | Snoop-forge-replay reaches up to 87.75% success on free-text continuous keystroke verification (rahman2011sfr). Trained mimicry: FAR 0.24 → 0.63 (tey2013). Out of scope for strong claims; added to the eval protocol (spec §2.1, §12). |
 | Signalling | **specified** | COSE_Sign1 assertion → verifier → CAEP `risk-level-change` (LOW/MEDIUM/HIGH) → RFC 9470 step-up |
-| Sample size | **checked** (`experiments/opendata/power.py`) | Intra-user error correlation is ρ ≤ 0.20, so ≈ 90–105 users are needed for ±2 pp on a 5% FRR (and ≥ 86 even with unlimited data per user). |
+| Sample size | **checked** (`experiments/opendata/power.py`) | Intra-user error correlation is ρ ≤ 0.20, so 87–104 users are needed for ±2 pp on a 5% FRR (20–200 blocks per user) (and ≥ 86 even with unlimited data per user). |
 
 ### Phase 3a: Go MVP (agent + scoring library + verifier)
 
