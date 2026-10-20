@@ -1,0 +1,7 @@
+windows 66739 users 224
+keys per window: median 140, mean 139
+active seconds per window: median 60.3, mean 59.5, p10 60.0, p90 62.0
+share closed by 200 keys (active<60): 9.7%
+windows per active-typing hour (pooled) = 3600/mean active s = 61
+per-user mean active s: median 60.7, p10 59.8, p90 61.1
+wall-clock span per window (incl. removed idle): median 302 s, mean 13843 s

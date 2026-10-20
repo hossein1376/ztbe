@@ -293,7 +293,7 @@ alarm ⇔ trust < 50  → band=high
 | t60 all | 0.49 [0.32, 0.73]; 0.84 [0.43, 1.36]; 1.90 [1.02, 3.70] | 78.1% [73.8, 82.7] / 86.2% / 92.2% |
 
 What this means for the spec configuration:
-- A hyb window is ≤ 60 s of active typing, so 60 windows is at most about one active hour.
+- A hyb window is ≤ 60 s of active typing, so 60 windows is at most about one active hour. Measured on Tappy: mean 59.5 s of active typing per hyb window (only 9.7% close at 200 keys first), i.e. about 61 windows per active-typing hour (`experiments/opendata/results/window_duration.txt`). Here and in D15, "active hour" means an hour of **active typing** (idle gaps > 5 s removed), not wall-clock time at the computer.
 - The **mean user** sees roughly 0.9 ZTBE step-ups per active hour (macro); the **p90 user** sees about 2.5.
 - A zero-effort different-device walk-up impostor is flagged within 5 windows (≤ 5 min of active typing) in about 4 of 5 runs, and about 7% are not flagged within 30.
 - Impostor runs start at trust = 100, and "within 30" is right-censored.
