@@ -1,0 +1,34 @@
+# adaptation on Tappy n200: users with >= 28 days span and >= 3 enrol windows: 75
+thr_verify (EER on week 2) = 1.550 (EER 8.1%), thr_adapt = 1.031, r_anchor = 1.046
+
+## genuine replay: FRR by week since enrolment (global thr_verify) - pooled over windows [macro mean over users]
+policy | wk1 | wk2 | wk4 | wk6 | wk8 | updates/user | impostor FAR after replay
+static | 8.1% [23.8%] | 12.2% [21.3%] | 10.0% [21.3%] | 10.7% [25.9%] | 10.9% [30.2%] | 0 | 9.1%
+naive | 7.0% [22.3%] | 8.0% [17.1%] | 6.8% [18.4%] | 8.1% [23.7%] | 7.4% [21.7%] | 171 | 7.2%
+gated | 7.8% [23.7%] | 11.0% [19.9%] | 8.3% [20.5%] | 11.3% [26.8%] | 10.9% [29.5%] | 81 | 8.8%
+gated+anchor | 7.8% [23.7%] | 11.0% [19.9%] | 8.3% [20.5%] | 11.3% [26.8%] | 10.9% [29.5%] | 81 | 7.9%
+gated+anchor+velocity | 8.0% [23.7%] | 11.4% [20.1%] | 8.6% [20.5%] | 10.3% [26.5%] | 11.3% [29.2%] | 55 | 9.1%
+gated+anchor+velocity+sanitize | 8.0% [23.7%] | 11.4% [20.1%] | 8.6% [20.5%] | 10.3% [26.5%] | 11.0% [29.1%] | 55 | 8.9%
+
+## poisoning: perfect-knowledge boundary walk (Biggio et al.), 50 injected windows per day
+each injected window sits just inside the adapt gate on the line from current mu to the attacker's mean
+policy | attack days | takeover rate (attacker's own windows accepted >= 50%) | median attacker acceptance | victim FRR after attack
+static | 1 | 8.0% | 0.0% | 24.1%
+static | 7 | 8.0% | 0.0% | 24.1%
+static | 28 | 8.0% | 0.0% | 24.1%
+naive | 1 | 65.3% | 70.9% | 88.5%
+naive | 7 | 82.7% | 81.5% | 91.2%
+naive | 28 | 82.7% | 81.5% | 91.2%
+gated | 1 | 65.3% | 70.9% | 88.5%
+gated | 7 | 82.7% | 81.5% | 91.2%
+gated | 28 | 82.7% | 81.5% | 91.2%
+gated+anchor | 1 | 32.9% | 16.1% | 57.2%
+gated+anchor | 7 | 32.9% | 16.1% | 57.5%
+gated+anchor | 28 | 32.9% | 16.1% | 57.5%
+gated+anchor+velocity | 1 | 8.9% | 0.0% | 24.1%
+gated+anchor+velocity | 7 | 15.1% | 0.7% | 26.7%
+gated+anchor+velocity | 28 | 32.9% | 16.1% | 57.5%
+gated+anchor+velocity+sanitize | 1 | 8.9% | 0.0% | 24.1%
+gated+anchor+velocity+sanitize | 7 | 14.2% | 0.7% | 26.6%
+gated+anchor+velocity+sanitize | 28 | 9.3% | 0.0% | 24.4%
+(no attack, static template: attacker's own windows accepted >= 50% for 8.0% of pairs)

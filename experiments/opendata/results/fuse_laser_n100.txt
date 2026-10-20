@@ -1,0 +1,7 @@
+# fusion over k consecutive windows: laser n100 (cross-session (enrol session 1, test sessions 2-4); priors+dictionary from Aalto); eval users 20
+k | users with >= k test windows | genuine blocks | impostor blocks | EER | FRR@FAR1% | FRR@FAR0.1% | FAR@FRR5% | Gini FRR
+1 | 20 | 1151 | 1140 | 16.6% | 58.7% | 90.8% | 41.1% | 0.56
+2 | 20 | 570 | 1140 | 15.1% | 48.6% | 64.9% | 32.1% | 0.66
+4 | 20 | 279 | 1140 | 14.0% | 41.6% | 72.0% | 25.0% | 0.72
+8 | 20 | 135 | 1140 | 13.3% | 40.7% | 58.5% | 24.6% | 0.74
+16 | 20 | 63 | 1102 | 11.1% | 41.3% | 49.2% | 15.3% | 0.80

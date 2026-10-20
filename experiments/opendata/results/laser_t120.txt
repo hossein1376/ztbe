@@ -1,0 +1,89 @@
+# laser t120: cross-session (enrol session 1, test sessions 2-4); priors+dictionary from Aalto
+population users 20000 windows 25737; eval users 20; enrol windows 73 test windows 201; D=36
+enrol windows per user: median 3 min 1
+
+## per-feature variation (z-units; pop = population within/between; eval = test windows vs own enrol template)
+feature | pop ICC | pop Fisher | eval within-sd | eval between-sd | ratio within/between
+hold_mu_L | 0.98 | 41.83 | 0.31 | 0.89 | 0.35
+hold_mu_R | 0.97 | 37.53 | 0.29 | 0.85 | 0.34
+hold_mu_S | 0.97 | 34.04 | 0.43 | 1.11 | 0.39
+rollover_frac | 0.97 | 28.30 | 0.35 | 1.06 | 0.33
+pp_median | 0.94 | 15.92 | 0.19 | 0.47 | 0.41
+rp_mu_SL | 0.91 | 10.43 | 0.28 | 0.42 | 0.67
+pp_mu_SL | 0.91 | 10.04 | 0.28 | 0.40 | 0.69
+rp_mu_RL | 0.90 | 8.70 | 0.23 | 0.43 | 0.53
+pp_mu_RL | 0.90 | 8.57 | 0.22 | 0.41 | 0.55
+rp_mu_LS | 0.89 | 8.35 | 0.47 | 0.62 | 0.75
+pause_frac | 0.89 | 7.75 | 0.57 | 0.45 | 1.26
+pp_mu_LS | 0.88 | 7.54 | 0.47 | 0.65 | 0.73
+rp_mu_SR | 0.87 | 6.46 | 0.36 | 0.51 | 0.69
+rp_mu_LR | 0.86 | 6.36 | 0.25 | 0.54 | 0.47
+pp_mu_LL | 0.86 | 6.20 | 0.28 | 0.54 | 0.52
+pp_mu_LR | 0.86 | 6.20 | 0.25 | 0.49 | 0.52
+pp_mu_SR | 0.86 | 6.18 | 0.36 | 0.46 | 0.78
+rp_mu_LL | 0.86 | 6.14 | 0.29 | 0.54 | 0.54
+hold_mu_M | 0.85 | 5.63 | 0.92 | 0.83 | 1.10
+hold_sd_R | 0.84 | 5.23 | 0.33 | 0.79 | 0.42
+rp_mu_RS | 0.84 | 5.15 | 0.44 | 0.80 | 0.55
+rp_mu_RR | 0.83 | 4.76 | 0.30 | 0.55 | 0.55
+hold_sd_L | 0.82 | 4.60 | 0.27 | 0.68 | 0.40
+pp_mu_RS | 0.82 | 4.55 | 0.44 | 0.70 | 0.62
+pp_mu_RR | 0.82 | 4.50 | 0.31 | 0.54 | 0.56
+backspace_frac | 0.81 | 4.26 | 1.01 | 0.53 | 1.88
+hold_sd_S | 0.76 | 3.18 | 0.36 | 0.68 | 0.54
+pp_sd_SL | 0.73 | 2.66 | 1.11 | 0.83 | 1.34
+pp_sd_LL | 0.70 | 2.34 | 0.71 | 0.46 | 1.54
+pp_sd_RL | 0.70 | 2.33 | 0.60 | 0.44 | 1.37
+pp_sd_LS | 0.69 | 2.23 | 1.15 | 0.97 | 1.19
+pp_sd_LR | 0.67 | 2.00 | 0.69 | 0.66 | 1.05
+burstiness | 0.64 | 1.81 | 1.96 | 1.27 | 1.54
+pp_sd_SR | 0.64 | 1.75 | 1.24 | 0.78 | 1.58
+pp_sd_RR | 0.60 | 1.53 | 0.76 | 0.58 | 1.32
+pp_sd_RS | 0.59 | 1.45 | 1.12 | 0.77 | 1.45
+
+## matching performance (global threshold; zero-effort impostors never used in training)
+variant | EER | FRR@FAR1% | FAR@FRR10% | gen BER mean/p90 | imp BER mean/p5 | DoF | Gini(FRR users) | Gini(FAR attackers)
+unprotected scaled-Manhattan | 9.5% | 39.8% | 8.7% | - | - | - | 0.74 | 0.43
+unprotected LDA-16 Euclidean | 11.9% | 53.2% | 13.7% | - | - | - | 0.75 | 0.45
+Gray m=1 (sign), all [n=36] | 25.7% | 83.6% | 45.5% | 0.221/0.361 | 0.403/0.167 | 10.4 | 0.63 | 0.34
+Gray m=2, all [n=72] | 16.7% | 73.6% | 25.5% | 0.257/0.375 | 0.451/0.264 | 20.9 | 0.67 | 0.41
+Gray m=3, all [n=108] | 15.1% | 64.2% | 26.1% | 0.303/0.417 | 0.468/0.343 | 40.3 | 0.70 | 0.34
+LSSC S=4, all [n=108] | 15.5% | 69.7% | 22.6% | 0.182/0.269 | 0.351/0.194 | 19.5 | 0.67 | 0.39
+LSSC S=8, all [n=252] | 12.7% | 58.2% | 16.3% | 0.163/0.230 | 0.320/0.190 | 22.9 | 0.74 | 0.39
+pop-mask top16 Gray m=2 [n=32] | 16.9% | 76.1% | 28.7% | 0.192/0.344 | 0.442/0.219 | 12.0 | 0.69 | 0.27
+pop-mask top16 LSSC S=8 [n=112] | 11.4% | 63.2% | 13.9% | 0.117/0.188 | 0.310/0.143 | 15.8 | 0.78 | 0.27
+LDA-16 sign (16 bit) [n=16] | 27.5% | 91.0% | 58.7% | 0.264/0.438 | 0.441/0.250 | 13.9 | 0.53 | 0.30
+LDA-16 LSSC S=8 (112 bit) [n=112] | 21.5% | 51.7% | 32.6% | 0.200/0.295 | 0.331/0.223 | 43.9 | 0.55 | 0.28
+DROBA L=64 (user-specific alloc) [n=64] | 14.5% | 78.6% | 27.4% | 0.215/0.375 | 0.443/0.250 | 18.4 | 0.72 | 0.37
+1-bit DROBA-style top16 (user-specific mask) [n=16] | 23.7% | 100.0% | 43.2% | 0.104/0.250 | 0.362/0.062 | 4.6 | 0.61 | 0.39
+
+## sample-then-lock (hypergeometric, per probe) on binary variants: FRR / FAR, and population-prior attack on ONE locker
+variant | k_sub | ell | FRR | FAR | P(1 guess opens a given locker) median / max | P(>=1 of ell lockers opened by pop-mode guesses)
+Gray m=1 (sign), all [n=36] | 8 | 1500 | 2.0% | 82.54% | 0.100 / 0.350 | 1.000 (over 300 sampled lockers)
+Gray m=1 (sign), all [n=36] | 16 | 1500 | 26.1% | 25.96% | 0.050 / 0.150 | 1.000 (over 300 sampled lockers)
+Gray m=1 (sign), all [n=36] | 24 | 1500 | 62.3% | 5.03% | 0.000 / 0.100 | 0.999 (over 300 sampled lockers)
+Gray m=1 (sign), all [n=36] | 32 | 1500 | 86.6% | 0.35% | 0.000 / 0.050 | 0.943 (over 300 sampled lockers)
+LSSC S=8, all [n=252] | 8 | 1500 | 0.0% | 98.78% | 0.100 / 0.600 | 1.000 (over 300 sampled lockers)
+LSSC S=8, all [n=252] | 16 | 1500 | 0.2% | 73.24% | 0.000 / 0.250 | 1.000 (over 300 sampled lockers)
+LSSC S=8, all [n=252] | 24 | 1500 | 6.1% | 31.98% | 0.000 / 0.100 | 0.947 (over 300 sampled lockers)
+LSSC S=8, all [n=252] | 32 | 1500 | 23.3% | 10.19% | 0.000 / 0.050 | 0.750 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 8 | 1500 | 0.0% | 97.35% | 0.150 / 0.600 | 1.000 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 16 | 1500 | 0.3% | 70.10% | 0.050 / 0.200 | 1.000 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 24 | 1500 | 3.3% | 32.46% | 0.000 / 0.150 | 0.994 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 32 | 1500 | 11.0% | 13.25% | 0.000 / 0.100 | 0.946 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 8 | 1500 | 0.0% | 99.84% | 0.050 / 0.500 | 1.000 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 16 | 1500 | 2.6% | 64.43% | 0.000 / 0.150 | 0.932 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 24 | 1500 | 29.5% | 14.78% | 0.000 / 0.050 | 0.337 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 32 | 1500 | 53.1% | 1.73% | 0.000 / 0.050 | 0.098 (over 300 sampled lockers)
+
+## population-dictionary guessing (attacker: templates of disjoint population users, greedy max-coverage)
+Acceptance = target's verifier accepts the guessed feature vector at the stated threshold.
+variant | threshold | P(success) 1 / 10 / 100 / 1000 guesses | guesses for 50% | -log2 P1 (fuzzy min-entropy upper estimate)
+unprotected scaled-Manhattan | EER | 0.300 / 0.800 / 0.850 / 0.850 | 3 | 1.7 bits
+unprotected scaled-Manhattan | FAR=1% | 0.050 / 0.250 / 0.500 / 0.550 | 29 | 4.3 bits
+Gray m=1 (sign), all | EER | 0.350 / 0.700 / 0.950 / 0.950 | 3 | 1.5 bits
+Gray m=1 (sign), all | FAR=1% | 0.050 / 0.250 / 0.300 / 0.350 | None | 4.3 bits
+LSSC S=8, all | EER | 0.300 / 0.850 / 1.000 / 1.000 | 4 | 1.7 bits
+LSSC S=8, all | FAR=1% | 0.100 / 0.200 / 0.550 / 0.750 | 28 | 3.3 bits
+LDA-16 LSSC S=8 (112 bit) | EER | 0.200 / 0.850 / 1.000 / 1.000 | 2 | 2.3 bits
+LDA-16 LSSC S=8 (112 bit) | FAR=1% | 0.100 / 0.150 / 0.650 / 0.800 | 71 | 3.3 bits

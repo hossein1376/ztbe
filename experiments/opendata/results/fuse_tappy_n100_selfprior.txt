@@ -1,0 +1,7 @@
+# fusion over k consecutive windows: tappy n100 (cross-day (enrol first 7 days, test >= 14 days after first day); priors+dictionary from half of Tappy users (in-domain)); eval users 61
+k | users with >= k test windows | genuine blocks | impostor blocks | EER | FRR@FAR1% | FRR@FAR0.1% | FAR@FRR5% | Gini FRR
+1 | 61 | 44946 | 5334 | 11.2% | 57.7% | 86.7% | 21.4% | 0.52
+2 | 60 | 22458 | 4974 | 9.7% | 49.6% | 94.0% | 16.3% | 0.60
+4 | 53 | 11214 | 4712 | 7.8% | 35.7% | 78.2% | 12.3% | 0.66
+8 | 52 | 5594 | 4372 | 6.7% | 32.0% | 70.3% | 9.8% | 0.71
+16 | 47 | 2784 | 3888 | 6.0% | 27.9% | 85.8% | 7.7% | 0.77

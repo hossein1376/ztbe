@@ -1,0 +1,8 @@
+# never commit datasets or derived data
+*.npz
+*.zip
+*.csv.gz
+*.sql.gz
+data/
+__pycache__/
+*.pyc

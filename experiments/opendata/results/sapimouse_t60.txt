@@ -1,0 +1,74 @@
+# sapimouse t60: same-day cross-session (enrol 3-min session, test 1-min session); priors+dictionary from 60 disjoint SapiMouse users
+population users 60 windows 168; eval users 60; enrol windows 144 test windows 37; D=23
+enrol windows per user: median 2 min 2
+
+## per-feature variation (z-units; pop = population within/between; eval = test windows vs own enrol template)
+feature | pop ICC | pop Fisher | eval within-sd | eval between-sd | ratio within/between
+angvel_mu | 1.00 | 295.30 | 0.03 | 0.08 | 0.45
+angvel_sd | 0.99 | 197.28 | 0.06 | 0.10 | 0.57
+a_mu | 0.99 | 86.23 | 0.11 | 0.18 | 0.62
+curv_mu | 0.98 | 40.28 | 0.22 | 0.37 | 0.59
+jerk_mu | 0.97 | 36.44 | 0.05 | 0.06 | 0.75
+a_sd | 0.97 | 30.34 | 0.31 | 0.19 | 1.66
+v_sd | 0.87 | 6.74 | 0.65 | 0.79 | 0.82
+v_mu | 0.87 | 6.62 | 0.65 | 0.94 | 0.69
+pause_frac | 0.84 | 5.17 | 0.98 | 1.06 | 0.92
+mvlen_mu | 0.78 | 3.58 | 0.94 | 0.81 | 1.16
+straight_mu | 0.76 | 3.21 | 0.94 | 0.91 | 1.03
+click_dwell_sd | 0.64 | 1.76 | 0.62 | 0.85 | 0.73
+dir_5 | 0.63 | 1.67 | 1.19 | 0.82 | 1.46
+mvdur_mu | 0.62 | 1.66 | 0.83 | 0.87 | 0.96
+dir_1 | 0.60 | 1.52 | 0.83 | 0.74 | 1.12
+click_dwell_mu | 0.60 | 1.52 | 0.89 | 0.77 | 1.14
+dir_2 | 0.58 | 1.39 | 1.32 | 0.91 | 1.45
+dir_6 | 0.53 | 1.11 | 1.18 | 0.84 | 1.41
+dir_7 | 0.51 | 1.04 | 1.48 | 0.83 | 1.78
+dir_0 | 0.47 | 0.88 | 1.44 | 0.71 | 2.04
+dir_4 | 0.46 | 0.84 | 1.31 | 0.82 | 1.60
+straight_sd | 0.44 | 0.80 | 1.35 | 0.69 | 1.97
+dir_3 | 0.40 | 0.67 | 1.59 | 0.92 | 1.73
+
+## matching performance (global threshold; zero-effort impostors never used in training)
+variant | EER | FRR@FAR1% | FAR@FRR10% | gen BER mean/p90 | imp BER mean/p5 | DoF | Gini(FRR users) | Gini(FAR attackers)
+unprotected scaled-Manhattan | 26.9% | 89.2% | 59.2% | - | - | - | 0.71 | 0.39
+unprotected LDA-16 Euclidean | 24.3% | 83.8% | 67.0% | - | - | - | 0.74 | 0.40
+Gray m=1 (sign), all [n=23] | 33.7% | 94.6% | 73.6% | 0.353/0.539 | 0.487/0.217 | 10.6 | 0.62 | 0.19
+Gray m=2, all [n=46] | 33.0% | 89.2% | 70.8% | 0.385/0.543 | 0.497/0.326 | 23.1 | 0.62 | 0.19
+Gray m=3, all [n=69] | 32.0% | 81.1% | 65.1% | 0.410/0.522 | 0.496/0.364 | 41.1 | 0.68 | 0.17
+LSSC S=4, all [n=69] | 31.1% | 89.2% | 55.5% | 0.284/0.406 | 0.399/0.232 | 22.3 | 0.65 | 0.23
+LSSC S=8, all [n=161] | 29.3% | 89.2% | 52.9% | 0.256/0.360 | 0.359/0.217 | 26.9 | 0.68 | 0.25
+pop-mask top16 Gray m=2 [n=32] | 26.0% | 83.8% | 56.9% | 0.333/0.500 | 0.494/0.281 | 16.2 | 0.74 | 0.21
+pop-mask top16 LSSC S=8 [n=112] | 21.4% | 81.1% | 53.9% | 0.213/0.343 | 0.354/0.196 | 19.0 | 0.83 | 0.26
+LDA-16 sign (16 bit) [n=16] | 29.1% | 89.2% | 58.0% | 0.355/0.500 | 0.498/0.312 | 15.5 | 0.67 | 0.14
+LDA-16 LSSC S=8 (112 bit) [n=112] | 24.2% | 86.5% | 57.9% | 0.265/0.368 | 0.372/0.241 | 37.6 | 0.72 | 0.30
+DROBA L=64 (user-specific alloc) [n=64] | 33.5% | 83.8% | 62.8% | 0.406/0.516 | 0.494/0.359 | 37.2 | 0.70 | 0.14
+1-bit DROBA-style top16 (user-specific mask) [n=16] | 32.8% | 91.9% | 71.0% | 0.306/0.562 | 0.483/0.188 | 7.0 | 0.66 | 0.20
+
+## sample-then-lock (hypergeometric, per probe) on binary variants: FRR / FAR, and population-prior attack on ONE locker
+variant | k_sub | ell | FRR | FAR | P(1 guess opens a given locker) median / max | P(>=1 of ell lockers opened by pop-mode guesses)
+Gray m=1 (sign), all [n=23] | 8 | 1500 | 14.3% | 55.95% | 0.017 / 0.167 | 0.998 (over 300 sampled lockers)
+Gray m=1 (sign), all [n=23] | 16 | 1500 | 74.2% | 4.81% | 0.000 / 0.017 | 0.065 (over 300 sampled lockers)
+LSSC S=8, all [n=161] | 8 | 1500 | 0.0% | 98.71% | 0.100 / 0.367 | 1.000 (over 300 sampled lockers)
+LSSC S=8, all [n=161] | 16 | 1500 | 12.5% | 54.77% | 0.017 / 0.150 | 0.994 (over 300 sampled lockers)
+LSSC S=8, all [n=161] | 24 | 1500 | 45.3% | 15.63% | 0.000 / 0.033 | 0.397 (over 300 sampled lockers)
+LSSC S=8, all [n=161] | 32 | 1500 | 77.2% | 3.56% | 0.000 / 0.017 | 0.017 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 8 | 1500 | 0.0% | 96.98% | 0.100 / 0.400 | 1.000 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 16 | 1500 | 8.7% | 54.85% | 0.017 / 0.083 | 0.982 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 24 | 1500 | 29.1% | 18.24% | 0.000 / 0.033 | 0.490 (over 300 sampled lockers)
+pop-mask top16 LSSC S=8 [n=112] | 32 | 1500 | 61.8% | 4.86% | 0.000 / 0.017 | 0.065 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 8 | 1500 | 0.0% | 99.48% | 0.083 / 0.417 | 1.000 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 16 | 1500 | 14.0% | 43.88% | 0.000 / 0.067 | 0.917 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 24 | 1500 | 56.5% | 7.90% | 0.000 / 0.033 | 0.169 (over 300 sampled lockers)
+LDA-16 LSSC S=8 (112 bit) [n=112] | 32 | 1500 | 84.0% | 1.43% | 0.000 / 0.000 | 0.000 (over 300 sampled lockers)
+
+## population-dictionary guessing (attacker: templates of disjoint population users, greedy max-coverage)
+Acceptance = target's verifier accepts the guessed feature vector at the stated threshold.
+variant | threshold | P(success) 1 / 10 / 100 / 1000 guesses | guesses for 50% | -log2 P1 (fuzzy min-entropy upper estimate)
+unprotected scaled-Manhattan | EER | 0.600 / 0.833 / 0.833 / 0.833 | 1 | 0.7 bits
+unprotected scaled-Manhattan | FAR=1% | 0.083 / 0.267 / 0.267 / 0.267 | None | 3.6 bits
+Gray m=1 (sign), all | EER | 0.383 / 0.783 / 0.783 / 0.783 | 2 | 1.4 bits
+Gray m=1 (sign), all | FAR=1% | 0.000 / 0.000 / 0.000 / 0.000 | None | inf bits
+LSSC S=8, all | EER | 0.550 / 0.983 / 0.983 / 0.983 | 1 | 0.9 bits
+LSSC S=8, all | FAR=1% | 0.067 / 0.183 / 0.183 / 0.183 | None | 3.9 bits
+LDA-16 LSSC S=8 (112 bit) | EER | 0.467 / 0.933 / 0.933 / 0.933 | 2 | 1.1 bits
+LDA-16 LSSC S=8 (112 bit) | FAR=1% | 0.000 / 0.000 / 0.000 / 0.000 | None | inf bits
