@@ -501,7 +501,7 @@ Makes, with zero-effort, open-data, different-device evidence:
 Key limitations:
 - **L1. Device confound (the main one).**
   - Tappy impostors typed on their own computers; the walk-up attacker (A4) types on the victim's.
-  - Bound attempted: impostor blocks from attackers whose **timer quantum equals** the target's are accepted *less* often than the rest (hyb: 9.6% [6.2, 13.4] vs 12.2% [8.6, 16.2]; same/different ratio 0.59–0.90 across window types).
+  - Bound attempted: impostor blocks from attackers whose **timer quantum equals** the target's are accepted *less* often than the rest (spec config hyb/v21: 10.5% [6.8, 14.6] vs 12.2% [8.9, 16.4], ratio 0.86; hyb with all 34 features: 9.6% [6.2, 13.4] vs 12.2% [8.6, 16.2], ratio 0.79; same/different ratio 0.59–0.90 across window types; `results/eval2_hyb_{v21,all}_all.txt` §D).
   - Restricting to the 3.906 ms quantum users only gives P0 FAR 9.5–12.8%.
   - So the **timer quantum** does not drive separability, but keyboard switch feel, layout, OS key repeat and posture remain unbounded.
   - **The same-device impostor rate is unknown** and is the go/no-go experiment (`docs/pilot-protocol.md`).
