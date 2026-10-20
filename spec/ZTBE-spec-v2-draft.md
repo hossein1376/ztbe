@@ -134,7 +134,7 @@ Measured with `userpolicy.py`, cold-start section, on Tappy. The template is bui
 | n200: keys | 200 | 400 | 600 | 1000 | 1600 | 2400 | 6000 |
 | n200: EER per window / per 4-block | 14.1 / 11.3 | 11.0 / 8.2 | 10.4 / 7.5 | 10.5 / 7.5 | 10.2 / 7.1 | 10.3 / 7.2 | 10.0 / 7.2 |
 | n100: EER per window / per 4-block | 18.5 / 14.6 (100 k) | 14.4 / 10.1 | 13.1 / 8.8 | 12.4 / 7.8 (500 k) | 12.6 / 8.3 | 13.0 / 8.5 | 12.9 / 9.1 |
-| t60: EER per window / per 4-block | 19.9 / 18.5 (1 min) | 12.9 / 10.1 | 11.8 / 9.0 | 10.9 / 7.4 (5 min) | 10.3 / 7.5 | 10.8 / 7.6 | 11.2 / 8.2 |
+| t60: EER per window / per 4-block | 19.8 / 18.7 (1 min) | 12.7 / 9.2 | 12.0 / 8.9 | 10.6 / 7.4 (5 min) | 10.5 / 7.1 | 10.7 / 7.5 | 11.2 / 8.5 |
 | t120: EER per window / per 4-block | 20.5 / 18.3 (2 min) | 15.9 / 12.1 | 12.5 / 9.8 | 10.8 / 8.4 (10 min) | 9.9 / 7.0 | 9.3 / 6.0 (24 min) | 8.9 / 5.8 (60 min) |
 
 Findings:
