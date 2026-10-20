@@ -6,7 +6,7 @@ Status: protocol v1, 2026-10-21 (research assistant). It implements D15 (go/no-g
 
 **Primary question.** When a different person types on the *victim's own device and keyboard* (attacker A4, zero-effort walk-up), how often does the shipped configuration raise an alarm within 10 windows?
 
-This removes the open-data device confound (spec L1). Different-device Tappy gives 88.0% [84.1, 91.7]. The same-quantum subset bound suggests the different-device figure is optimistic (FAR ratio 0.79; 0.59–0.90 across runs).
+This removes the open-data device confound (spec L1). Different-device Tappy gives 88.0% [84.1, 91.7]. The same-quantum subset bound does **not** indicate that the different-device figure is optimistic: impostors whose timer quantum matches the target's are accepted *less* often, not more (same/different FAR ratio 0.86 in the spec config, 0.79 with all features; 0.59–0.90 across runs; spec §11 L1). Timer quantum is only a weak device proxy, so this cannot rule out a same-device penalty either. That is why the pilot is needed.
 
 **Pre-registered outcomes (D15):**
 
