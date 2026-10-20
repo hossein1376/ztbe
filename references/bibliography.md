@@ -367,7 +367,7 @@ Levels: A = abstract read, F = full text read, M = metadata only (Crossref, Sema
 | song2001ssh | A (USENIX abstract) | Keystroke timing reveals typed content → research mode stores window vectors only (spec §3.3) |
 | rfc9864 | M (RFC Editor metadata; content checked in round 2) | −7/−8 deprecated; ESP256 (−9), Ed25519 (−19) |
 | rfc9449, rfc8705 | M | Sender-constrained OAuth tokens (spec §9.5) |
-| w3c-dbsc, google2026dbsc | F (ED read; blog read) | Device-bound browser sessions; Chrome 146 Windows |
+| w3c-dbsc, google2026dbsc | F (ED read; blog read) | Device-bound browser sessions; Chrome 146 Windows (blog). Note: the Chrome for Developers post says Chrome 145 on Windows |
 | rfc8610, rfc9457 | M | CDDL and problem+json in `docs/interfaces.md` |
 | edpb2020consent | F (§3.1.1 read) | Employee consent generally not freely given (para 21) |
 | wp29opinion2017work | F (consent passage pp. 6–7, §5.4.1 p. 16 read) | Logging keystrokes and mouse movements disproportionate; consent not the basis at work |

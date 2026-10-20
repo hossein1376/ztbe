@@ -428,7 +428,7 @@ Push events (§9.7) tell an RP that risk changed. They do not prove that a *requ
 5. **No valid proof** (no agent, wrong device, wrong origin, timeout) → treat as HIGH (step-up). This is the A3 control. A thief on another machine cannot produce a proof. A phishing page in the victim's browser gets a proof with the wrong `aud`.
 
 In addition, RPs SHOULD sender-constrain the session itself:
-- browsers: DBSC (W3C Editor's Draft, 2026-09-08). Chrome 146 on Windows has shipped it (Google, 2026-04-09). macOS support is reported from Chrome 147 (secondary source; UNVERIFIED);
+- browsers: DBSC (W3C Editor's Draft, 2026-09-08). It is available on Windows: Chrome for Developers announced it for Chrome 145 (<https://developer.chrome.com/blog/dbsc-windows-announcement>, page last updated 2026-03-03), and Google's security blog of 2026-04-09 announced public availability in Chrome 146. macOS support is reported from Chrome 147 (secondary source; UNVERIFIED);
 - OAuth clients: DPoP (RFC 9449) or mTLS certificate-bound tokens (RFC 8705).
 
 Proofs bind the *ZTBE signal* to the device. Sender-constraining binds the *session credential* to a device. Both are needed for a clean A3 story, and neither is behavioural.
