@@ -22,8 +22,17 @@ for f in sorted(glob.glob(f"{R}/userpolicy_*_K4_counts.json")):
     d = json.load(open(f)); pg, rg = rho_hat(d["genuine"]); pi, ri = rho_hat(d["impostor"])
     rhos_g.append(rg); rhos_i.append(ri)
     print(f"{d['cfg']} | {len(d['genuine'])} | {pg*100:.1f}% | {rg:.2f} | {pi*100:.1f}% | {ri:.2f}")
-rg, ri = max(rhos_g), max(rhos_i)
-print(f"\nPlanning values (max over configs): rho_FRR = {rg:.2f}, rho_FAR = {ri:.2f}")
+rng = np.random.default_rng(20261021)
+ub_g, ub_i = [], []
+for f in sorted(glob.glob(f"{R}/userpolicy_*_K4_counts.json")):
+    d = json.load(open(f)); n = len(d["genuine"])
+    bg = [rho_hat([d["genuine"][j] for j in rng.integers(0, n, n)])[1] for _ in range(1000)]
+    bi = [rho_hat([d["impostor"][j] for j in rng.integers(0, n, n)])[1] for _ in range(1000)]
+    ub_g.append(np.percentile(bg, 97.5)); ub_i.append(np.percentile(bi, 97.5))
+    print(f"{d['cfg']}: bootstrap 97.5th percentile rho_FRR {ub_g[-1]:.2f}, rho_FAR {ub_i[-1]:.2f}")
+rg, ri = max(ub_g), max(ub_i)
+print(f"\nPlanning values (round 2: max over configs of the upper 97.5% bootstrap bound; round 1 used point estimates {max(rhos_g):.2f}/{max(rhos_i):.2f}): rho_FRR = {rg:.2f}, rho_FAR = {ri:.2f}")
+print("Unequal cluster sizes (heavy vs light typists) inflate DEFF further; not modelled.")
 def users_needed(p, h, m, rho):
     n_eff = z * z * p * (1 - p) / (h * h); deff = 1 + (m - 1) * rho
     return math.ceil(n_eff * deff / m), n_eff, deff
