@@ -2,6 +2,50 @@
 
 Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a review of spec v1.0.0-draft (fuzzy extractors and cancelable templates). That design was rejected. The current direction is [spec v2](spec/ZTBE-spec-v2-draft.md): on-device keystroke scoring that emits a signed risk signal, with WebAuthn step-up. It is a risk signal, not an authentication factor.
 
+## Status: archived (2026-11-07)
+
+**Not pursued. Kept as a reference.** The intended use was as an input to a fraud or anomaly detection system. For that use, the gain is too small for the GDPR risk. The empirical work (E1–E3) under "What's next" below will not be done. Everything after this section is the state of the repo at archiving.
+
+### Observations at archiving
+
+**How the work was produced.**
+- An AI research assistant (Grok) did all the work in one overnight session on 2026-10-21: 72 commits in about four hours.
+- Both "independent" reviews (`notes/review-round-1.md`, `notes/review-round-2.md`) are the same assistant reviewing its own work.
+- Hossein made D1. The assistant made D2–D22.
+- No human has checked the numbers or citations. Treat the repo as a well-organised draft, not a vetted result.
+
+**What holds up and is worth reusing.**
+- Negative results, with measurements:
+  - Fuzzy extractors and cancelable templates (v1): a single population-dictionary guess opens 3.5–22% of the locked templates.
+  - Server-side homomorphic encryption and OPRF: 10³–10⁵× the cost with no accuracy gain.
+  - Continuous adaptation: an adaptive poisoning attacker takes over 31.6% of the time, and supervised updates give no FRR benefit.
+- The evaluation method in `experiments/opendata/eval2.py`: thresholds calibrated on disjoint users, bootstrap CIs, matched-FAR comparisons, pooled, macro and p90 reporting.
+- The bibliography, `notes/collector-tradeoffs.md` and `notes/landscape.md` as starting points.
+
+**Why it is a dead end for fraud and anomaly detection.**
+- **The signal is weak, and the numbers are best-case.**
+  - Zero-effort impostors pass 11.7% of 4-window blocks.
+  - Genuine users get about 0.9 step-ups per active-typing hour on average, and 2.5 for the worst 10% of users.
+  - About 1 in 5 walk-up impostors is not flagged within 5 windows.
+  - Every impostor was on different hardware from the victim (L1), so device differences inflate detection. Mimicry was never tested.
+  - The headline dataset is Tappy: 81 users, some with Parkinson's disease.
+- **It doesn't fit the fraud use case.** A "same user?" model can't catch the attacks that matter most there. In remote-access and social-engineering (APP) fraud, the genuine user is the one typing.
+- **The GDPR cost is high.**
+  - A stored per-user typing template used to verify a person is likely biometric data under Art. 9. That requires explicit consent or a member-state legal basis.
+  - Consent doesn't work for fraud detection: the people you most want to score are the ones who won't give it.
+  - Workforce use adds a proportionality problem.
+- **The original brief was narrowed early.** "Continuously learn user behaviour without compromising privacy" became keystroke authentication, and continuous learning was then switched off (D8). Other readings of the brief were never explored.
+
+**If the topic is revisited.**
+- The useful signals for fraud don't identify anyone. They are computed per session, with no stored template and no cross-session linking:
+  - injected or automated input (bots, pasted credentials, impossible cadence);
+  - remote-access tool sessions;
+  - signs that a victim is being coached through a payment;
+  - device and session context anomalies.
+- Such signals are ordinary personal data, usually under legitimate interest (Recital 47 names fraud prevention), not Art. 9 biometrics.
+- Spec §3.1 (input provenance, remote sessions) and `notes/collector-tradeoffs.md` cover how to capture them on each OS.
+- Get legal advice before building anything. These observations are not legal advice.
+
 ## Start here
 
 1. [`spec/ZTBE-spec-v2-draft.md`](spec/ZTBE-spec-v2-draft.md) **v2.2** is the single normative spec (D14).
@@ -62,7 +106,7 @@ Research base for the **ZeroTrace Behavioral Engine (ZTBE)**. It started as a re
 - Power: FRR 5% ± 2 pp needs 164–177 users; FAR 10% ± 3 pp needs 119–131.
 - **Main limitation:** user and device are confounded in all open data (spec L1). The same-device pilot is the next step.
 
-## Status: desk phase complete (2026-10-21)
+## Status: desk phase complete (2026-10-21; superseded by the archive note above)
 
 Two independent reviews agree that more desk research adds little (D17; `notes/review-round-2.md` §6). Their must-fix items H1, H2, H3 and H9 are fixed in spec v2.2, `docs/interfaces.md`, `docs/dpia-outline.md` and `docs/pilot-protocol.md` v2 (D18–D21). The should-fix items H4–H8 are covered by D22.
 
